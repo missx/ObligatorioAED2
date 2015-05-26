@@ -1,0 +1,50 @@
+package sistema;
+
+public class Utils {
+	
+	/*
+	 * Verifica que el formato de la cedula sea correcto
+	 * @param String ced: cedula a verificar
+	 * @return boolean: true: correcto, false: incorrecto
+	 */
+	public static boolean verificarCedula(String ced){
+		if(ced != null && ced.length() == 11){
+			if(ced.matches("[\\d]{1}\\.[\\d]{3}\\.[\\d]{3}-\\d{1}")){
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/*
+	 * Verifica que el formato del celular sea correcto
+	 * @param String cel: celular a verificar
+	 * @return boolean: true: correcto, false: incorrecto
+	 */
+	public static boolean verificarCelular(String cel){
+		
+		if(cel != null && cel.length() == 9){
+			if(cel.matches("09[0-9]{7}")){
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/*
+	 * Verifica que el formato del mail sea correcto
+	 * @param String mail: mail a verificar
+	 * @return boolean: true: correcto, false: incorrecto
+	 */
+	public static boolean verificarMail(String mail){
+		if(mail != null){
+			if(mail.matches("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$")){
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+}

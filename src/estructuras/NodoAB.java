@@ -1,29 +1,39 @@
 package estructuras;
 
+import dominio.Vendedor;
+
 public class NodoAB {
 	
-	Object dato;
+	private Vendedor dato;
     private NodoAB izq;
     private NodoAB der;
     
-    public NodoAB(int d){
-        this.dato = d;
+    public NodoAB(Vendedor d){
+        this.setDato(d);
     }
 
-	NodoAB getIzq() {
+    public NodoAB getIzq() {
 		return izq;
 	}
 
-	void setIzq(NodoAB izq) {
+    public void setIzq(NodoAB izq) {
 		this.izq = izq;
 	}
 
-	NodoAB getDer() {
+	public NodoAB getDer() {
 		return der;
 	}
 
-	void setDer(NodoAB der) {
+	public void setDer(NodoAB der) {
 		this.der = der;
+	}
+
+	public Vendedor getDato() {
+		return dato;
+	}
+
+	public void setDato(Vendedor dato) {
+		this.dato = dato;
 	}
     
 }

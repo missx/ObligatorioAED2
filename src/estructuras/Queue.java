@@ -25,7 +25,7 @@ public class Queue implements IQueue{
 	}
 
 	@Override
-	public void dequeue(Object elem) {
+	public void dequeue() {
 		NodoLista aux = this.front;
 		this.front = this.front.getSig();
 		aux.setSig(null);

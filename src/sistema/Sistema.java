@@ -1,15 +1,28 @@
 package sistema;
 
+import dominio.Vendedor;
+import estructuras.ArbolB;
+import estructuras.Queue;
 import interfaces.ISistema;
 import sistema.Enumerados.Rubro;
 import sistema.Enumerados.TipoPropiedad;
+import sistema.Retorno.Resultado;
 
 
 
 public class Sistema implements ISistema {
 
+	public Queue queueDeVendedores;
+	public ArbolB arbolDeVendedores;
+	
+	
 	public Retorno inicializarSistema (int cantPuntos) {
-		// TODO: reemplazar por su implementacion
+		// inicializar arboles y queue de vendedores
+		queueDeVendedores = new Queue();
+		arbolDeVendedores = new ArbolB();
+		
+		//TODO inicilizar resto de estructuras
+		
 		return new Retorno();
 	}
 	
@@ -56,8 +69,25 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno registrarVendedor(String cedula, String nombre, String email, String celular) {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		if(!Utils.verificarCedula(cedula)){
+			Retorno ret = new Retorno(Resultado.ERROR_1);
+			return ret;
+		}else if(!Utils.verificarCelular(celular)){
+			Retorno ret = new Retorno(Resultado.ERROR_2);
+			return ret;
+		}else if(!Utils.verificarMail(email)){
+			Retorno ret = new Retorno(Resultado.ERROR_3);
+			return ret;
+		}else if(!this.arbolDeVendedores.existeElemento(new Vendedor(cedula))){
+			Retorno ret = new Retorno(Resultado.ERROR_4);
+			return ret;
+		}else{
+			//insertar vendedor en el arbol y la queue
+			this.arbolDeVendedores.insertarElemento(new Vendedor(nombre, cedula, celular, email));
+			this.queueDeVendedores.enqueue(new Vendedor(nombre, cedula, celular, email));
+			Retorno ret = new Retorno(Resultado.OK);
+			return ret;
+		}
 	}
 
 	@Override

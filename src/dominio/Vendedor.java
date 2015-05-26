@@ -2,78 +2,42 @@ package dominio;
 
 import interfaces.IListaVendedor;
 
-public class Vendedor implements IListaVendedor{
+public class Vendedor {
 
 	private String cedula;
 	private String nombre;
 	private String email;
 	private String celular;
 	
-	@Override
-	public int largo() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean esVacio() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean pertenece(Object o) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void agregarPpio(Object o) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void borrarPpio() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void borrar(Object o) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private String getCedula() {
+	public String getCedula() {
 		return cedula;
 	}
 
-	private void setCedula(String cedula) {
+	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
 
-	private String getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
 
-	private void setNombre(String nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	private String getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
-	private void setEmail(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	private String getCelular() {
+	public String getCelular() {
 		return celular;
 	}
 
-	private void setCelular(String celular) {
+	public void setCelular(String celular) {
 		this.celular = celular;
 	}
 	
@@ -83,5 +47,23 @@ public class Vendedor implements IListaVendedor{
 		this.email = email;
 		this.nombre = nom;
 	}
+	
+	public Vendedor(String ced){
+		this.cedula = ced;
+	}
+	
+	@Override
+	public boolean equals(Object o){
+	    if(o == null)
+	    	return false;
+	    if(!(o instanceof Vendedor))
+	    	return false;
+
+	    Vendedor otro = (Vendedor) o;
+	    if(this.getCedula() != otro.getCedula())     
+	    	return false;
+	    
+	    return true;
+	 }
 
 }
