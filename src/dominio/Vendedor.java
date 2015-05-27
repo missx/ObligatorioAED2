@@ -1,6 +1,5 @@
 package dominio;
 
-import interfaces.IListaVendedor;
 
 public class Vendedor {
 

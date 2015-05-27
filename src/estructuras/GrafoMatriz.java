@@ -1,6 +1,8 @@
 package estructuras;
 
-public class GrafoMatriz {
+import interfaces.IGrafo;
+
+public class GrafoMatriz implements IGrafo{
 	
 	private int size;
 	private int cantNodos;
@@ -39,6 +41,7 @@ public class GrafoMatriz {
 		this.nodosUsados = nodosUsados;
 	}
 	
+	@Override
 	public void crearGrafo(int cantMax){
 	    this.size = 0;
 	    this.cantNodos = cantMax;
@@ -51,16 +54,13 @@ public class GrafoMatriz {
 	    this.nodosUsados = new boolean[cantMax + 1];
 	}
 
-	void agregarVertice(int nro){
+	@Override
+	public void agregarVertice(int nro){
 	    this.size++;
 	    this.nodosUsados[nro] = true;
 	}
 
-	void agregarArista(int vertOri, int vertDest){
-	    
-	}
-
-	//PRE: El grafo es no dirigido
+	@Override
 	public boolean esConexo(){
 	    //con el dfs
 	    boolean[] marcados = new boolean[this.cantNodos];
@@ -86,6 +86,56 @@ public class GrafoMatriz {
 	            DFS(i, visitados);
 	        }
 	    }
+	}
+
+	@Override
+	public void agregarArista(int origen, int destino, int peso) {
+		Arco nuevo = new Arco(peso);
+		this.matrizAdyacencia[origen][destino] = nuevo;
+	}
+
+	@Override
+	public void eliminarVertice(int v) {
+		this.nodosUsados[v]=false;
+		this.size--;
+		
+		//Elimino las aristas donde v es miembro
+		for(int i=1;i<=this.cantNodos;i++){
+			this.matrizAdyacencia[i][v] = new Arco();
+			this.matrizAdyacencia[v][i] = new Arco();
+		}
+	}
+
+	@Override
+	public void eliminarArista(int origen, int destino) {
+		Arco nuevo = new Arco();
+		this.matrizAdyacencia[origen][destino] = nuevo;
+	}
+
+	@Override
+	public Lista obtenerVerticesAdyacentes(int v) {
+		Lista l = new Lista();
+		for(int i=1; i<=this.cantNodos; i++){
+			if(this.sonAdyacentes(v, i)){
+				l.insertarInicio(i);
+			}
+		}
+		return l;
+	}
+
+	@Override
+	public boolean sonAdyacentes(int a, int b) {
+		return this.matrizAdyacencia[a][b].isExiste();
+	}
+
+	@Override
+	public boolean estaVertice(int v) {
+		return this.nodosUsados[v];
+	}
+
+	@Override
+	public boolean esVacio() {
+		return this.size==0;
 	}
 	
 	

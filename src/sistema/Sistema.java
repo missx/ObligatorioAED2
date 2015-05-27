@@ -2,6 +2,7 @@ package sistema;
 
 import dominio.Vendedor;
 import estructuras.ArbolB;
+import estructuras.GrafoMatriz;
 import estructuras.Queue;
 import interfaces.ISistema;
 import sistema.Enumerados.Rubro;
@@ -14,6 +15,7 @@ public class Sistema implements ISistema {
 
 	public Queue queueDeVendedores;
 	public ArbolB arbolDeVendedores;
+	public GrafoMatriz matrizMapa;
 	
 	
 	public Retorno inicializarSistema (int cantPuntos) {
@@ -21,14 +23,17 @@ public class Sistema implements ISistema {
 		queueDeVendedores = new Queue();
 		arbolDeVendedores = new ArbolB();
 		
-		//TODO inicilizar resto de estructuras
+		//TODO inicializar resto de estructuras
 		
 		return new Retorno();
 	}
 	
 	public Retorno destruirSistema() {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		queueDeVendedores = null;
+		arbolDeVendedores = null;
+		
+		// TODO reemplazar con otras estructuras
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
