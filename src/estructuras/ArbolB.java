@@ -4,14 +4,26 @@ import dominio.Vendedor;
 
 public class ArbolB {
 
-	NodoAB raiz;
+	private NodoAB raiz;
+	
+	public NodoAB getRaiz() {
+		return raiz;
+	}
+
+	public void setRaiz(NodoAB raiz) {
+		this.raiz = raiz;
+	}
+	
+	public ArbolB(){
+		
+	}
 	
 	/*
 	 * Verifica si es arbol vacio o no 
 	 * @return boolean: True si es vacío, false si no
 	 */
 	public boolean esArbolVacio() {
-		return (raiz == null) ;
+		return (getRaiz() == null) ;
 	}
 	
 	/*
@@ -20,9 +32,9 @@ public class ArbolB {
 	 */
 	public void insertarElemento(Vendedor v){
 		if (this.esArbolVacio()){
-            this.raiz = new NodoAB(v);
+            this.setRaiz(new NodoAB(v));
 		}else{
-			this.insertarElemento(v, this.raiz);
+			this.insertarElemento(v, this.getRaiz());
 		}
 	}
 	
@@ -66,22 +78,16 @@ public class ArbolB {
         if(n == null){
             return null;
         }
-        else{
-            if(n.getDato().equals(x)){
-                return n;
-            }
-            else{
-                NodoAB aux = Buscar(x, n.getDer());
-                if(aux != null){ //aca para mi (xime) es si aux == null y ahi retorna por el lado izq
-                    return Buscar(x, n.getIzq());
-                }
-                else{
-                    return aux;//return Buscar(x, n.der); No lo hago asi y quito el aux ya que recorro 2 veces el arbol
-                }
-            }
+        if(n.getDato().equals(x)){
+            return n;
+        }
+        if(Integer.parseInt(x.getCedula()) < Integer.parseInt(n.getDato().getCedula())){
+        	return Buscar(x, n.getIzq());
+        }else{
+            return  Buscar(x, n.getDer());
         }
     }
-	
+
 	/*
 	 * Retorna true si el elemento existe, false
 	 * de lo contrario
@@ -89,13 +95,18 @@ public class ArbolB {
 	 * @return boolean
 	 */
 	public boolean existeElemento(Vendedor v) {
-		NodoAB nodo = Buscar(v, raiz);
-		
-		if(nodo != null) {
-			return true;
-		} else {
+		if(this.raiz == null){
 			return false;
-		}
+		}else{
+			NodoAB nodo = Buscar(v, getRaiz());
+			if(nodo != null) {
+				return true;
+			} else {
+				return false;
+			}
+		}		
 	}
+
+	
 	
 }

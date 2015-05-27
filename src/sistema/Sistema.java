@@ -20,18 +20,19 @@ public class Sistema implements ISistema {
 	
 	public Retorno inicializarSistema (int cantPuntos) {
 		// inicializar arboles y queue de vendedores
-		queueDeVendedores = new Queue();
-		arbolDeVendedores = new ArbolB();
-		
+		this.queueDeVendedores = new Queue();
+		this.arbolDeVendedores = new ArbolB();
+		this.matrizMapa = new GrafoMatriz();
+		this.matrizMapa.crearGrafo(10);
 		//TODO inicializar resto de estructuras
 		
 		return new Retorno();
 	}
 	
 	public Retorno destruirSistema() {
-		queueDeVendedores = null;
-		arbolDeVendedores = null;
-		
+		this.queueDeVendedores = null;
+		this.arbolDeVendedores = null;
+		this.matrizMapa = null;
 		// TODO reemplazar con otras estructuras
 		return new Retorno(Resultado.OK);
 	}
@@ -83,7 +84,7 @@ public class Sistema implements ISistema {
 		}else if(!Utils.verificarMail(email)){
 			Retorno ret = new Retorno(Resultado.ERROR_3);
 			return ret;
-		}else if(!this.arbolDeVendedores.existeElemento(new Vendedor(cedula))){
+		}else if(this.arbolDeVendedores.existeElemento(new Vendedor(cedula))){
 			Retorno ret = new Retorno(Resultado.ERROR_4);
 			return ret;
 		}else{
