@@ -2,25 +2,12 @@ package dominio;
 
 import sistema.Enumerados.TipoPropiedad;
 
-public class Propiedad {
+public class Propiedad extends Punto{
 	
-	private Double coordX;
-	private Double coordY;
 	private TipoPropiedad tipo;
 	private String direccion;
 	
-	private Double getCoordX() {
-		return coordX;
-	}
-	private void setCoordX(Double coordX) {
-		this.coordX = coordX;
-	}
-	private Double getCoordY() {
-		return coordY;
-	}
-	private void setCoordY(Double coordY) {
-		this.coordY = coordY;
-	}
+	
 	private TipoPropiedad getTipo() {
 		return tipo;
 	}
@@ -35,8 +22,7 @@ public class Propiedad {
 	}
 	
 	public Propiedad(Double coordX, Double coordY, String dir, TipoPropiedad tipo){
-		this.coordX = coordX;
-		this.coordY = coordY;
+		super(coordX, coordY);
 		this.direccion = dir;
 		this.tipo = tipo;
 	}
