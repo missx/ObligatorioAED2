@@ -40,7 +40,7 @@ public class Vendedor {
 		this.celular = celular;
 	}
 	
-	public Vendedor(String nom, String ced, String cel, String email){
+	public Vendedor(String ced, String nom, String email, String cel){
 		this.cedula = ced;
 		this.celular = cel;
 		this.email = email;

@@ -89,8 +89,8 @@ public class Sistema implements ISistema {
 			return ret;
 		}else{
 			//insertar vendedor en el arbol y la queue
-			this.arbolDeVendedores.insertarElemento(new Vendedor(nombre, cedula, celular, email));
-			this.queueDeVendedores.enqueue(new Vendedor(nombre, cedula, celular, email));
+			this.arbolDeVendedores.insertarElemento(new Vendedor(cedula, nombre, email, celular));
+			this.queueDeVendedores.enqueue(new Vendedor(cedula, nombre, email, celular));
 			Retorno ret = new Retorno(Resultado.OK);
 			return ret;
 		}
@@ -98,8 +98,8 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno listadoVendedores() {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		String resultadoString = this.arbolDeVendedores.mostrarInOrder();
+		return new Retorno(Resultado.OK, resultadoString);
 	}
 
 	@Override

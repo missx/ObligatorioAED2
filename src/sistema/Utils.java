@@ -1,5 +1,7 @@
 package sistema;
 
+import dominio.Vendedor;
+
 public class Utils {
 	
 	/*
@@ -46,5 +48,20 @@ public class Utils {
 			return false;
 		}
 		return false;
+	}
+	
+	/*
+	 * Convierte la cedula del vendedor de string a int
+	 * @param Vendedor v
+	 * @return int
+	 */
+	public static int convertirCedulaAInt(Vendedor v){
+		if(v != null){
+			String cedStr = v.getCedula().replace(".", "");
+			cedStr = cedStr.replace("-", "");
+			int cedulaInt = Integer.parseInt(cedStr);
+			return cedulaInt;
+		}
+		return 0;
 	}
 }

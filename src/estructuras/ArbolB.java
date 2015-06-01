@@ -1,5 +1,6 @@
 package estructuras;
 
+import sistema.Utils;
 import dominio.Vendedor;
 
 public class ArbolB {
@@ -26,6 +27,24 @@ public class ArbolB {
 		return (getRaiz() == null) ;
 	}
 	
+	public int cantNodos(){
+		if(this.raiz == null){
+			return 0;
+		}else{
+			return cantNodos(this.raiz);
+		}
+	}
+	
+	public int cantNodos(NodoAB nodo) {
+		int cont = 0;
+		if(nodo != null){
+			cont += cantNodos(nodo.getIzq()); 	
+			cont++; 							
+			cont += cantNodos(nodo.getDer());
+		}
+		return cont;
+	}
+	
 	/*
 	 * Inserta un elemento al arbol
 	 * @param Vendedor n: el vendedor que queremos insertar
@@ -44,8 +63,9 @@ public class ArbolB {
 	 * @param NodoAB nodo: el nodo desde el cual vamos a insertar
 	 */
 	public void insertarElemento(Vendedor n, NodoAB nodo) {
-		int cedulaDeNodoInt = Integer.parseInt(nodo.getDato().getCedula());
-		int cedulaVendedorInt = Integer.parseInt(n.getCedula());
+		//tratar cedulas como int
+		int cedulaDeNodoInt = Utils.convertirCedulaAInt(nodo.getDato());
+		int cedulaVendedorInt = Utils.convertirCedulaAInt(n);
 		NodoAB nuevo = null;
 
         if(cedulaVendedorInt < cedulaDeNodoInt){
@@ -57,7 +77,7 @@ public class ArbolB {
              else
                  insertarElemento(n, nodo.getIzq());
         }
-        else if(cedulaVendedorInt > cedulaDeNodoInt){   
+        else{ 
         	// n > dato => insertaré en subárbol derecho
 			if(nodo.getDer() == null){
 				nuevo = new NodoAB(n);
@@ -81,7 +101,15 @@ public class ArbolB {
         if(n.getDato().equals(x)){
             return n;
         }
-        if(Integer.parseInt(x.getCedula()) < Integer.parseInt(n.getDato().getCedula())){
+        //tratar cedulas como int
+  		String cedNodoStr = n.getDato().getCedula().replace(".", "");
+  		cedNodoStr = cedNodoStr.replace("-", "");
+  		int cedulaDeNodoInt = Integer.parseInt(cedNodoStr);
+  		String cedVendedorStr = x.getCedula().replace(".", "");
+  		cedVendedorStr = cedVendedorStr.replace("-", "");
+  		int cedulaVendedorInt = Integer.parseInt(cedVendedorStr);
+  		  		
+        if(cedulaVendedorInt < cedulaDeNodoInt){
         	return Buscar(x, n.getIzq());
         }else{
             return  Buscar(x, n.getDer());
@@ -106,7 +134,28 @@ public class ArbolB {
 			}
 		}		
 	}
+	
+	/*
+	 * Muestra contenido de los nodos en orden
+	 */
+	public String mostrarInOrder(){
+		String retorno = "";
+    	return mostrarInOrder(this.raiz, retorno);
+    }
+	
+	/*
+	 * Muestra contenido de los nodos en orden
+	 * @param NodoAB a
+	 */
+    public String mostrarInOrder(NodoAB a, String retorno){
+        if (a != null){
+        	retorno = mostrarInOrder(a.getIzq(), retorno);
+            retorno += a.getDato().getCedula() + ";" + a.getDato().getNombre() + ";" + a.getDato().getCelular() + "|";
+            System.out.println(retorno);
+            retorno = mostrarInOrder(a.getDer(), retorno);
+            return retorno;
+        }
+        return retorno;
+    }
 
-	
-	
 }
