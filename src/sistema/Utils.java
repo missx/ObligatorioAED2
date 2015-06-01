@@ -1,5 +1,8 @@
 package sistema;
 
+import java.awt.Desktop;
+import java.net.URI;
+
 import dominio.Vendedor;
 
 public class Utils {
@@ -63,5 +66,20 @@ public class Utils {
 			return cedulaInt;
 		}
 		return 0;
+	}
+	
+	/*
+	 * Crea un mapa en google maps para mostrar 
+	 * los puntos
+	 */
+	public static void crearMapa(){
+		String urlMapa = "https://maps.googleapis.com/maps/api/staticmap?";
+		
+		Desktop desk = Desktop.getDesktop();
+		try{
+			desk.browse(new URI(urlMapa));
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
 	}
 }
