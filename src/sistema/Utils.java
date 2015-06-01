@@ -73,8 +73,13 @@ public class Utils {
 	 * los puntos
 	 */
 	public static void crearMapa(){
-		String urlMapa = "https://maps.googleapis.com/maps/api/staticmap?";
-		
+		String urlMapa = "https://maps.googleapis.com/maps/api/staticmap?size=1200x600&markers=";
+		/*MARKERS
+		 * color:<color>
+		 * label: <P><Pto><E>
+		 * %7C separator (or |)
+		 * lat y long separadas por coma
+		 */
 		Desktop desk = Desktop.getDesktop();
 		try{
 			desk.browse(new URI(urlMapa));
