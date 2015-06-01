@@ -1,5 +1,6 @@
 package estructuras;
 
+import sistema.Utils;
 import dominio.Vendedor;
 
 public class NodoAB {
@@ -34,6 +35,39 @@ public class NodoAB {
 
 	public void setDato(Vendedor dato) {
 		this.dato = dato;
+	}
+	
+	public boolean eliminar(Vendedor v, NodoAB padre) {
+		int cedV = Utils.convertirCedulaAInt(v);
+		int cedThis = Utils.convertirCedulaAInt(this.dato);
+        if (cedV < cedThis) {
+              if (izq != null)
+                    return izq.eliminar(v, this);
+              else
+                    return false;
+        } else if (cedV > cedThis) {
+              if (der != null)
+                    return der.eliminar(v, this);
+              else
+                    return false;
+        } else {
+              if (izq != null && der != null) {
+                  this.dato = der.minValor();
+                  der.eliminar(this.dato, this);
+              } else if (padre.izq == this) {
+            	  padre.izq = (izq != null) ? izq : der;
+              } else if (padre.der == this) {
+            	  padre.der = (izq != null) ? izq : der;
+              }
+              return true;
+        }
+	}
+
+	public Vendedor minValor() {
+		if (izq == null)
+	        return dato;
+		else
+	        return izq.minValor();
 	}
     
 }

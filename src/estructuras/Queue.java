@@ -1,5 +1,6 @@
 package estructuras;
 
+import dominio.Vendedor;
 import interfaces.IQueue;
 
 public class Queue implements IQueue{
@@ -52,5 +53,40 @@ public class Queue implements IQueue{
 			return false;
 		}
 		return true;
+	}
+
+	public void borrarElemento(Vendedor v) {
+		if(!this.isEmpty()){
+			if(this.front.getDato().equals(v))
+				this.dequeue();
+			else{
+				NodoLista aux = this.front;
+				while(aux.getSig() != null && !aux.getSig().getDato().equals(v))
+					aux = aux.getSig();
+				if(aux.getSig() != null){
+					System.out.println("aux getsig");
+					NodoLista aBorrar = aux.getSig();
+					aux.setSig(aBorrar.getSig());
+					aBorrar.setSig(null);
+				}
+				
+			}
+		}
+	}
+	
+	/*
+	 * Devuelve la cantidad de nodos de la queue
+	 */
+	public int cantNodos(){
+		int cont = 0;
+		
+		if(!this.isEmpty()){
+			NodoLista aux = this.front;
+			while(aux!= null){
+				cont++;
+				aux = aux.getSig();
+			}
+		}
+		return cont;
 	}
 }

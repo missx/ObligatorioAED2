@@ -104,8 +104,15 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno eliminarVendedor(String cedula) {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		//el vendedor no está ingresado
+		if(!this.arbolDeVendedores.existeElemento(new Vendedor(cedula))){
+			return new Retorno(Resultado.ERROR_1);
+		}else{
+			//se pudo eliminar exitosamente
+			this.arbolDeVendedores.eliminar(new Vendedor(cedula));
+			this.queueDeVendedores.borrarElemento(new Vendedor(cedula));
+			return new Retorno(Resultado.OK);
+		}
 	}
 
 	@Override

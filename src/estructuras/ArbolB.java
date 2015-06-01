@@ -157,5 +157,26 @@ public class ArbolB {
         }
         return retorno;
     }
+    
+    /*
+     * Eliminar un elemento del arbol
+     * @param int value
+     * @return boolean
+     */
+    public boolean eliminar(Vendedor v) {
+        if (this.raiz == null)
+              return false;
+        else {
+              if (this.raiz.getDato().equals(v)) {
+                    NodoAB auxRoot = new NodoAB(new Vendedor("4.486.255-3"));
+                    auxRoot.setIzq(this.raiz);
+                    boolean result = this.raiz.eliminar(v, auxRoot);
+                    this.raiz = auxRoot.getIzq();
+                    return result;
+              } else {
+                    return this.raiz.eliminar(v, null);
+              }
+        }
+    }
 
 }
