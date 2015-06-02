@@ -138,5 +138,12 @@ public class GrafoMatriz implements IGrafo{
 		return this.size==0;
 	}
 	
+	public boolean hayLugar(){
+        for (int i = 1; i <= cantNodos; i++){
+            if(!this.nodosUsados[i])
+                return true;
+        }
+        return false;
+    }  
 	
 }

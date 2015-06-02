@@ -1,16 +1,16 @@
 package estructuras;
 
-import java.awt.List;
+import dominio.Punto;
 
 public class Hash {
 
-	private Lista[] tabla;
+	private Punto[] tabla;
 	private int tamañoTabla;
 	
-	public Lista[] getTabla() {
+	public Punto[] getTabla() {
 		return tabla;
 	}
-	public void setTabla(Lista[] tabla) {
+	public void setTabla(Punto[] tabla) {
 		this.tabla = tabla;
 	}
 	public int getTamañoTabla() {
@@ -24,33 +24,100 @@ public class Hash {
 	 * Constructor
 	 */
 	public Hash(int tam){
-		this.tamañoTabla = tam;
-		this.tabla = new Lista[tam];
-		for (int i = 0; i < tabla.length; i++) {
-			tabla[i] = new Lista();
-		}
+		this.tamañoTabla = tam + 1;
+		this.tabla = new Punto[tam + 1];
 	}
 	
 	/*
 	 * Función de hash
 	 */
 	public int h(int nr){
-		//TODO crear la función del hash
-		return 0;
+		return nr%tamañoTabla;
 	}
 	
 	/*
 	 * Inserta un obj en la tabla
 	 */
-	public void insertar(Object obj){
-		//TODO crear la función insertar
+	public int insertar(Punto p){
+		int key = (p.getCoordX().intValue() + p.getCoordY().intValue()) * -1;
+		int pos = h(key);
+		boolean flag = true;
+		while(flag){
+			if(tabla[pos] != null){
+				pos += 1;
+				if(pos == tabla.length){
+					pos = 0;
+				}
+			}
+			else{
+				flag = false;
+			}
+		}
+		tabla[pos] = p;
+		System.out.println(pos);
+		System.out.println(tabla[pos].getCoordX());
+		return pos;
 	}
 	
 	/*
 	 * Chequea si el obj está en la tabla
 	 */
-	public boolean pertenece(int nr){
-		//TODO crear la función pertenece
+	public boolean pertenece(double coordX, double coordY){
+		int key = ((int)coordX + (int)coordY) * -1;
+		int pos = h(key);boolean flag = true;
+		int count = 0;
+		while(flag){
+			if(count < tabla.length){
+				count += 1;
+				if(tabla[pos] != null){
+					if(tabla[pos].getCoordX() == coordX && tabla[pos].getCoordY() == coordY){
+						return true;
+					}
+					else{
+						pos += 1;
+						if(pos == tabla.length){
+							pos = 0;
+						}
+					}
+				}
+				else{
+					flag = false;
+				}
+			}
+			else{
+				flag = false;
+			}
+		}
 		return false;
 	}
+	
+	public int devolverPosActual(double coordX, double coordY){
+		int key = ((int)coordX + (int)coordY) * -1;
+		int pos = h(key);boolean flag = true;
+		int count = 0;
+		while(flag){
+			if(count < tabla.length){
+				count += 1;
+				if(tabla[pos] != null){
+					if(tabla[pos].getCoordX() == coordX && tabla[pos].getCoordY() == coordY){
+						return pos;
+					}
+					else{
+						pos += 1;
+						if(pos == tabla.length){
+							pos = 0;
+						}
+					}
+				}
+				else{
+					flag = false;
+				}
+			}
+			else{
+				flag = false;
+			}
+		}
+		return -1;
+	}
+	
 }

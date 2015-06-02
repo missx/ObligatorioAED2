@@ -19,40 +19,97 @@ public class Sistema implements ISistema {
 	
 	
 	public Retorno inicializarSistema (int cantPuntos) {
-		// inicializar arboles y queue de vendedores
+		Retorno ret;
+		if(cantPuntos <= 0){
+			ret = new Retorno(Resultado.ERROR_1);
+			return ret;
+		}
 		this.queueDeVendedores = new Queue();
 		this.arbolDeVendedores = new ArbolB();
 		this.matrizMapa = new GrafoMatriz();
-		this.matrizMapa.crearGrafo(10);
-		//TODO inicializar resto de estructuras
+		this.matrizMapa.crearGrafo(cantPuntos);
+		this.tableHash = new Hash(cantPuntos);
 		
-		return new Retorno();
+		ret = new Retorno(Resultado.OK);
+		return ret;
 	}
 	
 	public Retorno destruirSistema() {
 		this.queueDeVendedores = null;
 		this.arbolDeVendedores = null;
 		this.matrizMapa = null;
-		// TODO reemplazar con otras estructuras
+		this.tableHash = null;
+		
 		return new Retorno(Resultado.OK);
 	}
 
 	@Override
 	public Retorno registrarEsquina(double coordX, double coordY) {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		if(!matrizMapa.hayLugar()){
+			System.out.println("No hay lugar");
+			return new Retorno(Resultado.ERROR_1);
+		}
+		
+		if(tableHash.pertenece(coordX, coordY)){
+			System.out.println("hay uno igual");
+			return new Retorno(Resultado.ERROR_2);
+		}
+		
+		Esquina e = new Esquina(coordX, coordY);
+		int pos = tableHash.insertar(e);
+		matrizMapa.agregarVertice(pos);
+		
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
 	public Retorno registrarPuntoInteres(double coordX, double coordY, Rubro rubro, String nombre) {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		if(!matrizMapa.hayLugar()){
+			System.out.println("No hay lugar");
+			return new Retorno(Resultado.ERROR_1);
+		}
+		
+		if(nombre == null || nombre == ""){
+			return new Retorno(Resultado.ERROR_2);
+		}
+		
+		if(tableHash.pertenece(coordX, coordY)){
+			System.out.println("hay uno igual");
+			return new Retorno (Resultado.ERROR_3);
+		}
+		
+		PuntoDeInteres pi = new PuntoDeInteres(coordX, coordY, rubro, nombre);
+		int pos = tableHash.insertar(pi);
+		matrizMapa.agregarVertice(pos);
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
 	public Retorno registrarPropiedad(double coordX, double coordY, TipoPropiedad tipoPropiedad, String direccion) {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		if(!matrizMapa.hayLugar()){
+			return new Retorno(Resultado.ERROR_1);
+		}
+		
+		if(direccion == null || direccion == ""){
+			return new Retorno(Resultado.ERROR_2);
+		}
+		
+		//Falta error 3 si no existen vendedores registrados
+		
+		if(tableHash.pertenece(coordX, coordY)){
+			System.out.println("hay uno igual");
+			return new Retorno (Resultado.ERROR_4);
+		}
+		
+		//Falta error 5 si la direccion  direccion ya existe en el sistema
+		
+		//Falta asignarle el vendedor
+		
+		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion);
+		int pos = tableHash.insertar(p);
+		matrizMapa.agregarVertice(pos);
+		
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
@@ -63,8 +120,23 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno registrarTramo(double coordXi, double coordYi, double coordXf, double coordYf, int largo) {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		if(peso <= 0){
+				return new Retorno(Resultado.ERROR_1);
+			}
+			
+			if(!tableHash.pertenece(coordXi, coordYi) || !tableHash.pertenece(coordXf, coordYf)){
+				return new Retorno (Resultado.ERROR_2);
+			}
+			
+			//Si existe el tramo en el sistema error3
+			
+            int origen = tableHash.devolverPosActual(coordXi, coordYi);
+            int destino = tableHash.devolverPosActual(coordXf, coordYf);
+
+			matrizMapa.agregarArista(origen, destino, peso);
+			matrizMapa.agregarArista(destino, origen, peso);
+			
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override

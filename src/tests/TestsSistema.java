@@ -1,17 +1,15 @@
 package tests;
 
 import static org.junit.Assert.*;
+
 import interfaces.ISistema;
-
 import org.junit.Test;
-
-import dominio.Vendedor;
 import sistema.Retorno;
 import sistema.Sistema;
 import sistema.Retorno.Resultado;
 
 public class TestsSistema {
-
+	
 	@Test
 	public void testRegistroVendedor() {
 		ISistema sistema = new Sistema();
@@ -27,10 +25,9 @@ public class TestsSistema {
 		
 	}
 
-	
 	@Test
 	public void testListadoVendedor() {
-		Sistema sistema = new Sistema();
+		ISistema sistema = new Sistema();
 		sistema.inicializarSistema(10);
 		//Datos de la prueba
 		String cedula = "3.702.156-9";
@@ -41,13 +38,11 @@ public class TestsSistema {
 		Retorno ret = sistema.registrarVendedor(cedula, nombre, email, celular);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
 		ret = sistema.listadoVendedores();
-		System.out.println("retvalorstr " + ret.valorString);
-		System.out.println(sistema.arbolDeVendedores.cantNodos());
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
 		// El valor string deberia contener los datos del vendedor ingresado
 		assertTrue(ret.valorString.contains(cedula) && ret.valorString.contains(nombre) && ret.valorString.contains(celular));
-		
 	}
+	
 	
 	@Test
 	public void testListadoVendedorConVarios(){
@@ -128,5 +123,59 @@ public class TestsSistema {
 		assertEquals(sis.queueDeVendedores.cantNodos(), 2);
 		
 	}
+	
+	@Test
+	public void testRegistrarEsquinaCorrectamente(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(10);
+		
+		//Crear datos
+		Retorno ret = s.registrarEsquina(-33.905,-56.188);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-39.905,-56.188);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-39.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-37.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		
+	}
+	
+	@Test
+	public void testRegistrarEsquinaExcederMasUno(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(3);
+		
+		//Crear datos
+		Retorno ret = s.registrarEsquina(-33.905,-56.188);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-39.905,-56.188);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-37.905, -56.190);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);	//Deberia retornar ERROR_1
+	}
 
+	@Test
+	public void testRegistroEsquinaExistente(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(4);
+		
+		//Crear datos
+		Retorno ret = s.registrarEsquina(-33.905,-56.188);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-39.905,-56.188);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(-39.905,-56.188);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);	//Deberia retornar ERROR_2
+		}
+	
+
+	@Test
+	public void testRegistroPuntoDeInteresCorrectamente(){}
 }
