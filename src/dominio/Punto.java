@@ -5,16 +5,16 @@ public class Punto {
 	private Double coordX;
 	private Double coordY;
 	
-	private Double getCoordX() {
+	public Double getCoordX() {
 		return coordX;
 	}
-	private void setCoordX(Double coordX) {
+	public void setCoordX(Double coordX) {
 		this.coordX = coordX;
 	}
-	private Double getCoordY() {
+	public Double getCoordY() {
 		return coordY;
 	}
-	private void setCoordY(Double coordY) {
+	public void setCoordY(Double coordY) {
 		this.coordY = coordY;
 	}
 	
