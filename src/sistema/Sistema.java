@@ -14,7 +14,8 @@ import sistema.Enumerados.TipoPropiedad;
 import sistema.Retorno.Resultado;
 
 public class Sistema implements ISistema {
-
+	
+	//atributos
 	public Queue queueDeVendedores;
 	public ArbolB arbolDeVendedores;
 	public GrafoMatriz matrizMapa;
