@@ -13,14 +13,13 @@ import sistema.Enumerados.Rubro;
 import sistema.Enumerados.TipoPropiedad;
 import sistema.Retorno.Resultado;
 
-
-
 public class Sistema implements ISistema {
 
 	public Queue queueDeVendedores;
 	public ArbolB arbolDeVendedores;
 	public GrafoMatriz matrizMapa;
 	public Hash tableHash;
+
 	
 	public Retorno inicializarSistema (int cantPuntos) {
 		Retorno ret;
@@ -109,7 +108,9 @@ public class Sistema implements ISistema {
 		
 		//Falta asignarle el vendedor
 		
+
 		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion);
+
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
 		
@@ -193,25 +194,25 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno verMapa() {
-		// TODO reemplazar por su implementacion
+		//TODO reemplazar por su implementacion
 		return new Retorno();
 	}
 
 	@Override
 	public Retorno puntoInteresMasCercano(String direccionPropiedad, Rubro rubroPuntoInteres) {
-		// TODO reemplazar por su implementacion
+		//TODO reemplazar por su implementacion
 		return new Retorno();
 	}
 
 	@Override
 	public Retorno caminoMinimo(String direccionPropiedad, Double coordX, Double coordY) {
-		// TODO reemplazar por su implementacion
+		//TODO reemplazar por su implementacion
 		return new Retorno();
 	}
 
 	@Override
 	public Retorno listadoPropiedades(String cedulaVendedor) {
-		// TODO reemplazar por su implementacion
+		//TODO reemplazar por su implementacion
 		return new Retorno();
 	}
 
