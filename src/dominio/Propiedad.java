@@ -8,20 +8,20 @@ public class Propiedad extends Punto{
 	private String direccion;
 	
 	
-	private TipoPropiedad getTipo() {
+	public TipoPropiedad getTipo() {
 		return tipo;
 	}
-	private void setTipo(TipoPropiedad tipo) {
+	public void setTipo(TipoPropiedad tipo) {
 		this.tipo = tipo;
 	}
-	private String getDireccion() {
+	public String getDireccion() {
 		return direccion;
 	}
-	private void setDireccion(String direccion) {
+	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
 	
-	public Propiedad(Double coordX, Double coordY, String dir, TipoPropiedad tipo){
+	public Propiedad(Double coordX, Double coordY, TipoPropiedad tipo, String dir){
 		super(coordX, coordY);
 		this.direccion = dir;
 		this.tipo = tipo;

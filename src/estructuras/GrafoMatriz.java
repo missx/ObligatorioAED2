@@ -9,35 +9,35 @@ public class GrafoMatriz implements IGrafo{
 	private Arco[][] matrizAdyacencia;
 	private boolean[] nodosUsados;
 	
-	private int getSize() {
+	public int getSize() {
 		return size;
 	}
 	
-	private void setSize(int size) {
+	public void setSize(int size) {
 		this.size = size;
 	}
 	
-	private int getCantNodos() {
+	public int getCantNodos() {
 		return cantNodos;
 	}
 	
-	private void setCantNodos(int cantNodos) {
+	public void setCantNodos(int cantNodos) {
 		this.cantNodos = cantNodos;
 	}
 	
-	private Arco[][] getMatrizAdyacencia() {
+	public Arco[][] getMatrizAdyacencia() {
 		return matrizAdyacencia;
 	}
 	
-	private void setMatrizAdyacencia(Arco[][] matrizAdyacencia) {
+	public void setMatrizAdyacencia(Arco[][] matrizAdyacencia) {
 		this.matrizAdyacencia = matrizAdyacencia;
 	}
 	
-	private boolean[] getNodosUsados() {
+	public boolean[] getNodosUsados() {
 		return nodosUsados;
 	}
 	
-	private void setNodosUsados(boolean[] nodosUsados) {
+	public void setNodosUsados(boolean[] nodosUsados) {
 		this.nodosUsados = nodosUsados;
 	}
 	
