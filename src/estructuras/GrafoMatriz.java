@@ -9,35 +9,35 @@ public class GrafoMatriz implements IGrafo{
 	private Arco[][] matrizAdyacencia;
 	private boolean[] nodosUsados;
 	
-	private int getSize() {
+	public int getSize() {
 		return size;
 	}
 	
-	private void setSize(int size) {
+	public void setSize(int size) {
 		this.size = size;
 	}
 	
-	private int getCantNodos() {
+	public int getCantNodos() {
 		return cantNodos;
 	}
 	
-	private void setCantNodos(int cantNodos) {
+	public void setCantNodos(int cantNodos) {
 		this.cantNodos = cantNodos;
 	}
 	
-	private Arco[][] getMatrizAdyacencia() {
+	public Arco[][] getMatrizAdyacencia() {
 		return matrizAdyacencia;
 	}
 	
-	private void setMatrizAdyacencia(Arco[][] matrizAdyacencia) {
+	public void setMatrizAdyacencia(Arco[][] matrizAdyacencia) {
 		this.matrizAdyacencia = matrizAdyacencia;
 	}
 	
-	private boolean[] getNodosUsados() {
+	public boolean[] getNodosUsados() {
 		return nodosUsados;
 	}
 	
-	private void setNodosUsados(boolean[] nodosUsados) {
+	public void setNodosUsados(boolean[] nodosUsados) {
 		this.nodosUsados = nodosUsados;
 	}
 	
@@ -51,7 +51,7 @@ public class GrafoMatriz implements IGrafo{
 	            this.matrizAdyacencia[i][j] = new Arco();      
 	        }
 	    }
-	    this.nodosUsados = new boolean[cantMax + 1];
+	    this.nodosUsados = new boolean[cantMax];
 	}
 
 	@Override
@@ -138,5 +138,12 @@ public class GrafoMatriz implements IGrafo{
 		return this.size==0;
 	}
 	
+	public boolean hayLugar(){
+        for (int i = 0; i < cantNodos; i++){
+            if(!this.nodosUsados[i])
+                return true;
+        }
+        return false;
+    }  
 	
 }

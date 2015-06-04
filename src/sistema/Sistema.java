@@ -7,6 +7,7 @@ import dominio.Vendedor;
 import estructuras.ArbolB;
 import estructuras.GrafoMatriz;
 import estructuras.Hash;
+import estructuras.HashPropiedad;
 import estructuras.Queue;
 import interfaces.ISistema;
 import sistema.Enumerados.Rubro;
@@ -14,12 +15,14 @@ import sistema.Enumerados.TipoPropiedad;
 import sistema.Retorno.Resultado;
 
 public class Sistema implements ISistema {
-
+	
+	//atributos
 	public Queue queueDeVendedores;
 	public ArbolB arbolDeVendedores;
 	public GrafoMatriz matrizMapa;
 	public Hash tableHash;
-	
+	public HashPropiedad tableHashProp;
+
 	
 	public Retorno inicializarSistema (int cantPuntos) {
 		Retorno ret;
@@ -32,6 +35,7 @@ public class Sistema implements ISistema {
 		this.matrizMapa = new GrafoMatriz();
 		this.matrizMapa.crearGrafo(cantPuntos);
 		this.tableHash = new Hash(cantPuntos);
+		this.tableHashProp = new HashPropiedad(cantPuntos);
 		
 		ret = new Retorno(Resultado.OK);
 		return ret;
@@ -42,6 +46,7 @@ public class Sistema implements ISistema {
 		this.arbolDeVendedores = null;
 		this.matrizMapa = null;
 		this.tableHash = null;
+		this.tableHashProp = null;
 		
 		return new Retorno(Resultado.OK);
 	}
@@ -84,6 +89,7 @@ public class Sistema implements ISistema {
 		PuntoDeInteres pi = new PuntoDeInteres(coordX, coordY, rubro, nombre);
 		int pos = tableHash.insertar(pi);
 		matrizMapa.agregarVertice(pos);
+		
 		return new Retorno(Resultado.OK);
 	}
 
@@ -97,20 +103,30 @@ public class Sistema implements ISistema {
 			return new Retorno(Resultado.ERROR_2);
 		}
 		
-		//Falta error 3 si no existen vendedores registrados
+		//Falta error 3 si no existen vendedores registrados!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		if(tableHash.pertenece(coordX, coordY)){
 			System.out.println("hay uno igual");
 			return new Retorno (Resultado.ERROR_4);
 		}
 		
-		//Falta error 5 si la direccion  direccion ya existe en el sistema
+		if(tableHashProp.existeDireccion(direccion)){
+			System.out.println("Error 5");
+			return new Retorno(Resultado.ERROR_5);
+		}
 		
-		//Falta asignarle el vendedor
 		
-		Propiedad p = new Propiedad(coordX, coordY, direccion, tipoPropiedad);
+		//Falta asignarle el vendedor!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+
+		//Se agrega la propiedad al Hash general
+		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion);
+
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
+		
+		//Se agrega la propiedad al Hash de propiedades
+		pos = tableHashProp.insertar(p);
 		
 		return new Retorno(Resultado.OK);
 	}
@@ -124,20 +140,20 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno registrarTramo(double coordXi, double coordYi, double coordXf, double coordYf, int peso) {
 		if(peso <= 0){
-				return new Retorno(Resultado.ERROR_1);
-			}
-			
-			if(!tableHash.pertenece(coordXi, coordYi) || !tableHash.pertenece(coordXf, coordYf)){
-				return new Retorno (Resultado.ERROR_2);
-			}
-			
-			//Si existe el tramo en el sistema error3
-			
-            int origen = tableHash.devolverPosActual(coordXi, coordYi);
-            int destino = tableHash.devolverPosActual(coordXf, coordYf);
+			return new Retorno(Resultado.ERROR_1);
+		}
+		
+		if(!tableHash.pertenece(coordXi, coordYi) || !tableHash.pertenece(coordXf, coordYf)){
+			return new Retorno (Resultado.ERROR_2);
+		}
+		
+		//Si existe el tramo en el sistema error3
+		
+        int origen = tableHash.devolverPosActual(coordXi, coordYi);
+        int destino = tableHash.devolverPosActual(coordXf, coordYf);
 
-			matrizMapa.agregarArista(origen, destino, peso);
-			matrizMapa.agregarArista(destino, origen, peso);
+		matrizMapa.agregarArista(origen, destino, peso);
+		matrizMapa.agregarArista(destino, origen, peso);
 			
 		return new Retorno(Resultado.OK);
 	}
