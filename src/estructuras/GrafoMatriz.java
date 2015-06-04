@@ -51,7 +51,7 @@ public class GrafoMatriz implements IGrafo{
 	            this.matrizAdyacencia[i][j] = new Arco();      
 	        }
 	    }
-	    this.nodosUsados = new boolean[cantMax + 1];
+	    this.nodosUsados = new boolean[cantMax];
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public class GrafoMatriz implements IGrafo{
 	}
 	
 	public boolean hayLugar(){
-        for (int i = 1; i <= cantNodos; i++){
+        for (int i = 0; i < cantNodos; i++){
             if(!this.nodosUsados[i])
                 return true;
         }

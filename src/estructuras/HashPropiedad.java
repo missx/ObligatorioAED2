@@ -1,16 +1,16 @@
 package estructuras;
 
+import dominio.Propiedad;
 import dominio.Punto;
 
-public class Hash {
-
-	private Punto[] tabla;
+public class HashPropiedad {
+	private Propiedad[] tabla;
 	private int tamañoTabla;
 	
-	public Punto[] getTabla() {
+	public Propiedad[] getTabla() {
 		return tabla;
 	}
-	public void setTabla(Punto[] tabla) {
+	public void setTabla(Propiedad[] tabla) {
 		this.tabla = tabla;
 	}
 	public int getTamañoTabla() {
@@ -23,9 +23,9 @@ public class Hash {
 	/*
 	 * Constructor
 	 */
-	public Hash(int tam){
+	public HashPropiedad(int tam){
 		this.tamañoTabla = tam;
-		this.tabla = new Punto[tam];
+		this.tabla = new Propiedad[tam];
 	}
 	
 	/*
@@ -38,7 +38,7 @@ public class Hash {
 	/*
 	 * Inserta un obj en la tabla
 	 */
-	public int insertar(Punto p){
+	public int insertar(Propiedad p){
 		int key = Math.abs(p.getCoordX().intValue()) + Math.abs(p.getCoordY().intValue());
 		int pos = h(key);
 		boolean flag = true;
@@ -120,4 +120,14 @@ public class Hash {
 		return -1;
 	}
 	
+	public boolean existeDireccion(String dir){
+		for(int i = 0; i < tabla.length; i++){
+			if(tabla[i] != null){
+				if(tabla[i].getDireccion() == dir){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

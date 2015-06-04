@@ -4,11 +4,28 @@ import static org.junit.Assert.*;
 
 import interfaces.ISistema;
 import org.junit.Test;
+<<<<<<< HEAD
+=======
+
+import sistema.Enumerados.Rubro;
+>>>>>>> ddfec508910b31869dae7a15ef09c5e09b3bf7c4
 import sistema.Retorno;
 import sistema.Sistema;
 import sistema.Retorno.Resultado;
 
 public class TestsSistema {
+	
+
+	@Test
+	public void testInicializarSistemaNumIncorrecto(){
+		ISistema sistema = new Sistema();
+		Retorno ret = sistema.inicializarSistema(-10);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+		
+		sistema.destruirSistema();
+		ret = sistema.inicializarSistema(0);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+	}
 	
 	@Test
 	public void testRegistroVendedor() {
@@ -42,6 +59,7 @@ public class TestsSistema {
 		// El valor string deberia contener los datos del vendedor ingresado
 		assertTrue(ret.valorString.contains(cedula) && ret.valorString.contains(nombre) && ret.valorString.contains(celular));
 	}
+
 	
 	
 	@Test
@@ -123,22 +141,22 @@ public class TestsSistema {
 		assertEquals(sis.queueDeVendedores.cantNodos(), 2);
 		
 	}
-	
+
 	@Test
 	public void testRegistrarEsquinaCorrectamente(){
 		ISistema s = new Sistema();
 		s.inicializarSistema(10);
 		
-		//Crear datos
-		Retorno ret = s.registrarEsquina(-33.905,-56.188);
+
+		Retorno ret = s.registrarEsquina(34.764167,56.213889);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
 		ret = s.registrarEsquina(-34.905, -56.190);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
-		ret = s.registrarEsquina(-39.905,-56.188);
+		ret = s.registrarEsquina(34.851944,56.188333);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
 		ret = s.registrarEsquina(-39.905, -56.190);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
-		ret = s.registrarEsquina(-37.905, -56.190);
+		ret = s.registrarEsquina(32.516667, 54.533333);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
 		
 	}
@@ -149,14 +167,16 @@ public class TestsSistema {
 		s.inicializarSistema(3);
 		
 		//Crear datos
-		Retorno ret = s.registrarEsquina(-33.905,-56.188);
+		Retorno ret = s.registrarEsquina(34.764167,56.213889);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
 		ret = s.registrarEsquina(-34.905, -56.190);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
-		ret = s.registrarEsquina(-39.905,-56.188);
+		ret = s.registrarEsquina(34.851944,56.188333);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
-		ret = s.registrarEsquina(-37.905, -56.190);
-		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);	//Deberia retornar ERROR_1
+		ret = s.registrarEsquina(-39.905, -56.190);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);	//Deberia retornar OK
+		ret = s.registrarEsquina(32.516667, 54.533333);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);	//Deberia retornar OK
 	}
 
 	@Test
@@ -166,16 +186,154 @@ public class TestsSistema {
 		
 		//Crear datos
 		Retorno ret = s.registrarEsquina(-33.905,-56.188);
-		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarEsquina(-34.905, -56.190);
-		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarEsquina(-39.905,-56.188);
-		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarEsquina(-39.905,-56.188);
-		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);	//Deberia retornar ERROR_2
-		}
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);	
+	}
+	
+	
 	
 
 	@Test
-	public void testRegistroPuntoDeInteresCorrectamente(){}
+	public void testRegistroPuntoDeInteresCorrectamente(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(3);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistrarPuntoDeInteresExcederMasUno(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(3);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-39.905, -56.190, Rubro.SUPERMERCADO, "Devoto");
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistrarPuntoDeInteresErrorNombre(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(4);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-39.905, -56.190, Rubro.SUPERMERCADO, "");
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+		
+		s.destruirSistema();
+		s.inicializarSistema(4);
+		
+		//Crear datos
+		ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-39.905, -56.190, Rubro.SUPERMERCADO, null);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistroPuntoInteresExistente(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(3);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.ERROR_3, ret.resultado);
+	}
+	
+	
+	
+	@Test
+	public void testRegistroPropiedadCorrectamente(){
+		
+	}
+	
+	@Test
+	public void testRegistroPropiedadExcederMasUno(){
+		
+	}
+	
+	@Test
+	public void testRegistroPropiedadExistente(){
+		
+	}
+	
+	
+	@Test
+	public void testRegistroPuntosTipoVariadoCorrectamente(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-39.905,-56.188);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistroPuntoTipoVariadoExcederMasUno(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(3);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-39.905,-56.188);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistroPuntoTipoVariadoExistente(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.764167,56.213889, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	
+		ret = s.registrarPuntoInteres(34.851944,56.188333, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(34.851944,56.188333);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+	}
 }
