@@ -77,20 +77,31 @@ public class Utils {
 	 * los puntos
 	 */
 	public static void crearMapa(Hash hashPtos){
-		String urlMapa = "https://maps.googleapis.com/maps/api/staticmap?size=1200x600&markers=";
+		String urlMapa = "http://maps.googleapis.com/maps/api/staticmap?center=-34.8988,-56.1660&zoom=13&size=600x600&maptype=roadmap&";
+		Punto[] tabla = hashPtos.getTabla();
 		
 		for(int i = 0; i < hashPtos.getTamañoTabla(); i++){
-			Punto[] tabla = hashPtos.getTabla();
-			if(tabla[i] instanceof Propiedad){
-				//propiedades azul, label P
-				urlMapa += "";
-			}else if(tabla[i] instanceof Esquina){
-				//esquinas amarillo, label E
-				urlMapa += "";
-			}else{
-				//punto de interes rojo, label Pto
-				urlMapa += "";
+			if(tabla[i] != null){
+				if(tabla[i] instanceof Propiedad){
+					//propiedades azul, label P
+					urlMapa += "markers=color:blue%7Clabel:P%7C" + tabla[i].getCoordX()  +"," + tabla[i].getCoordY() + "&";
+				}else if(tabla[i] instanceof Esquina){
+					//esquinas amarillo, label E
+					urlMapa += "markers=color:yellow%7Clabel:E%7C" + tabla[i].getCoordX()  +"," + tabla[i].getCoordY() + "&";
+				}else{
+					//punto de interes rojo, label Pto
+					urlMapa += "markers=color:red%7Clabel:I%7C" + tabla[i].getCoordX()  +"," + tabla[i].getCoordY() + "&";
+				}
 			}
+			
+		}
+		urlMapa += "&sensor=false";	 
+		
+		Desktop desk = Desktop.getDesktop();
+		try{
+			desk.browse(new URI(urlMapa));
+		}catch(Exception e){
+			System.out.println(e.getMessage());
 		}
 		
 		/*MARKERS
@@ -99,11 +110,5 @@ public class Utils {
 		 * %7C separator (or |)
 		 * lat y long separadas por coma
 		 */
-		Desktop desk = Desktop.getDesktop();
-		try{
-			desk.browse(new URI(urlMapa));
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-		}
 	}
 }

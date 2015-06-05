@@ -23,7 +23,8 @@ public class Sistema implements ISistema {
 	public Hash tableHash;
 	public HashPropiedad tableHashProp; //xa que necesitamos el hash este aca?
 
-	
+	//PRE: El valor de “cantPuntos” > 0.
+	//POST: Quedan todas las estructuras inicializadas para manejar el sistema (Hash, Arboles, etc).
 	public Retorno inicializarSistema (int cantPuntos) {
 		Retorno ret;
 		if(cantPuntos <= 0){
@@ -41,6 +42,8 @@ public class Sistema implements ISistema {
 		return ret;
 	}
 	
+	//PRE:  ------
+	//POST: Se destruyen todas las estructuras creadas.
 	public Retorno destruirSistema() {
 		this.queueDeVendedores = null;
 		this.arbolDeVendedores = null;
@@ -51,6 +54,9 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 
+	//PRE: Alguna celda del Hash = null || celda del hash = (0.0,0.0).
+		//coordX y coordY no existe en el sistema.
+	//POST: La esquina queda registrada en el sistema.
 	@Override
 	public Retorno registrarEsquina(double coordX, double coordY) {
 		if(!matrizMapa.hayLugar()){
@@ -70,6 +76,10 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 
+	//PRE: El valor de nombre != null || nombre != “” (vacio)
+		//Alguna celda del Hash = null || celda del hash = (0.0,0.0).
+		//coordX y coordY no existe en el sistema.
+	//POST: El punto de interes queda registrado en el sistema.
 	@Override
 	public Retorno registrarPuntoInteres(double coordX, double coordY, Rubro rubro, String nombre) {
 		if(!matrizMapa.hayLugar()){
@@ -93,6 +103,11 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 
+	//PRE: Alguna celda del Hash = null || celda del hash = (0.0,0.0).
+		//El valor de direccion != null || direccion!= “” (vacio) y no exista en el sistema
+		//Hay al menos un vendedor registrado
+		//coordX y coordY no existe en el sistema.
+	//POST: La propiedad queda registrada en el sistema.
 	@Override
 	public Retorno registrarPropiedad(double coordX, double coordY, TipoPropiedad tipoPropiedad, String direccion) {
 		if(!matrizMapa.hayLugar()){
@@ -125,18 +140,34 @@ public class Sistema implements ISistema {
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
 		
-		//Se agrega la propiedad al Hash de propiedades
-		pos = tableHashProp.insertar(p);
-		
 		return new Retorno(Resultado.OK);
 	}
 
+	//PRE: coordX y coordY existen en el sistema
+	//POST: El punto queda eliminado del sistema.
 	@Override
 	public Retorno eliminarPuntoMapa(double coordX, double coordY) {
-		// TODO reemplazar por su implementacion
+		if(tableHash.pertenece(coordX, coordY)){
+			//Elimino vertice del Grafo
+			int pos = tableHash.devolverPosActual(coordX, coordY);
+			matrizMapa.eliminarVertice(pos);
+			
+			//Elimino objeto del hash
+			tableHash.eliminarPunto(pos);
+			tableHash.imprimirLista();
+		}
+		else{
+			System.out.println("no hay uno igual");
+			return new Retorno(Resultado.ERROR_1);
+		}
+		
 		return new Retorno();
 	}
 
+	//PRE: El valor de “peso” > 0
+		//coordXi, coordYi, coordXf y coordYf existen en el sistema.
+		//No exista un tramo con las mismas coordenadas en el sistema
+	//POST:  El tramo queda registrado en el sistema
 	@Override
 	public Retorno registrarTramo(double coordXi, double coordYi, double coordXf, double coordYf, int peso) {
 		if(peso <= 0){
@@ -160,8 +191,19 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno eliminarTramo(double coordXi, double coordYi, double coordXf, double coordYf) {
-		// TODO reemplazar por su implementacion
-		return new Retorno();
+		if(!tableHash.pertenece(coordXi, coordYi) || !tableHash.pertenece(coordXf, coordYf)){
+			return new Retorno (Resultado.ERROR_1);
+		}
+		
+		//Si existe el tramo en el sistema error2
+		
+		int origen = tableHash.devolverPosActual(coordXi, coordYi);
+        int destino = tableHash.devolverPosActual(coordXf, coordYf);
+        
+		matrizMapa.eliminarArista(origen, destino);
+		matrizMapa.eliminarArista(destino, origen);
+        
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
@@ -208,7 +250,6 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno verMapa() {
-		//TODO reemplazar por su implementacion
 		Utils.crearMapa(this.tableHash);
 		return new Retorno(Resultado.OK);
 	}
