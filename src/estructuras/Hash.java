@@ -44,9 +44,14 @@ public class Hash {
 		boolean flag = true;
 		while(flag){
 			if(tabla[pos] != null){
-				pos += 1;
-				if(pos == tabla.length){
-					pos = 0;
+				if(!(tabla[pos].getCoordX().equals(0.0) && tabla[pos].getCoordY().equals(0.0))){
+					pos += 1;
+					if(pos == tabla.length){
+						pos = 0;
+					}
+				}
+				else{
+					flag = false;
 				}
 			}
 			else{
@@ -54,8 +59,6 @@ public class Hash {
 			}
 		}
 		tabla[pos] = p;
-		System.out.println(pos);
-		System.out.println(tabla[pos].getCoordX());
 		return pos;
 	}
 	
@@ -70,14 +73,19 @@ public class Hash {
 			if(count < tabla.length){
 				count += 1;
 				if(tabla[pos] != null){
-					if(tabla[pos].getCoordX() == coordX && tabla[pos].getCoordY() == coordY){
-						return true;
+					if(!(tabla[pos].getCoordX().equals(0.0) && tabla[pos].getCoordY().equals(0.0))){
+						if(tabla[pos].getCoordX() == coordX && tabla[pos].getCoordY() == coordY){
+							return true;
+						}
+						else{
+							pos += 1;
+							if(pos == tabla.length){
+								pos = 0;
+							}
+						}
 					}
 					else{
-						pos += 1;
-						if(pos == tabla.length){
-							pos = 0;
-						}
+						flag = false;
 					}
 				}
 				else{
@@ -98,7 +106,7 @@ public class Hash {
 		while(flag){
 			if(count < tabla.length){
 				count += 1;
-				if(tabla[pos] != null){
+				if(tabla[pos] != null || (tabla[pos].getCoordX() == 0.0 && tabla[pos].getCoordY() == 0.0)){
 					if(tabla[pos].getCoordX() == coordX && tabla[pos].getCoordY() == coordY){
 						return pos;
 					}
@@ -120,5 +128,17 @@ public class Hash {
 		return -1;
 	}
 	
+	public void eliminarPunto(int pos){
+		tabla[pos] = new Punto(0.0,0.0);
+	}
+	
+
+	public void imprimirLista(){
+		for(int i = 0; i < tabla.length; i++){
+			if(tabla[i] != null){
+			System.out.println(i + " --> " + tabla[i].getCoordX() + " - " + tabla[i].getCoordY());
+			}
+		}
+	}
 	
 }
