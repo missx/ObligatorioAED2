@@ -4,6 +4,7 @@ import dominio.Propiedad;
 import dominio.Punto;
 
 public class HashPropiedad {
+	
 	private Propiedad[] tabla;
 	private int tamañoTabla;
 	
@@ -32,7 +33,7 @@ public class HashPropiedad {
 	 * Función de hash
 	 */
 	public int h(int nr){
-		return nr%tamañoTabla;
+		return nr % tamañoTabla;
 	}
 	
 	/*
@@ -130,4 +131,16 @@ public class HashPropiedad {
 		}
 		return false;
 	}
+	
+	public boolean esVacio(){
+		boolean vacio = true;
+		for(int i = 0; i < this.tabla.length; i++){
+			if(this.tabla[i] != null){
+				vacio = false;
+			}
+		}		
+		return vacio;
+	}
+	
+	
 }

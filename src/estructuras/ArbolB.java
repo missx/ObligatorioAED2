@@ -87,7 +87,14 @@ public class ArbolB {
 				insertarElemento(n, nodo.getDer());
 		}
 	}
-	 
+	
+	public NodoAB Buscar(Vendedor vendedor) {
+		if(this.raiz != null){
+			return Buscar(vendedor, this.raiz);
+		}
+		return null;
+	}
+	
 	/*
 	 * Busca determinado elemento en el arbol 
 	 * @param Vendedor x: el vendedor que buscamos
@@ -178,5 +185,7 @@ public class ArbolB {
               }
         }
     }
+
+	
 
 }

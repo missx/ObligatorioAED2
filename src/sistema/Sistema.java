@@ -226,8 +226,17 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno listadoPropiedades(String cedulaVendedor) {
-		//TODO reemplazar por su implementacion
-		return new Retorno();
+		//si el vendedor no existe
+		if(!this.arbolDeVendedores.existeElemento(new Vendedor(cedulaVendedor))){
+			return new Retorno(Resultado.ERROR_1);
+		}
+		//si no tiene propiedades
+		Vendedor v = this.arbolDeVendedores.Buscar(new Vendedor(cedulaVendedor)).getDato();
+		if(v.getHashPropiedades().esVacio()){
+			return new Retorno(Resultado.ERROR_2);
+		}
+		//si no listar propiedades
+		return new Retorno(Resultado.OK, v.listarPropiedades());
 	}
 
 	

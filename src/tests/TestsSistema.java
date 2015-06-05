@@ -4,11 +4,8 @@ import static org.junit.Assert.*;
 
 import interfaces.ISistema;
 import org.junit.Test;
-<<<<<<< HEAD
-=======
 
 import sistema.Enumerados.Rubro;
->>>>>>> ddfec508910b31869dae7a15ef09c5e09b3bf7c4
 import sistema.Retorno;
 import sistema.Sistema;
 import sistema.Retorno.Resultado;
@@ -335,5 +332,51 @@ public class TestsSistema {
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarEsquina(34.851944,56.188333);
 		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+	}
+	
+	@Test
+	public void testListadoDePropiedadesOK(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//Datos de la prueba
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		//Estimulo
+		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		
+		//TODO falta terminar porque falta terminar el asignar propiedad a vendedor
+	}
+	
+	@Test
+	public void testListadoDePropiedadesError1(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//Estimulo
+		Retorno ret = s.listadoPropiedades("3.354.988-2");
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+	}
+	
+	@Test
+	public void testListadoDePropiedadesError2(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//Datos de la prueba
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		//Estimulo
+		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		
+		//Estimulo
+		Retorno retList = s.listadoPropiedades("3.702.156-9");
+		assertEquals(Retorno.Resultado.ERROR_2, retList.resultado);
 	}
 }
