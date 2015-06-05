@@ -1,5 +1,6 @@
 package estructuras;
 
+import dominio.Punto;
 import interfaces.IGrafo;
 
 public class GrafoMatriz implements IGrafo{
@@ -145,5 +146,9 @@ public class GrafoMatriz implements IGrafo{
         }
         return false;
     }  
+	
+	public Punto puntoInteresMasCercano(){
+		return null;
+	}
 	
 }
