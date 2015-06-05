@@ -7,16 +7,16 @@ public class PuntoDeInteres extends Punto{
 	private String nombre;
 	
 	
-	private Rubro getRubro() {
+	public Rubro getRubro() {
 		return rubro;
 	}
-	private void setRubro(Rubro rubro) {
+	public void setRubro(Rubro rubro) {
 		this.rubro = rubro;
 	}
-	private String getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
-	private void setNombre(String nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 	
