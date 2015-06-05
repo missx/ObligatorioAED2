@@ -3,7 +3,11 @@ package sistema;
 import java.awt.Desktop;
 import java.net.URI;
 
+import dominio.Esquina;
+import dominio.Propiedad;
+import dominio.Punto;
 import dominio.Vendedor;
+import estructuras.Hash;
 
 public class Utils {
 	
@@ -72,8 +76,23 @@ public class Utils {
 	 * Crea un mapa en google maps para mostrar 
 	 * los puntos
 	 */
-	public static void crearMapa(){
+	public static void crearMapa(Hash hashPtos){
 		String urlMapa = "https://maps.googleapis.com/maps/api/staticmap?size=1200x600&markers=";
+		
+		for(int i = 0; i < hashPtos.getTamañoTabla(); i++){
+			Punto[] tabla = hashPtos.getTabla();
+			if(tabla[i] instanceof Propiedad){
+				//propiedades azul, label P
+				urlMapa += "";
+			}else if(tabla[i] instanceof Esquina){
+				//esquinas amarillo, label E
+				urlMapa += "";
+			}else{
+				//punto de interes rojo, label Pto
+				urlMapa += "";
+			}
+		}
+		
 		/*MARKERS
 		 * color:<color>
 		 * label: <P><Pto><E>

@@ -21,7 +21,7 @@ public class Sistema implements ISistema {
 	public ArbolB arbolDeVendedores;
 	public GrafoMatriz matrizMapa;
 	public Hash tableHash;
-	public HashPropiedad tableHashProp;
+	public HashPropiedad tableHashProp; //xa que necesitamos el hash este aca?
 
 	
 	public Retorno inicializarSistema (int cantPuntos) {
@@ -209,7 +209,8 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno verMapa() {
 		//TODO reemplazar por su implementacion
-		return new Retorno();
+		Utils.crearMapa(this.tableHash);
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
