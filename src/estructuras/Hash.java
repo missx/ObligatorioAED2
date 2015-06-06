@@ -136,7 +136,7 @@ public class Hash {
 	public void imprimirLista(){
 		for(int i = 0; i < tabla.length; i++){
 			if(tabla[i] != null){
-			System.out.println(i + " --> " + tabla[i].getCoordX() + " - " + tabla[i].getCoordY());
+				System.out.println(i + " --> " + tabla[i].getCoordX() + " - " + tabla[i].getCoordY());
 			}
 		}
 	}
