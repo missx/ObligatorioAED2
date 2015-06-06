@@ -48,12 +48,12 @@ public class Vendedor {
 		this.celular = cel;
 		this.email = email;
 		this.nombre = nom;
-		this.setHashPropiedades(new HashPropiedad(50));
+		this.setHashPropiedades(new HashPropiedad(20));
 	}
 	
 	public Vendedor(String ced){
 		this.cedula = ced;
-		this.setHashPropiedades(new HashPropiedad(50));
+		this.setHashPropiedades(new HashPropiedad(20));
 	}
 	
 	@Override
@@ -81,8 +81,8 @@ public class Vendedor {
 	public String listarPropiedades(){
 		String listado = "";
 		for(int i = 0; i < this.hashPropiedades.getTamañoTabla(); i++){
-			listado += this.hashPropiedades.getTabla()[i].getCoordX() + ";" + 
-					this.hashPropiedades.getTabla()[i].getCoordY() + "|";
+			listado += this.hashPropiedades.getTabla()[i].getDato().getCoordX() + ";" + 
+					this.hashPropiedades.getTabla()[i].getDato().getCoordY() + "|";
 		}
 		return listado;
 	}

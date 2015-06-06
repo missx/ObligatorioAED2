@@ -289,6 +289,7 @@ public class TestsSistema {
 		String nombre1 = "Luis";
 		String email1 = "luis@gmail.com";
 		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
 		
 		Retorno ret = sis.registrarVendedor(cedula, nombre, email, celular);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
@@ -310,20 +311,141 @@ public class TestsSistema {
 		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado);
 		
 		//verificamos que cada vendedor tenga una
-		//assertEquals(true, v.getHashPropiedades().existeDireccion("18 de Julio 1234"));
-		assertEquals(false, sis.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().esVacio());
+		assertEquals(false, sis.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
+		assertEquals(false, sis.arbolDeVendedores.Buscar(v1).getDato().getHashPropiedades().pertenece("Avda Italia 1234"));
 	}
 	
 	@Test
-	public void testRegistroPropiedadExcederMasUno(){
-		ISistema s = new Sistema();
-		s.inicializarSistema(5);
+	public void testRegistroPropiedadCoordenadasExistentes(){
+		Sistema sis = new Sistema();
+		sis.inicializarSistema(5);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
+		
+		Retorno ret = sis.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = sis.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(sis.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		Retorno retRegistroProp1 = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "Avda Italia 1234");
+		assertEquals(Retorno.Resultado.ERROR_4, retRegistroProp1.resultado);
 	}
 	
 	@Test
-	public void testRegistroPropiedadExistente(){
-		ISistema s = new Sistema();
-		s.inicializarSistema(5);
+	public void testRegistroPropiedadYaNoHayLugar(){
+		Sistema sis = new Sistema();
+		sis.inicializarSistema(1);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
+		
+		Retorno ret = sis.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = sis.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(sis.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		Retorno retRegistroProp1 = sis.registrarPropiedad(14.764167, 16.213889, TipoPropiedad.APARTAMENTO, "Avda Italia 1234");
+		assertEquals(Retorno.Resultado.ERROR_1, retRegistroProp1.resultado);
+	}
+	
+	@Test
+	public void testRegistroPropiedadNoHayVendedor(){
+		Sistema sis = new Sistema();
+		sis.inicializarSistema(5);
+		
+		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.ERROR_3, retRegistroProp.resultado);
+	}
+	
+	@Test
+	public void testRegistroPropiedadDireccionExistente(){
+		Sistema sis = new Sistema();
+		sis.inicializarSistema(5);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
+		
+		Retorno ret = sis.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = sis.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(sis.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		Retorno retRegistroProp1 = sis.registrarPropiedad(32.764167, 12.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.ERROR_5, retRegistroProp1.resultado);
+	}
+	
+	@Test
+	public void testRegistroPropiedadDireccionVaciaONula(){
+		Sistema sis = new Sistema();
+		sis.inicializarSistema(5);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+				
+		Retorno ret = sis.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+				
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(sis.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, null);
+		assertEquals(Retorno.Resultado.ERROR_2, retRegistroProp.resultado);
+		
+		Retorno retRegistroProp2 = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "");
+		assertEquals(Retorno.Resultado.ERROR_2, retRegistroProp2.resultado);
+		
 	}
 	
 	/********************REGISTRO DE PROPIEDAD**************************/

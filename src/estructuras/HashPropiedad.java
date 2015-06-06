@@ -72,15 +72,19 @@ public class HashPropiedad {
 	 * Chequea si el obj está en la tabla
 	 */
 	public boolean pertenece(String direccion){
+		
 		int key = h(direccion);
 		boolean flag = true;
-		int recorridos = 0;
-		while(flag && recorridos < this.tamañoTabla){
-			if(this.tabla[key].getDato().getDireccion().equals(direccion)){
+		int recorridos = 1;
+		while(flag && recorridos < this.tamañoTabla){			
+			if(this.tabla[key].getDato() != null && this.tabla[key].getDato().getDireccion().equals(direccion)){
 				flag = false;
 			}else{
 				key++;
 				recorridos++;
+				if(key == this.tamañoTabla){
+					key = 0;
+				}
 			}
 		}
 		if(recorridos == this.tamañoTabla){

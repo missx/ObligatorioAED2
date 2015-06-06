@@ -128,15 +128,16 @@ public class Sistema implements ISistema {
 			return new Retorno (Resultado.ERROR_4);
 		}
 		//si la dirección ya existe
-		if(tableHashProp.existeDireccion(direccion)){
+		if(tableHashProp.pertenece(direccion)){
 			System.out.println("Error 5");
 			return new Retorno(Resultado.ERROR_5);
 		}
 		//Se agrega la propiedad al Hash general
 		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion);
-
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
+		//se asigna al has de propiedades del sistema
+		this.tableHashProp.insertar(p);
 		
 		//se le asigna al vendedor
 		Vendedor vendAsignado = (Vendedor)this.queueDeVendedores.front();

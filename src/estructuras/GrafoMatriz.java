@@ -140,7 +140,7 @@ public class GrafoMatriz implements IGrafo{
 	}
 	
 	public boolean hayLugar(){
-        for (int i = 0; i < cantNodos; i++){
+        for(int i = 0; i < cantNodos; i++){
             if(!this.nodosUsados[i])
                 return true;
         }
