@@ -20,8 +20,8 @@ public class NodoHashPropiedad {
 		this.usado = usado;
 	}
 	
-	public NodoHashPropiedad(Propiedad dato){
-		this.dato = dato;
+	public NodoHashPropiedad(Propiedad prop){
+		this.dato = prop;
 		this.usado = true;
 	}
 	

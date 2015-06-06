@@ -504,19 +504,46 @@ public class TestsSistema {
 		s.inicializarSistema(5);
 		
 		//Datos de la prueba
+		//vendedor
 		String cedula = "3.702.156-9";
 		String nombre = "Omar";
 		String email = "omar@gmail.com";
 		String celular = "098123456";
+		
+		//propiedad1
+		Double coordX1 = 34.764167;
+		Double coordY1 = 56.213889;
+		TipoPropiedad tipo1 = TipoPropiedad.APARTAMENTO;
+		String dir1 = "18 de Julio 1234";
+		
+		//propiedad2
+		Double coordX2 = 12.444167;
+		Double coordY2 = 43.243289;
+		TipoPropiedad tipo2 = TipoPropiedad.CASA;
+		String dir2 = "Avda Italia 1234";
+				
 		//Estimulo
 		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
 		
-		//TODO falta terminar porque falta terminar el asignar propiedad a vendedor
+		Retorno retRegistroProp = s.registrarPropiedad(coordX1, coordY1, tipo1, dir1);
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado); //Deberia retornar OK
+		
+		Retorno retRegistroProp1 = s.registrarPropiedad(coordX2, coordY2, tipo2, dir2);
+		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado); //Deberia retornar OK
+		
+		Retorno retListado = s.listadoPropiedades(cedula);
+		System.out.println(retListado.valorString);
+		
+		assertEquals(Retorno.Resultado.OK, retListado.resultado.OK);
+		assertEquals(true, retListado.valorString.contains(coordX1.toString()) && retListado.valorString.contains(coordX2.toString()) &&
+			retListado.valorString.contains(coordY1.toString()) && retListado.valorString.contains(coordY2.toString()));
+		
+		
 	}
 	
 	@Test
-	public void testListadoDePropiedadesError1(){
+	public void testListadoDePropiedadesError1VendedorNoExiste(){
 		ISistema s = new Sistema();
 		s.inicializarSistema(5);
 		
@@ -526,7 +553,7 @@ public class TestsSistema {
 	}
 	
 	@Test
-	public void testListadoDePropiedadesError2(){
+	public void testListadoDePropiedadesError2NoTienePropiedades(){
 		ISistema s = new Sistema();
 		s.inicializarSistema(5);
 		

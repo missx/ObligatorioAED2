@@ -40,6 +40,7 @@ public class HashPropiedad {
 		for(int i = 0; i < direccion.length(); i++){
 			nr += (int)direccion.charAt(i);
 		}
+		System.out.println("key elem " + nr % tamañoTabla);
 		return nr % tamañoTabla;
 	}
 	
@@ -53,6 +54,7 @@ public class HashPropiedad {
 		while(flag && recorridos < this.tamañoTabla){
 			if(tabla[key].getDato() == null){ //usa esta pos
 				tabla[key] = new NodoHashPropiedad(p);
+				System.out.println("inserto la propiedad ");
 				flag = false;
 			}else{ //ya esta ocupado, sigue o pasa a 0
 				recorridos++;
@@ -127,10 +129,11 @@ public class HashPropiedad {
 	public boolean esVacio(){
 		boolean vacio = true;
 		for(int i = 0; i < this.tabla.length; i++){
-			if(this.tabla[i] != null){
+			if(this.tabla[i].getDato() != null){
 				vacio = false;
 			}
-		}		
+		}	
+		System.out.println("es vacio " +vacio);
 		return vacio;
 	}
 	

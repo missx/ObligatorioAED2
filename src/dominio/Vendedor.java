@@ -1,6 +1,7 @@
 package dominio;
 
 import estructuras.HashPropiedad;
+import estructuras.NodoHashPropiedad;
 
 
 public class Vendedor {
@@ -48,28 +49,14 @@ public class Vendedor {
 		this.celular = cel;
 		this.email = email;
 		this.nombre = nom;
-		this.setHashPropiedades(new HashPropiedad(20));
+		this.setHashPropiedades(new HashPropiedad(23));
 	}
 	
 	public Vendedor(String ced){
 		this.cedula = ced;
-		this.setHashPropiedades(new HashPropiedad(20));
+		this.setHashPropiedades(new HashPropiedad(23));
 	}
 	
-	@Override
-	public boolean equals(Object o){
-	    if(o == null)
-	    	return false;
-	    if(!(o instanceof Vendedor))
-	    	return false;
-
-	    Vendedor otro = (Vendedor) o;
-	    if(this.getCedula() != otro.getCedula())     
-	    	return false;
-	    
-	    return true;
-	 }
-
 	public HashPropiedad getHashPropiedades() {
 		return hashPropiedades;
 	}
@@ -78,13 +65,35 @@ public class Vendedor {
 		this.hashPropiedades = hashPropiedades;
 	}
 	
-	public String listarPropiedades(){
+	public String listarPropiedadesDelVendedor(){
 		String listado = "";
+		System.out.println("im here");
 		for(int i = 0; i < this.hashPropiedades.getTamañoTabla(); i++){
-			listado += this.hashPropiedades.getTabla()[i].getDato().getCoordX() + ";" + 
-					this.hashPropiedades.getTabla()[i].getDato().getCoordY() + "|";
+			NodoHashPropiedad[] tabla = this.hashPropiedades.getTabla();
+			if(tabla[i].getDato() != null){
+				listado += tabla[i].getDato().listadoDeCoordenadas();
+			}
 		}
+		System.out.println("listado " + listado);
 		return listado;
+	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vendedor other = (Vendedor) obj;
+		if (cedula == null) {
+			if (other.cedula != null)
+				return false;
+		} else if (!cedula.equals(other.cedula))
+			return false;
+		return true;
 	}
 
 }

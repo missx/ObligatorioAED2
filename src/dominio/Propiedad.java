@@ -27,6 +27,12 @@ public class Propiedad extends Punto{
 		this.tipo = tipo;
 	}
 	
+	public String listadoDeCoordenadas(){
+		String listado = super.getCoordX() + ";" + super.getCoordY() + "|";
+		System.out.println("listado 1 " + listado);
+		return listado;
+	}
+	
 	
 	
 	

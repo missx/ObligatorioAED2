@@ -141,6 +141,7 @@ public class Sistema implements ISistema {
 		
 		//se le asigna al vendedor
 		Vendedor vendAsignado = (Vendedor)this.queueDeVendedores.front();
+		System.out.println("nombre vendedor asignado " +vendAsignado.getNombre());
 		vendAsignado.getHashPropiedades().insertar(p);
 		//lo saco del frente de la queue y lo mando al final
 		this.queueDeVendedores.dequeue();
@@ -284,7 +285,11 @@ public class Sistema implements ISistema {
 			return new Retorno(Resultado.ERROR_2);
 		}
 		//si no listar propiedades
-		return new Retorno(Resultado.OK, v.listarPropiedades());
+		System.out.println("es vacio " + v.getCedula() + v.getHashPropiedades().esVacio());
+		String retorno = "";
+		retorno = v.listarPropiedadesDelVendedor();
+		System.out.println();
+		return new Retorno(Resultado.OK, retorno);
 	}
 
 	
