@@ -104,11 +104,5 @@ public class Utils {
 			System.out.println(e.getMessage());
 		}
 		
-		/*MARKERS
-		 * color:<color>
-		 * label: <P><Pto><E>
-		 * %7C separator (or |)
-		 * lat y long separadas por coma
-		 */
 	}
 }

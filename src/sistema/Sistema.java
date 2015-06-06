@@ -104,41 +104,46 @@ public class Sistema implements ISistema {
 	}
 
 	//PRE: Alguna celda del Hash = null || celda del hash = (0.0,0.0).
-		//El valor de direccion != null || direccion!= “” (vacio) y no exista en el sistema
+		//El valor de direccion != null || direccion != “” (vacio) y no exista en el sistema
 		//Hay al menos un vendedor registrado
 		//coordX y coordY no existe en el sistema.
 	//POST: La propiedad queda registrada en el sistema.
 	@Override
 	public Retorno registrarPropiedad(double coordX, double coordY, TipoPropiedad tipoPropiedad, String direccion) {
+		//no hay lugar
 		if(!matrizMapa.hayLugar()){
 			return new Retorno(Resultado.ERROR_1);
 		}
-		
+		//si la direccion es null o vacia
 		if(direccion == null || direccion == ""){
 			return new Retorno(Resultado.ERROR_2);
 		}
-		
-		//Falta error 3 si no existen vendedores registrados!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
+		//si no hay vendedores registrados
+		if(this.arbolDeVendedores.esArbolVacio()){
+			return new Retorno(Resultado.ERROR_3);
+		}
+		//si las coordenadas ya están siendo usadas
 		if(tableHash.pertenece(coordX, coordY)){
 			System.out.println("hay uno igual");
 			return new Retorno (Resultado.ERROR_4);
 		}
-		
+		//si la dirección ya existe
 		if(tableHashProp.existeDireccion(direccion)){
 			System.out.println("Error 5");
 			return new Retorno(Resultado.ERROR_5);
 		}
-		
-		
-		//Falta asignarle el vendedor!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
-
 		//Se agrega la propiedad al Hash general
 		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion);
 
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
+		
+		//se le asigna al vendedor
+		Vendedor vendAsignado = (Vendedor)this.queueDeVendedores.front();
+		vendAsignado.getHashPropiedades().insertar(p);
+		//lo saco del frente de la queue y lo mando al final
+		this.queueDeVendedores.dequeue();
+		this.queueDeVendedores.enqueue(vendAsignado);
 		
 		return new Retorno(Resultado.OK);
 	}

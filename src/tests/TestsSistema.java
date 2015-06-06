@@ -1,11 +1,14 @@
 package tests;
 
 import static org.junit.Assert.*;
-
 import interfaces.ISistema;
+
 import org.junit.Test;
 
+import dominio.Propiedad;
+import dominio.Vendedor;
 import sistema.Enumerados.Rubro;
+import sistema.Enumerados.TipoPropiedad;
 import sistema.Retorno;
 import sistema.Sistema;
 import sistema.Retorno.Resultado;
@@ -268,23 +271,62 @@ public class TestsSistema {
 		assertEquals(Retorno.Resultado.ERROR_3, ret.resultado);
 	}
 	
-	
+	/********************REGISTRO DE PROPIEDAD**************************/
 	
 	@Test
 	public void testRegistroPropiedadCorrectamente(){
+		Sistema sis = new Sistema();
+		sis.inicializarSistema(5);
 		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		
+		Retorno ret = sis.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = sis.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(sis.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		//verificamos que el oto vendedor esté al frente de la queue ahora
+		assertEquals(sis.queueDeVendedores.front(), new Vendedor("4.702.156-9"));
+		
+		Propiedad p1 = new Propiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
+		Retorno retRegistroProp1 = sis.registrarPropiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado);
+		
+		//verificamos que cada vendedor tenga una
+		//assertEquals(true, v.getHashPropiedades().existeDireccion("18 de Julio 1234"));
+		assertEquals(false, sis.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().esVacio());
 	}
 	
 	@Test
 	public void testRegistroPropiedadExcederMasUno(){
-		
+		ISistema s = new Sistema();
+		s.inicializarSistema(5);
 	}
 	
 	@Test
 	public void testRegistroPropiedadExistente(){
-		
+		ISistema s = new Sistema();
+		s.inicializarSistema(5);
 	}
 	
+	/********************REGISTRO DE PROPIEDAD**************************/
 	
 	@Test
 	public void testRegistroPuntosTipoVariadoCorrectamente(){
