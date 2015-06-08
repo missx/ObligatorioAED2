@@ -190,8 +190,8 @@ public class Sistema implements ISistema {
         int origen = tableHash.devolverPosActual(coordXi, coordYi);
         int destino = tableHash.devolverPosActual(coordXf, coordYf);
 
-		matrizMapa.agregarArista(origen, destino, peso);
-		matrizMapa.agregarArista(destino, origen, peso);
+		matrizMapa.agregarArista(origen, destino, peso, coordXi, coordYi, coordXf, coordYf);
+		matrizMapa.agregarArista(destino, origen, peso, coordXf, coordYf, coordXi, coordYi);
 			
 		return new Retorno(Resultado.OK);
 	}

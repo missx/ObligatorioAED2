@@ -1,5 +1,7 @@
 package estructuras;
 
+import java.util.ArrayList;
+
 import interfaces.ILista;
 
 public class Lista implements ILista{
@@ -128,6 +130,16 @@ public class Lista implements ILista{
 			return aux != null;
 		}
 		return false;
+	}
+	
+	public ArrayList devolverTodosEnArrayList(){
+		ArrayList array = new ArrayList();
+		NodoLista aux = this.inicio;
+		while(aux != null){
+			array.add((Arco)aux.getDato());
+			aux = aux.getSig();
+		}
+		return array;
 	}
 
 	

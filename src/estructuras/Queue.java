@@ -26,7 +26,7 @@ public class Queue implements IQueue{
 	}
 
 	@Override
-	public void dequeue() {
+	public Object dequeue() {
 		NodoLista aux = this.front;
 		this.front = this.front.getSig();
 		aux.setSig(null);
@@ -34,7 +34,7 @@ public class Queue implements IQueue{
 		if(this.front == null){
 			this.back = null;
 		}
-		
+		return this.front();
 	}
 
 	@Override

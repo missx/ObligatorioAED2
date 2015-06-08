@@ -10,7 +10,7 @@ public interface IQueue {
 	/*
 	 * Saca un elem del ppio de la lista
 	 */
-	public void dequeue();
+	public Object dequeue();
 	
 	/*
 	 * Retorna el primer elem de la lista

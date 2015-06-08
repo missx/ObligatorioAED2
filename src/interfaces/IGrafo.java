@@ -19,7 +19,7 @@ public interface IGrafo {
 
 	//Pre: origen y destino son los índices de vértices ya ingresados en el grafo
 	//Post: Agrega la arista origen-destino de peso "peso" en el grafo
-	public void agregarArista(int origen, int destino, int peso);
+	public void agregarArista(int origen, int destino, int peso, Double coordXi, Double coordYi, Double coordXf, Double coordYf);
 
 	//Pre: El vértice v existe en el grafo
 	//Post: Elimina el vértice y todas las aristas a las que pertenezca

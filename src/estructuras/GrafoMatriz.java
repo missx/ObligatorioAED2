@@ -90,8 +90,8 @@ public class GrafoMatriz implements IGrafo{
 	}
 
 	@Override
-	public void agregarArista(int origen, int destino, int peso) {
-		Arco nuevo = new Arco(peso);
+	public void agregarArista(int origen, int destino, int peso, Double coordXi, Double coordYi, Double coordXf, Double coordYf){
+		Arco nuevo = new Arco(peso, coordXi, coordYi, coordXf, coordYf);
 		this.matrizAdyacencia[origen][destino] = nuevo;
 	}
 
