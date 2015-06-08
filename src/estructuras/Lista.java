@@ -136,7 +136,7 @@ public class Lista implements ILista{
 		ArrayList array = new ArrayList();
 		NodoLista aux = this.inicio;
 		while(aux != null){
-			array.add((Arco)aux.getDato());
+			array.add(aux.getDato());
 			aux = aux.getSig();
 		}
 		return array;

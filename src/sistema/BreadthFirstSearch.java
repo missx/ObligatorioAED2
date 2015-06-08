@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import estructuras.Arco;
 import estructuras.GrafoMatriz;
 import estructuras.Hash;
+import estructuras.HashArco;
 import estructuras.Lista;
 import estructuras.Queue;
 
 public class BreadthFirstSearch {
 
 	private ArrayList usados;
-	private Arco[] conectados;
+	private HashArco conectados;
 	private Arco ORIGEN;
 	private Hash tableHash;
 	
@@ -19,7 +20,7 @@ public class BreadthFirstSearch {
 		
 		//inicializar arrays con el tamaño de la matriz
 		usados = new ArrayList();
-		conectados = new Arco[matriz.getSize()];
+		conectados = new HashArco(matriz.getSize());
 		ORIGEN = origen;
 		tableHash = tableHash;
 		
@@ -40,8 +41,10 @@ public class BreadthFirstSearch {
 			ArrayList arrayAdyacentes = adyacentes.devolverTodosEnArrayList();
 			for(Object hijo : arrayAdyacentes){ 
 				Arco arcoHijo = (Arco)hijo;
-				if(!usados.contains(arcoHijo)){
-					
+				if(!usados.contains(arcoHijo)){ 
+					conectados.insertar(arcoHijo, arcoPadre);
+					usados.add(arcoHijo);
+					queueDePadres.enqueue(arcoHijo);
 				}
 			}
 		}
