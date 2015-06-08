@@ -288,7 +288,25 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno caminoMinimo(String direccionPropiedad, Double coordX, Double coordY) {
-		//TODO reemplazar por su implementacion
+		//esa direccion no esta registrada en el sistema
+		if(!this.tableHashProp.pertenece(direccionPropiedad)){
+			return new Retorno(Resultado.ERROR_1);
+		}
+		//ambas coordenadas no estan registradas
+		if(!this.tableHash.pertenece(coordX, coordY)){
+			return new Retorno(Resultado.ERROR_2);
+		}
+		//no hay camino posible entre prop y pto de interes
+		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
+		int keyDePropEnTableHash = 0;
+		if(p != null){
+			keyDePropEnTableHash = this.tableHash.h(p.getCoordX(), p.getCoordY());
+		}
+		int keyDePtoInteresEnTableHash = this.tableHash.h(coordX, coordY);
+		if(this.matrizMapa.sonAdyacentes(keyDePropEnTableHash, keyDePtoInteresEnTableHash)){
+			return new Retorno(Resultado.ERROR_3);
+		}
+		//TODO mostrar el camino mínimo a pto de interes
 		return new Retorno();
 	}
 
