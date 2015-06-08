@@ -8,6 +8,7 @@ import estructuras.ArbolB;
 import estructuras.GrafoMatriz;
 import estructuras.Hash;
 import estructuras.HashPropiedad;
+import estructuras.Lista;
 import estructuras.Queue;
 import interfaces.ISistema;
 import sistema.Enumerados.Rubro;
@@ -263,7 +264,25 @@ public class Sistema implements ISistema {
 
 	@Override
 	public Retorno puntoInteresMasCercano(String direccionPropiedad, Rubro rubroPuntoInteres) {
-		//TODO reemplazar por su implementacion
+		//propiedad de esa direccion no existe 
+		if(this.tableHashProp.pertenece(direccionPropiedad)){
+			return new Retorno(Resultado.ERROR_1);
+		}
+		//si no hay ningun punto de interes de ese rubro
+		if(!this.tableHash.existePuntoDeEseRubro(rubroPuntoInteres)){
+			return new Retorno(Resultado.ERROR_2);
+		}
+		//si hay algún punto pero no es alcanzable
+		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
+		int keyATableHash = 0;
+		if(p != null){
+			keyATableHash = this.tableHash.h(p.getCoordX(), p.getCoordY());
+		}
+		Lista verticesAdyascentes = this.matrizMapa.obtenerVerticesAdyacentes(keyATableHash);
+		if(!verticesAdyascentes.chequearSiAlMenosUnoDeRubro(rubroPuntoInteres)){
+			return new Retorno(Resultado.ERROR_3);
+		}
+		//TODO mostrar el pto de interes más cercano
 		return new Retorno();
 	}
 

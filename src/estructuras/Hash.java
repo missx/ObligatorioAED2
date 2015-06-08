@@ -1,6 +1,8 @@
 package estructuras;
 
+import sistema.Enumerados.Rubro;
 import dominio.Punto;
+import dominio.PuntoDeInteres;
 
 public class Hash {
 
@@ -31,7 +33,8 @@ public class Hash {
 	/*
 	 * Función de hash
 	 */
-	public int h(int nr){
+	public int h(double coordX, double coordY){
+		int nr = Math.abs((int)coordX) + Math.abs((int)coordY);
 		return nr%tamañoTabla;
 	}
 	
@@ -39,8 +42,7 @@ public class Hash {
 	 * Inserta un obj en la tabla
 	 */
 	public int insertar(Punto p){
-		int key = Math.abs(p.getCoordX().intValue()) + Math.abs(p.getCoordY().intValue());
-		int pos = h(key);
+		int pos = h(p.getCoordX(), p.getCoordY());
 		boolean flag = true;
 		while(flag){
 			if(tabla[pos] != null){
@@ -66,8 +68,8 @@ public class Hash {
 	 * Chequea si el obj está en la tabla
 	 */
 	public boolean pertenece(double coordX, double coordY){
-		int key = Math.abs((int)coordX) + Math.abs((int)coordY);
-		int pos = h(key);boolean flag = true;
+		int pos = h(coordX, coordY);
+		boolean flag = true;
 		int count = 0;
 		while(flag){
 			if(count < tabla.length){
@@ -100,8 +102,8 @@ public class Hash {
 	}
 	
 	public int devolverPosActual(double coordX, double coordY){
-		int key = Math.abs((int)coordX) + Math.abs((int)coordY);
-		int pos = h(key);boolean flag = true;
+		int pos = h(coordX, coordY);
+		boolean flag = true;
 		int count = 0;
 		while(flag){
 			if(count < tabla.length){
@@ -139,6 +141,23 @@ public class Hash {
 				System.out.println(i + " --> " + tabla[i].getCoordX() + " - " + tabla[i].getCoordY());
 			}
 		}
+	}
+	
+	/*
+	 * Retorna true si al menos hay un objeto del rubro rubro
+	 * en la tabla
+	 * @param Rubro rubro
+	 * @return boolean
+	 */
+	public boolean existePuntoDeEseRubro(Rubro rubro){
+		for(Punto p : this.tabla){
+			if(p instanceof PuntoDeInteres){
+				if(((PuntoDeInteres) p).getRubro().equals(rubro)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 }

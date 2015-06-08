@@ -1,6 +1,7 @@
 package sistema;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import estructuras.Arco;
 import estructuras.GrafoMatriz;
@@ -48,7 +49,37 @@ public class BreadthFirstSearch {
 				}
 			}
 		}
-		
+	}
+	
+	/*
+	 * Nos permite saber si un Arco está conectado
+	 * al origen
+	 * @param Arco a
+	 * @return boolean
+	 */
+	public boolean estaConectado(Arco a){
+		return usados.contains(a);
+	}
+	
+	/*
+	 * Retorna el camino desde el origen a el Arco dado
+	 * @param Arco a
+	 * @return ArrayList
+	 */
+	public ArrayList caminoA(Arco a){
+		if(!estaConectado(a)){
+			return null;
+		}
+		ArrayList camino = new ArrayList();
+		//primero agregamos el vertice a
+		camino.add(a);
+		Arco padre = conectados.retornarArcoPadre(a);
+		while(padre != ORIGEN){
+			padre = conectados.retornarArcoPadre(padre);
+			camino.add(padre);
+		}
+		camino.add(ORIGEN);
+		return camino;
 	}
 			
 }

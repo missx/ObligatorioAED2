@@ -91,6 +91,7 @@ public class HashArco {
 			return true;
 		}
 	}
+	
 	/*
 	public int devolverPosActual(double coordX, double coordY){
 		int pos = h(coordX, coordY);
@@ -119,8 +120,25 @@ public class HashArco {
 			}
 		}
 		return -1;
+	}*/
+	
+	public Arco retornarArcoPadre(Arco arco){
+		int key = h(arco);
+		int recorridos = 1;
+		while(recorridos < this.tamañoTabla){			
+			if(this.tabla[key].getDato() != null && this.tabla[key].getDato().equals(arco)){
+				return this.tabla[key].getArcoPadre();
+			}else{
+				key++;
+				recorridos++;
+				if(key == this.tamañoTabla){
+					key = 0;
+				}
+			}
+		}
+		return null;
 	}
-	*/
+	
 		
 	public boolean esVacio(){
 		boolean vacio = true;

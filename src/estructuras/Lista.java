@@ -2,6 +2,8 @@ package estructuras;
 
 import java.util.ArrayList;
 
+import sistema.Enumerados.Rubro;
+import dominio.PuntoDeInteres;
 import interfaces.ILista;
 
 public class Lista implements ILista{
@@ -142,6 +144,24 @@ public class Lista implements ILista{
 		return array;
 	}
 
-	
+	/*
+	 * Chequea si al menos uno de la lista de puntos
+	 * es del rubro rubro
+	 * @param Rubro rubro
+	 * @return boolean
+	 */
+	public boolean chequearSiAlMenosUnoDeRubro(Rubro rubro){
+		
+		NodoLista aux = this.inicio;
+		while(aux != null){
+			if(aux.getDato() instanceof PuntoDeInteres){
+				if(((PuntoDeInteres)aux.getDato()).getRubro().equals(rubro)){
+					return true;
+				}
+			}
+			aux = aux.getSig();
+		}
+		return false;
+	}
 	
 }
