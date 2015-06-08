@@ -21,7 +21,7 @@ public class BreadthFirstSearch {
 		
 		//inicializar arrays con el tamaño de la matriz
 		usados = new boolean[matriz.getSize()];
-		conectados = new int[matriz.getSize()];//conectados = new HashArco(matriz.getSize());
+		conectados = new int[matriz.getSize()];
 		ORIGEN = origen;
 		tableHash = tableHash;
 		

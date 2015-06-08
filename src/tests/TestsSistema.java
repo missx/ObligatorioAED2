@@ -6,6 +6,7 @@ import interfaces.ISistema;
 import org.junit.Test;
 
 import dominio.Propiedad;
+import dominio.Punto;
 import dominio.PuntoDeInteres;
 import dominio.Vendedor;
 import sistema.Enumerados.Rubro;
@@ -509,6 +510,248 @@ public class TestsSistema {
 		Retorno retRegistroProp2 = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "");
 		assertEquals(Retorno.Resultado.ERROR_2, retRegistroProp2.resultado);
 		
+	}
+
+	/********************REGISTRAR TRAMO***********************/
+	
+	@Test
+	
+	public void testRegistrarTramoCorrectamente(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		Retorno ret = s.registrarEsquina(-34.9055,-56.1892);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9058, -56.1927, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9059,-56.1929);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9039,-56.2049);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.registrarTramo(-34.9055, -56.1892, -34.9058, -56.1927, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9032, -56.2040, -34.9055, -56.1892, 3);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9058, -56.1927, -34.9032, -56.2040, 1);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9059, -56.1929, -34.9039, -56.2049, 5);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9058, -56.1927, -34.9039, -56.2049, 2);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistrarTramoExistente(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		Retorno ret = s.registrarEsquina(-34.9055,-56.1892);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9058, -56.1927, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9059,-56.1929);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9039,-56.2049);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.registrarTramo(-34.9055, -56.1892, -34.9058, -56.1927, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9055, -56.1892, -34.9058, -56.1927, 4);
+		assertEquals(Retorno.Resultado.ERROR_3, ret.resultado);
+		ret = s.registrarTramo(-34.9058, -56.1927, -34.9032, -56.2040, 1);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9059, -56.1929, -34.9039, -56.2049, 5);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9059, -56.1929, -34.9039, -56.2049, 5);
+		assertEquals(Retorno.Resultado.ERROR_3, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistrarTramoCoordenadasNoExisten(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		Retorno ret = s.registrarEsquina(-34.9055,-56.1892);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9058, -56.1927, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9059,-56.1929);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9039,-56.2049);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.registrarTramo(-34.9055, -56.1892, -34.9058, -56.1927, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9051, -56.1891, -34.9051, -56.1921, 4);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+		ret = s.registrarTramo(-34.9058, -56.1927, -34.9032, -56.2040, 1);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9059, -56.1929, -34.9039, -56.2049, 5);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9056, -56.1926, -34.9036, -56.2046, 5);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+	}
+	
+	@Test
+	public void testRegistrarTramoPesoMenorIgualCero(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		Retorno ret = s.registrarEsquina(-34.9055,-56.1892);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9058, -56.1927, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9059,-56.1929);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9039,-56.2049);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.registrarTramo(-34.9055, -56.1892, -34.9058, -56.1927, 0);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+		ret = s.registrarTramo(-34.9058, -56.1927, -34.9032, -56.2040, -1);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+		ret = s.registrarTramo(-34.9059, -56.1929, -34.9039, -56.2049, 5);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+	}
+	
+
+	/********************ELIMINAR TRAMO***********************/
+	
+	@Test
+	public void testEliminarTramoCorrectamente(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		Retorno ret = s.registrarEsquina(-34.9055,-56.1892);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9058, -56.1927, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9059,-56.1929);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9039,-56.2049);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.registrarTramo(-34.9055, -56.1892, -34.9058, -56.1927, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9051, -56.1891, -34.9051, -56.1921, 4);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+		ret = s.registrarTramo(-34.9058, -56.1927, -34.9032, -56.2040, 1);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.eliminarTramo(-34.9055, -56.1892, -34.9058, -56.1927);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.eliminarTramo(-34.9058, -56.1927, -34.9032, -56.2040);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+	}
+	
+	@Test
+	public void testEliminarTramoInexistente(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		Retorno ret = s.registrarEsquina(-34.9055,-56.1892);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9058, -56.1927, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9059,-56.1929);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9039,-56.2049);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.registrarTramo(-34.9055, -56.1892, -34.9058, -56.1927, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9039,-56.2049, -34.9058, -56.1927, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.eliminarTramo(-34.9058, -56.1927, -34.9032, -56.2040);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+		ret = s.eliminarTramo(-34.9055, -56.1892, -34.9058, -56.1927);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+	}
+	
+	@Test
+	public void testEliminarTramoCoordenadasInexistentes(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(3);
+		
+		Retorno ret = s.registrarEsquina(-34.9055,-56.1892);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9058, -56.1927, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.registrarTramo(-34.9055,-56.1892, -34.9032, -56.2040, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarTramo(-34.9058, -56.1927, -34.9032, -56.2040, 4);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.eliminarTramo(-34.9051, -56.1921, -34.9031, -56.2041);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+		ret = s.eliminarTramo(-34.9050, -56.1892, -34.9058, -56.1927);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+	}
+
+	
+	/********************ELIMINAR PUNTO DEL MAPA***********************/
+	
+	@Test
+	public void testEliminarPuntoDelMapa(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(4);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.7641,56.2138, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	
+		ret = s.registrarPuntoInteres(34.8519,56.1883, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9058, -56.1927);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(-34.9032, -56.2040, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+		
+		s.eliminarPuntoMapa(-34.9058, -56.1927);
+		
+		ret = s.registrarPuntoInteres(-34.9033, -56.2041, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+	}
+
+	
+	/********************MOSTRAR MAPA**********************************/
+	
+	@Test
+	public void testMostrarMapa(){
+		ISistema s = new Sistema();
+		s.inicializarSistema(4);
+		
+		//Crear datos
+		Retorno ret = s.registrarPuntoInteres(34.7641,56.2138, Rubro.CAJERO, "Abitab");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.905, -56.190);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	
+		ret = s.registrarPuntoInteres(34.8519,56.1883, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarEsquina(-34.9058, -56.1927);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.verMapa();
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
 	}
 	
 	/********************LISTADO DE PROPIEDAD**************************/

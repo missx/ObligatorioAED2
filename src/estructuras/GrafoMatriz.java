@@ -147,6 +147,20 @@ public class GrafoMatriz implements IGrafo{
         return false;
     }  
 	
+	public boolean existeArista(int origen, int destino, double coordXi, double coordYi, double coordXf, double coordYf){
+		if(this.matrizAdyacencia[origen][destino].getCoordXi() == null && this.matrizAdyacencia[origen][destino].getCoordYi() == null){
+			if(this.matrizAdyacencia[origen][destino].getCoordXf() == null && this.matrizAdyacencia[origen][destino].getCoordYf() == null){
+				return false;
+			}
+		}
+		if(this.matrizAdyacencia[origen][destino].getCoordXf() == coordXf && this.matrizAdyacencia[origen][destino].getCoordYf() == coordYf){
+			if(this.matrizAdyacencia[origen][destino].getCoordXi() == coordXi && this.matrizAdyacencia[origen][destino].getCoordYi() == coordYi){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Punto puntoInteresMasCercano(){
 		return null;
 	}

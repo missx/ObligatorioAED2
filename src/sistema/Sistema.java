@@ -28,6 +28,7 @@ public class Sistema implements ISistema {
 	//POST: Quedan todas las estructuras inicializadas para manejar el sistema (Hash, Arboles, etc).
 	public Retorno inicializarSistema (int cantPuntos) {
 		Retorno ret;
+		//Verificar si la cantidad de puntos ingresado es menor o igual a 0
 		if(cantPuntos <= 0){
 			ret = new Retorno(Resultado.ERROR_1);
 			return ret;
@@ -60,16 +61,19 @@ public class Sistema implements ISistema {
 	//POST: La esquina queda registrada en el sistema.
 	@Override
 	public Retorno registrarEsquina(double coordX, double coordY) {
+		//Verificar si hay lugar para ingresar la esquina
 		if(!matrizMapa.hayLugar()){
 			System.out.println("No hay lugar");
 			return new Retorno(Resultado.ERROR_1);
 		}
 		
+		//Verificar si la las coordenadas ya existen
 		if(tableHash.pertenece(coordX, coordY)){
 			System.out.println("hay uno igual");
 			return new Retorno(Resultado.ERROR_2);
 		}
 		
+		//Ingresar la esquina en el Hash general y en el grafo
 		Esquina e = new Esquina(coordX, coordY);
 		int pos = tableHash.insertar(e);
 		matrizMapa.agregarVertice(pos);
@@ -83,20 +87,24 @@ public class Sistema implements ISistema {
 	//POST: El punto de interes queda registrado en el sistema.
 	@Override
 	public Retorno registrarPuntoInteres(double coordX, double coordY, Rubro rubro, String nombre) {
+		//Verificar si hay lugar para ingresar la esquina
 		if(!matrizMapa.hayLugar()){
 			System.out.println("No hay lugar");
 			return new Retorno(Resultado.ERROR_1);
 		}
 		
+		//Verificar si el nombre ingresado es nulo o vacío
 		if(nombre == null || nombre == ""){
 			return new Retorno(Resultado.ERROR_2);
 		}
 		
+		//Verificar si la las coordenadas ya existen
 		if(tableHash.pertenece(coordX, coordY)){
 			System.out.println("hay uno igual");
 			return new Retorno (Resultado.ERROR_3);
 		}
 		
+		//Ingresar el Punto de Interes en el Hash general y en el grafo
 		PuntoDeInteres pi = new PuntoDeInteres(coordX, coordY, rubro, nombre);
 		int pos = tableHash.insertar(pi);
 		matrizMapa.agregarVertice(pos);
@@ -178,19 +186,27 @@ public class Sistema implements ISistema {
 	//POST:  El tramo queda registrado en el sistema
 	@Override
 	public Retorno registrarTramo(double coordXi, double coordYi, double coordXf, double coordYf, int peso) {
+		//Verificar si el peso es menor o igual a 0
 		if(peso <= 0){
 			return new Retorno(Resultado.ERROR_1);
 		}
 		
+		//Verificar si las coordenadas del tramo no existen en el sistema
 		if(!tableHash.pertenece(coordXi, coordYi) || !tableHash.pertenece(coordXf, coordYf)){
+			System.out.println("no existen las coordenadas en el sistema");
 			return new Retorno (Resultado.ERROR_2);
 		}
-		
-		//Si existe el tramo en el sistema error3
-		
+
         int origen = tableHash.devolverPosActual(coordXi, coordYi);
         int destino = tableHash.devolverPosActual(coordXf, coordYf);
+        
+        //Verificar si existe el tramo en el grafo
+		if(matrizMapa.existeArista(origen, destino, coordXi, coordYi, coordXf, coordYf)){
+			System.out.println("ya existe el tramo en el grafo");
+			return new Retorno (Resultado.ERROR_3);
+		}
 
+		//Agregar arista al grafo, como es no dirigido se ingresa 2 veces cambiando origen y destino
 		matrizMapa.agregarArista(origen, destino, peso, coordXi, coordYi, coordXf, coordYf);
 		matrizMapa.agregarArista(destino, origen, peso, coordXf, coordYf, coordXi, coordYi);
 			
@@ -203,14 +219,20 @@ public class Sistema implements ISistema {
 			return new Retorno (Resultado.ERROR_1);
 		}
 		
-		//Si existe el tramo en el sistema error2
-		
 		int origen = tableHash.devolverPosActual(coordXi, coordYi);
         int destino = tableHash.devolverPosActual(coordXf, coordYf);
         
+		//Verificar si no existe el tramo en el grafo
+		if(!matrizMapa.existeArista(origen, destino, coordXi, coordYi, coordXf, coordYf)){
+			System.out.println("no existe el tramo en el grafo");
+			return new Retorno (Resultado.ERROR_2);
+		}
+				
+		//Eliminar arista del grafo
 		matrizMapa.eliminarArista(origen, destino);
 		matrizMapa.eliminarArista(destino, origen);
-        
+
+		System.out.println("Exito");
 		return new Retorno(Resultado.OK);
 	}
 
