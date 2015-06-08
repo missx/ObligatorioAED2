@@ -307,6 +307,7 @@ public class Sistema implements ISistema {
 			return new Retorno(Resultado.ERROR_3);
 		}
 		//TODO mostrar el camino mínimo a pto de interes
+		BreadthFirstSearch bfs = new BreadthFirstSearch(this.matrizMapa, keyDePropEnTableHash,this.tableHash);
 		return new Retorno();
 	}
 

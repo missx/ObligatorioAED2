@@ -12,53 +12,53 @@ import estructuras.Queue;
 
 public class BreadthFirstSearch {
 
-	private ArrayList usados;
-	private HashArco conectados;
-	private Arco ORIGEN;
+	private boolean[] usados;
+	private int[] conectados;
+	private int ORIGEN;
 	private Hash tableHash;
 	
-	public BreadthFirstSearch(GrafoMatriz matriz, Arco origen, Hash tableHash){
+	public BreadthFirstSearch(GrafoMatriz matriz, int origen, Hash tableHash){
 		
 		//inicializar arrays con el tamaño de la matriz
-		usados = new ArrayList();
-		conectados = new HashArco(matriz.getSize());
+		usados = new boolean[matriz.getSize()];
+		conectados = new int[matriz.getSize()];//conectados = new HashArco(matriz.getSize());
 		ORIGEN = origen;
 		tableHash = tableHash;
 		
 		bfs(matriz, origen);
 	}
 	
-	public void bfs(GrafoMatriz matriz, Arco origen){
+	public void bfs(GrafoMatriz matriz, int origen){
 		
 		Queue queueDePadres = new Queue(); //creamos la queue
-		usados.add(origen);
+		usados[origen] = true;//usados.add(origen);
 		queueDePadres.enqueue(origen); //agregamos el origen a la queue
 		
 		while(!queueDePadres.isEmpty()){
 			
-			Arco arcoPadre = (Arco)queueDePadres.dequeue();
-			int arcoPadreKey = tableHash.devolverPosActual(arcoPadre.getCoordXi(), arcoPadre.getCoordYi());
-			Lista adyacentes = matriz.obtenerVerticesAdyacentes(arcoPadreKey);
+			int verticePadre = (int)queueDePadres.dequeue();
+			//int arcoPadreKey = tableHash.devolverPosActual(arcoPadre.getCoordXi(), arcoPadre.getCoordYi());
+			Lista adyacentes = matriz.obtenerVerticesAdyacentes(verticePadre);
 			ArrayList arrayAdyacentes = adyacentes.devolverTodosEnArrayList();
 			for(Object hijo : arrayAdyacentes){ 
-				Arco arcoHijo = (Arco)hijo;
-				if(!usados.contains(arcoHijo)){ 
-					conectados.insertar(arcoHijo, arcoPadre);
-					usados.add(arcoHijo);
-					queueDePadres.enqueue(arcoHijo);
+				int verticeHijo = (int)hijo;
+				if(!usados[verticeHijo]){ 
+					conectados[verticeHijo] = verticePadre; //conectados.insertar(arcoHijo, arcoPadre);
+					usados[verticeHijo] = true; //usados.add(arcoHijo);
+					queueDePadres.enqueue(verticeHijo);
 				}
 			}
 		}
 	}
 	
 	/*
-	 * Nos permite saber si un Arco está conectado
+	 * Nos permite saber si un vertice está conectado
 	 * al origen
-	 * @param Arco a
+	 * @param int vertice
 	 * @return boolean
 	 */
-	public boolean estaConectado(Arco a){
-		return usados.contains(a);
+	public boolean estaConectado(int vertice){
+		return usados[vertice];
 	}
 	
 	/*
@@ -66,17 +66,17 @@ public class BreadthFirstSearch {
 	 * @param Arco a
 	 * @return ArrayList
 	 */
-	public ArrayList caminoA(Arco a){
-		if(!estaConectado(a)){
+	public ArrayList caminoA(int vertice){
+		if(!estaConectado(vertice)){
 			return null;
 		}
 		ArrayList camino = new ArrayList();
 		//primero agregamos el vertice a
-		camino.add(a);
-		Arco padre = conectados.retornarArcoPadre(a);
-		while(padre != ORIGEN){
-			padre = conectados.retornarArcoPadre(padre);
-			camino.add(padre);
+		camino.add(vertice);
+		//Arco padre = conectados.retornarArcoPadre(vertice);
+		while(conectados[vertice] != ORIGEN){
+			vertice = conectados[vertice];
+			camino.add(vertice);
 		}
 		camino.add(ORIGEN);
 		return camino;
