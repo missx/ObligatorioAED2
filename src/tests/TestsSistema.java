@@ -738,16 +738,20 @@ public class TestsSistema {
 	@Test
 	public void testMostrarMapa(){
 		ISistema s = new Sistema();
-		s.inicializarSistema(4);
+		s.inicializarSistema(5);
 		
 		//Crear datos
-		Retorno ret = s.registrarPuntoInteres(34.7641,56.2138, Rubro.CAJERO, "Abitab");
+		Retorno ret = s.registrarPuntoInteres(-34.882142,-56.175832, Rubro.CAJERO, "Abitab");
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarEsquina(-34.905, -56.190);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);	
-		ret = s.registrarPuntoInteres(34.8519,56.1883, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		ret = s.registrarPuntoInteres(-34.869200,-56.169083, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarEsquina(-34.9058, -56.1927);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarVendedor("4.586.255-3", "Juan Apellido", "juan@gmail.com", "091547865");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPropiedad(-34.905634, -56.184232, TipoPropiedad.APARTAMENTO, "Constituyente 548");
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		
 		ret = s.verMapa();

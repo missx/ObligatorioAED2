@@ -34,7 +34,7 @@ public class Queue implements IQueue{
 		if(this.front == null){
 			this.back = null;
 		}
-		return this.front();
+		return aux;
 	}
 
 	@Override

@@ -95,7 +95,7 @@ public class Utils {
 			}
 			
 		}
-		urlMapa += "&sensor=false";	 
+		urlMapa += "sensor=false";	 
 		
 		Desktop desk = Desktop.getDesktop();
 		try{
