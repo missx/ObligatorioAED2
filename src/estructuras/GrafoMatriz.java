@@ -165,4 +165,17 @@ public class GrafoMatriz implements IGrafo{
 		return null;
 	}
 	
+	/*
+	 * Devuelve la distancia de un arco dado
+	 * @param int x
+	 * @param int y
+	 * @return int
+	 */
+	public int devolverDistancia(int x, int y){
+		if(this.matrizAdyacencia[x][y] != null){
+			return this.matrizAdyacencia[x][y].getDistancia();
+		}
+		return 0;
+	}
+	
 }

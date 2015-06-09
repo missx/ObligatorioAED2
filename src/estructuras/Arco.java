@@ -26,7 +26,7 @@ public class Arco {
 	}
 	
 	public Arco(){
-		
+		this.existe = false;
 	}
 	
 	public Arco(Integer dist, Double coordXi, Double coordYi, Double coordXf, Double coordYf){
@@ -35,6 +35,7 @@ public class Arco {
 		this.coordYi = coordYi;
 		this.coordXf = coordXf;
 		this.coordYf = coordYf;
+		this.existe = true;
 	}
 
 	
