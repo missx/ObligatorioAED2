@@ -54,7 +54,7 @@ public class Vendedor {
 	
 	public Vendedor(String ced){
 		this.cedula = ced;
-		this.setHashPropiedades(new HashPropiedad(23));
+		//this.setHashPropiedades(new HashPropiedad(23));
 	}
 	
 	public HashPropiedad getHashPropiedades() {

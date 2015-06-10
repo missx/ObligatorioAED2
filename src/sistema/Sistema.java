@@ -24,6 +24,9 @@ public class Sistema implements ISistema {
 	public Hash tableHash;
 	public HashPropiedad tableHashProp; //xa que necesitamos el hash este aca?
 
+	
+	//**************************INICIALIZAR/DESTRUIR SISTEMA ******************************************************
+	
 	//PRE: El valor de “cantPuntos” > 0.
 	//POST: Quedan todas las estructuras inicializadas para manejar el sistema (Hash, Arboles, etc).
 	public Retorno inicializarSistema (int cantPuntos) {
@@ -56,6 +59,11 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 
+	
+	
+	
+	//*************************REGISTRAR/ELIMINAR PUNTOS (ESQUINAS,PUNTO DE INT, PROPIEDADES)*********************
+	
 	//PRE: Alguna celda del Hash = null || celda del hash = (0.0,0.0).
 		//coordX y coordY no existe en el sistema.
 	//POST: La esquina queda registrada en el sistema.
@@ -63,13 +71,11 @@ public class Sistema implements ISistema {
 	public Retorno registrarEsquina(double coordX, double coordY) {
 		//Verificar si hay lugar para ingresar la esquina
 		if(!matrizMapa.hayLugar()){
-			System.out.println("No hay lugar");
 			return new Retorno(Resultado.ERROR_1);
 		}
 		
 		//Verificar si la las coordenadas ya existen
 		if(tableHash.pertenece(coordX, coordY)){
-			System.out.println("hay uno igual");
 			return new Retorno(Resultado.ERROR_2);
 		}
 		
@@ -89,7 +95,6 @@ public class Sistema implements ISistema {
 	public Retorno registrarPuntoInteres(double coordX, double coordY, Rubro rubro, String nombre) {
 		//Verificar si hay lugar para ingresar la esquina
 		if(!matrizMapa.hayLugar()){
-			System.out.println("No hay lugar");
 			return new Retorno(Resultado.ERROR_1);
 		}
 		
@@ -100,7 +105,6 @@ public class Sistema implements ISistema {
 		
 		//Verificar si la las coordenadas ya existen
 		if(tableHash.pertenece(coordX, coordY)){
-			System.out.println("hay uno igual");
 			return new Retorno (Resultado.ERROR_3);
 		}
 		
@@ -133,19 +137,17 @@ public class Sistema implements ISistema {
 		}
 		//si las coordenadas ya están siendo usadas
 		if(tableHash.pertenece(coordX, coordY)){
-			System.out.println("hay uno igual");
 			return new Retorno (Resultado.ERROR_4);
 		}
 		//si la dirección ya existe
 		if(tableHashProp.pertenece(direccion)){
-			System.out.println("Error 5");
 			return new Retorno(Resultado.ERROR_5);
 		}
 		//Se agrega la propiedad al Hash general
 		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion);
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
-		//se asigna al has de propiedades del sistema
+		//se asigna al hash de propiedades del sistema
 		this.tableHashProp.insertar(p);
 		
 		//se le asigna al vendedor
@@ -159,6 +161,28 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 
+
+	@Override
+	public Retorno listadoPropiedades(String cedulaVendedor) {
+		//si el vendedor no existe
+		if(!this.arbolDeVendedores.existeElemento(new Vendedor(cedulaVendedor))){
+			return new Retorno(Resultado.ERROR_1);
+		}
+		
+		//si no tiene propiedades
+		Vendedor v = this.arbolDeVendedores.Buscar(new Vendedor(cedulaVendedor)).getDato();
+		if(v.getHashPropiedades().esVacio()){
+			return new Retorno(Resultado.ERROR_2);
+		}
+		
+		//si no listar propiedades
+		System.out.println("es vacio " + v.getCedula() + v.getHashPropiedades().esVacio());
+		String retorno = "";
+		retorno = v.listarPropiedadesDelVendedor();
+		System.out.println();
+		return new Retorno(Resultado.OK, retorno);
+	}
+	
 	//PRE: coordX y coordY existen en el sistema
 	//POST: El punto queda eliminado del sistema.
 	@Override
@@ -170,16 +194,19 @@ public class Sistema implements ISistema {
 			
 			//Elimino objeto del hash
 			tableHash.eliminarPunto(pos);
-			tableHash.imprimirLista();
 		}
 		else{
-			System.out.println("no hay uno igual");
 			return new Retorno(Resultado.ERROR_1);
 		}
 		
 		return new Retorno();
 	}
 
+	
+	
+	
+	//**********************************REGISTRAR/ELIMINAR TRAMOS**********************************************
+	
 	//PRE: El valor de “peso” > 0
 		//coordXi, coordYi, coordXf y coordYf existen en el sistema.
 		//No exista un tramo con las mismas coordenadas en el sistema
@@ -193,7 +220,6 @@ public class Sistema implements ISistema {
 		
 		//Verificar si las coordenadas del tramo no existen en el sistema
 		if(!tableHash.pertenece(coordXi, coordYi) || !tableHash.pertenece(coordXf, coordYf)){
-			System.out.println("no existen las coordenadas en el sistema");
 			return new Retorno (Resultado.ERROR_2);
 		}
 
@@ -202,7 +228,6 @@ public class Sistema implements ISistema {
         
         //Verificar si existe el tramo en el grafo
 		if(matrizMapa.existeArista(origen, destino, coordXi, coordYi, coordXf, coordYf)){
-			System.out.println("ya existe el tramo en el grafo");
 			return new Retorno (Resultado.ERROR_3);
 		}
 
@@ -224,7 +249,6 @@ public class Sistema implements ISistema {
         
 		//Verificar si no existe el tramo en el grafo
 		if(!matrizMapa.existeArista(origen, destino, coordXi, coordYi, coordXf, coordYf)){
-			System.out.println("no existe el tramo en el grafo");
 			return new Retorno (Resultado.ERROR_2);
 		}
 				
@@ -232,10 +256,14 @@ public class Sistema implements ISistema {
 		matrizMapa.eliminarArista(origen, destino);
 		matrizMapa.eliminarArista(destino, origen);
 
-		System.out.println("Exito");
 		return new Retorno(Resultado.OK);
 	}
 
+	
+	
+	
+	//***************************************VENDEDOR**********************************************************
+	
 	@Override
 	public Retorno registrarVendedor(String cedula, String nombre, String email, String celular) {
 		if(!Utils.verificarCedula(cedula)){
@@ -252,17 +280,12 @@ public class Sistema implements ISistema {
 			return ret;
 		}else{
 			//insertar vendedor en el arbol y la queue
-			this.arbolDeVendedores.insertarElemento(new Vendedor(cedula, nombre, email, celular));
-			this.queueDeVendedores.enqueue(new Vendedor(cedula, nombre, email, celular));
+			Vendedor v = new Vendedor(cedula, nombre, email, celular);
+			this.arbolDeVendedores.insertarElemento(v);
+			this.queueDeVendedores.enqueue(v);
 			Retorno ret = new Retorno(Resultado.OK);
 			return ret;
 		}
-	}
-
-	@Override
-	public Retorno listadoVendedores() {
-		String resultadoString = this.arbolDeVendedores.mostrarInOrder();
-		return new Retorno(Resultado.OK, resultadoString);
 	}
 
 	@Override
@@ -277,7 +300,18 @@ public class Sistema implements ISistema {
 			return new Retorno(Resultado.OK);
 		}
 	}
+	
+	@Override
+	public Retorno listadoVendedores() {
+		String resultadoString = this.arbolDeVendedores.mostrarInOrder();
+		return new Retorno(Resultado.OK, resultadoString);
+	}
 
+
+	
+	
+	//***********************************MAPAS Y CAMINOS*******************************************************
+	
 	@Override
 	public Retorno verMapa() {
 		Utils.crearMapa(this.tableHash);
@@ -304,8 +338,8 @@ public class Sistema implements ISistema {
 		if(!verticesAdyascentes.chequearSiAlMenosUnoDeRubro(rubroPuntoInteres)){
 			return new Retorno(Resultado.ERROR_3);
 		}
-		//TODO mostrar el pto de interes más cercano
-		return new Retorno();
+
+		return new Retorno(Resultado.OK);
 	}
 
 	@Override
@@ -328,31 +362,10 @@ public class Sistema implements ISistema {
 		if(this.matrizMapa.sonAdyacentes(keyDePropEnTableHash, keyDePtoInteresEnTableHash)){
 			return new Retorno(Resultado.ERROR_3);
 		}
-		//TODO mostrar el camino mínimo a pto de interes
+
 		BreadthFirstSearch bfs = new BreadthFirstSearch(this.matrizMapa, keyDePropEnTableHash,this.tableHash);
-		return new Retorno();
+	
+		return new Retorno(Resultado.OK);
 	}
 
-	@Override
-	public Retorno listadoPropiedades(String cedulaVendedor) {
-		//si el vendedor no existe
-		if(!this.arbolDeVendedores.existeElemento(new Vendedor(cedulaVendedor))){
-			return new Retorno(Resultado.ERROR_1);
-		}
-		//si no tiene propiedades
-		Vendedor v = this.arbolDeVendedores.Buscar(new Vendedor(cedulaVendedor)).getDato();
-		if(v.getHashPropiedades().esVacio()){
-			return new Retorno(Resultado.ERROR_2);
-		}
-		//si no listar propiedades
-		System.out.println("es vacio " + v.getCedula() + v.getHashPropiedades().esVacio());
-		String retorno = "";
-		retorno = v.listarPropiedadesDelVendedor();
-		System.out.println();
-		return new Retorno(Resultado.OK, retorno);
-	}
-
-	
-
-	
 }
