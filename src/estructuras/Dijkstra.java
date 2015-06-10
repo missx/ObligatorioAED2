@@ -1,74 +1,98 @@
 package estructuras;
 
-import java.util.ArrayList;
-
 public class Dijkstra {
 
 	static int[] dist;
 	static int[] prec;
 	static boolean[] visited;
+	static int DESTINO;
 	static int ORIGEN;
+	static GrafoMatriz grafo;
+
 	
-	/*
-	 * 
-	 */
-	public static int[] dijkstra(GrafoMatriz Grafo, int origen) {
-		dist = new int[Grafo.getSize()]; // distancia mas corta desde origen
-		prec = new int[Grafo.getSize()]; // nodo precedente en el camino
-		visited = new boolean[Grafo.getSize()]; // inicialmente todos false
+	public void dijkstra(GrafoMatriz gr, int origen, int fin) {
+		grafo = gr;
+		dist = new int[gr.getSize()]; // distancia mas corta desde origen
+		prec = new int[gr.getSize()]; // nodo precedente en el camino
+		visited = new boolean[gr.getSize()]; // inicialmente todos false
 		ORIGEN = origen;
+		DESTINO = fin;
 		
-		//ponemos todos con el max valor
+		//ponemos todos con el max valor y los visitados en false
 		for (int i = 0; i < dist.length; i++) {
 			dist[i] = Integer.MAX_VALUE;
+			visited[i] = false;
 		}
+		
 		dist[origen] = 0; //distancia desde origen a origen es 0
+		visited[origen] = true; //el origen como true ya que fue visitado
+		
+		dijkstra(origen);
+		
+	}
+	
+	public void dijkstra(int punto){
+		boolean flag = true;
+		//Busco vertices adyacentes del origen
+		Lista l = obtenerAdyacentes(punto);
+		
+		//Obtengo el vertice de menor distancia
+		int vmd = obtenerVerticeMenorDistancia(l, punto);
+		
+		int peso = grafo.devolverDistancia(vmd, punto);
+		
+		visited[vmd] = true;
+		prec[vmd] = punto;
+		dist[vmd] = dist[punto] + peso;
+		
+		if(vmd == DESTINO){
+			flag = false;
+		}
+		if(flag){
+			System.out.println(vmd);
+			dijkstra(vmd);
+		}
+	}
 
-		for (int i = 0; i < dist.length; i++) {
-			int prox = minVertice(dist, visited); //se busca el de menor dist entre los dos
-			visited[prox] = true;
-
-			// El camino mas corto a prox es dist[prox] y via prec[prox]
-			System.out.println("prox " + prox);
-			ArrayList ady = Grafo.obtenerVerticesAdyacentes(prox).devolverTodosEnArrayList();
-			for (int j = 0; j < ady.size(); j++) {
-				int vert = (int)ady.get(j);
-				int d = dist[prox] + Grafo.devolverDistancia(prox, vert);
-				if (dist[vert] > d) {
-					dist[vert] = d;
-					prec[vert] = prox;
+	private Lista obtenerAdyacentes(int punto){
+		return grafo.obtenerVerticesAdyacentes(punto);
+	}
+	
+	private int obtenerVerticeMenorDistancia(Lista l, int actual){
+		int verticeMenor = 0;
+		int vertice = 0;
+		int pesoAux = 0;
+		int menorPeso = Integer.MAX_VALUE;
+		NodoLista aux = l.getInicio();
+		
+		while(aux != null){
+			vertice = (Integer)aux.getDato();
+			if(vertice != DESTINO){
+				if(!visited[vertice]){
+					pesoAux = grafo.devolverDistancia(vertice, actual);
+					if(pesoAux < menorPeso){
+						menorPeso = pesoAux;
+						verticeMenor = vertice;
+					}
+					aux = aux.getSig();
+				}
+				else{
+					aux = aux.getSig();
 				}
 			}
-		}
-		return prec; // (ignorar prec[s]==0!)
-	}
-
-	/*
-	 * 
-	 */
-	private static int minVertice(int[] dist, boolean[] v) {
-		int x = Integer.MAX_VALUE;
-		int y = -1; // grafo no conexo, o no tiene vertices no visitados
-		for (int i = 0; i < dist.length; i++) {
-			if (!v[i] && dist[i] < x) {
-				y = i;
-				x = dist[i];
+			else{
+				verticeMenor = vertice;
+				aux = null;
 			}
 		}
-		return y;
-	}
-
-	/*
-	 * 
-	 */
-	public static void imprimirCamino(GrafoMatriz Grafo) {
-		ArrayList camino = new ArrayList();
-		int x = prec.length;
-		while (x != ORIGEN) {
-			camino.add(0, prec[x]);
-			x = prec[x];
+		return verticeMenor;
+	}	
+	
+	public void imprimirCamino(GrafoMatriz Grafo) {
+		int i = 0;
+		while (i < dist.length) {
+			System.out.println(dist[i] + " - " + prec[i]);
+			i += 1;
 		}
-		camino.add(0, prec[ORIGEN]);
-		System.out.println(camino);
 	}
 }
