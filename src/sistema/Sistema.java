@@ -149,10 +149,8 @@ public class Sistema implements ISistema {
 		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion, vendAsignado.getCedula());
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
-		//se asigna al hash de propiedades del sistema
-		this.tableHashProp.insertar(p);
 		
-		//se agrega la propiedad al hash general de propiedades
+		//se asigna al hash de propiedades del sistema
 		this.tableHashProp.insertar(p);
 		
 		//se le asigna la propiedad al vendedor
