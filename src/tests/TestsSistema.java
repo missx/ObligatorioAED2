@@ -478,20 +478,20 @@ public class TestsSistema {
 		//verificamos que v1 esta al frent de la queue
 		assertEquals(sis.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
 		
-		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234", ((Vendedor)sis.queueDeVendedores.front()).getCedula());
 		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
 		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
 		
 		//verificamos que el oto vendedor esté al frente de la queue ahora
 		assertEquals(sis.queueDeVendedores.front(), new Vendedor("4.702.156-9"));
 		
-		Propiedad p1 = new Propiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
+		Propiedad p1 = new Propiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234", ((Vendedor)sis.queueDeVendedores.front()).getCedula());
 		Retorno retRegistroProp1 = sis.registrarPropiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
 		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado);
 		
 		//verificamos que cada vendedor tenga una
-		assertEquals(false, sis.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
-		assertEquals(false, sis.arbolDeVendedores.Buscar(v1).getDato().getHashPropiedades().pertenece("Avda Italia 1234"));
+		assertEquals(true, sis.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
+		assertEquals(true, sis.arbolDeVendedores.Buscar(v1).getDato().getHashPropiedades().pertenece("Avda Italia 1234"));
 	}
 	
 	@Test

@@ -6,6 +6,7 @@ public class Propiedad extends Punto{
 	
 	private TipoPropiedad tipo;
 	private String direccion;
+	private String cedulaVendedor;
 	
 	
 	public TipoPropiedad getTipo() {
@@ -20,11 +21,18 @@ public class Propiedad extends Punto{
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
+	public String getCedulaVendedor() {
+		return cedulaVendedor;
+	}
+	public void setCedulaVendedor(String cedulaVendedor) {
+		this.cedulaVendedor = cedulaVendedor;
+	}
 	
-	public Propiedad(Double coordX, Double coordY, TipoPropiedad tipo, String dir){
+	public Propiedad(Double coordX, Double coordY, TipoPropiedad tipo, String dir, String ciVendedor){
 		super(coordX, coordY);
 		this.direccion = dir;
 		this.tipo = tipo;
+		this.cedulaVendedor = ciVendedor;
 	}
 	
 	public String listadoDeCoordenadas(){
@@ -32,6 +40,7 @@ public class Propiedad extends Punto{
 		System.out.println("listado 1 " + listado);
 		return listado;
 	}
+	
 	
 	
 	

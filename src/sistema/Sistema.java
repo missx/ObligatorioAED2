@@ -2,6 +2,7 @@ package sistema;
 
 import dominio.Esquina;
 import dominio.Propiedad;
+import dominio.Punto;
 import dominio.PuntoDeInteres;
 import dominio.Vendedor;
 import estructuras.ArbolB;
@@ -143,15 +144,15 @@ public class Sistema implements ISistema {
 		if(tableHashProp.pertenece(direccion)){
 			return new Retorno(Resultado.ERROR_5);
 		}
-		//Se agrega la propiedad al Hash general
-		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion);
+		//Se busca vendedor asignado y se agrega la propiedad al Hash general
+		Vendedor vendAsignado = (Vendedor)this.queueDeVendedores.front();
+		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion, vendAsignado.getCedula());
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
 		//se asigna al hash de propiedades del sistema
 		this.tableHashProp.insertar(p);
 		
-		//se le asigna al vendedor
-		Vendedor vendAsignado = (Vendedor)this.queueDeVendedores.front();
+		//se le asigna la propiedad al vendedor
 		System.out.println("nombre vendedor asignado " +vendAsignado.getNombre());
 		vendAsignado.getHashPropiedades().insertar(p);
 		//lo saco del frente de la queue y lo mando al final
@@ -192,9 +193,16 @@ public class Sistema implements ISistema {
 			int pos = tableHash.devolverPosActual(coordX, coordY);
 			matrizMapa.eliminarVertice(pos);
 			
+			//Obtengo el punto para ver si es propiedad
+			Punto pto = tableHash.getTabla()[pos];
+			if(pto instanceof Propiedad){ //si propiedad, lo elimino de la tabla del vendedor
+				String ci = ((Propiedad) pto).getCedulaVendedor();
+				Vendedor v = this.arbolDeVendedores.Buscar(new Vendedor(ci)).getDato();
+				v.getHashPropiedades().eliminarPropiedad(((Propiedad) pto).getDireccion());
+			}
 			//Elimino objeto del hash
 			tableHash.eliminarPunto(pos);
-			//TODO si es propiedad eliminarla del vendedor, capaz que podemos tener su ci en la prop como atrib
+			
 		}
 		else{
 			return new Retorno(Resultado.ERROR_1);

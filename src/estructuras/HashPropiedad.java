@@ -154,4 +154,14 @@ public class HashPropiedad {
 		return null;
 	}
 	
+	/*
+	 * Elimina propiedad del hash. Setea a null el dato
+	 * Usado queda como true
+	 * @param String direccion
+	 */
+	public void eliminarPropiedad(String direccion){
+		int key = this.h(direccion);
+		this.tabla[key].setDato(null);
+	}
+	
 }
