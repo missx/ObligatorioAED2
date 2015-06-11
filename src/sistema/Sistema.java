@@ -194,6 +194,7 @@ public class Sistema implements ISistema {
 			
 			//Elimino objeto del hash
 			tableHash.eliminarPunto(pos);
+			//TODO si es propiedad eliminarla del vendedor, capaz que podemos tener su ci en la prop como atrib
 		}
 		else{
 			return new Retorno(Resultado.ERROR_1);
@@ -297,6 +298,7 @@ public class Sistema implements ISistema {
 			//se pudo eliminar exitosamente
 			this.arbolDeVendedores.eliminar(new Vendedor(cedula));
 			this.queueDeVendedores.borrarElemento(new Vendedor(cedula));
+			//TODO asignar sus props
 			return new Retorno(Resultado.OK);
 		}
 	}
