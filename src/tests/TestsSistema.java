@@ -842,7 +842,8 @@ public class TestsSistema {
 		ret = s.registrarEsquina(-34.9058, -56.1927);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		
-		s.eliminarPuntoMapa(-34.9058, -56.1927);
+		ret = s.eliminarPuntoMapa(-34.9058, -56.1927);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		
 		ret = s.registrarPuntoInteres(-34.9033, -56.2041, Rubro.CAJERO, "hola");
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
@@ -867,7 +868,44 @@ public class TestsSistema {
 		
 	}
 
-	
+	@Test
+	public void testEliminarPuntoDelMapaQueEsPropiedad(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(3);
+		
+		//Crear datos
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		
+		//propiedad1
+		Double coordX1 = 34.764167;
+		Double coordY1 = 56.213889;
+		TipoPropiedad tipo1 = TipoPropiedad.APARTAMENTO;
+		String dir1 = "18 de Julio 1234";
+						
+		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+			
+		Retorno retRegistroProp = s.registrarPropiedad(coordX1, coordY1, tipo1, dir1);
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado); //Deberia retornar OK
+		
+		//verificamos que no exista la propiedad en ninguno de los hash donde estaba
+		assertEquals(true, s.tableHashProp.pertenece(dir1));
+		assertEquals(true, s.tableHash.pertenece(coordX1, coordY1));
+		assertEquals(true, ((Vendedor)s.arbolDeVendedores.Buscar(new Vendedor(cedula)).getDato()).getHashPropiedades().pertenece(dir1));
+		
+		Retorno retEliminacionProp = s.eliminarPuntoMapa(coordX1, coordY1);
+		assertEquals(Retorno.Resultado.OK, retEliminacionProp.resultado); //Deberia retornar OK
+		
+		//verificamos que no exista la propiedad en ninguno de los hash donde estaba
+		assertEquals(false, s.tableHashProp.pertenece(dir1));
+		assertEquals(false, s.tableHash.pertenece(coordX1, coordY1));
+		assertEquals(false, ((Vendedor)s.arbolDeVendedores.Buscar(new Vendedor(cedula)).getDato()).getHashPropiedades().pertenece(dir1));
+		
+	}
 	
 	
 	/********************MOSTRAR MAPA**********************************/

@@ -144,12 +144,15 @@ public class Sistema implements ISistema {
 		if(tableHashProp.pertenece(direccion)){
 			return new Retorno(Resultado.ERROR_5);
 		}
-		//Se busca vendedor asignado y se agrega la propiedad al Hash general
+		//Se busca vendedor asignado y se agrega la propiedad al Hash general de puntos
 		Vendedor vendAsignado = (Vendedor)this.queueDeVendedores.front();
 		Propiedad p = new Propiedad(coordX, coordY, tipoPropiedad, direccion, vendAsignado.getCedula());
 		int pos = tableHash.insertar(p);
 		matrizMapa.agregarVertice(pos);
 		//se asigna al hash de propiedades del sistema
+		this.tableHashProp.insertar(p);
+		
+		//se agrega la propiedad al hash general de propiedades
 		this.tableHashProp.insertar(p);
 		
 		//se le asigna la propiedad al vendedor
@@ -199,16 +202,19 @@ public class Sistema implements ISistema {
 				String ci = ((Propiedad) pto).getCedulaVendedor();
 				Vendedor v = this.arbolDeVendedores.Buscar(new Vendedor(ci)).getDato();
 				v.getHashPropiedades().eliminarPropiedad(((Propiedad) pto).getDireccion());
+				
+				//Elimino objeto del hash de propiedades general
+				this.tableHashProp.eliminarPropiedad((((Propiedad) pto).getDireccion()));
 			}
-			//Elimino objeto del hash
+			//Elimino objeto del hash de puntos
 			tableHash.eliminarPunto(pos);
-			
+			return new Retorno(Resultado.OK);
 		}
 		else{
 			return new Retorno(Resultado.ERROR_1);
 		}
 		
-		return new Retorno();
+		
 	}
 
 	
