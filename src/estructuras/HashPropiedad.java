@@ -140,7 +140,7 @@ public class HashPropiedad {
 	public Propiedad devolverPropiedad(String direccion){
 		int key = h(direccion);
 		int recorridos = 1;
-		while(recorridos < this.tamañoTabla){			
+		while(recorridos <= this.tamañoTabla){			
 			if(this.tabla[key].getDato() != null && this.tabla[key].getDato().getDireccion().equals(direccion)){
 				return this.tabla[key].getDato();
 			}else{

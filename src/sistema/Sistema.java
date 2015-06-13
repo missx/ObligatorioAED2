@@ -306,10 +306,33 @@ public class Sistema implements ISistema {
 		//el vendedor no está ingresado
 		if(!this.arbolDeVendedores.existeElemento(new Vendedor(cedula))){
 			return new Retorno(Resultado.ERROR_1);
-		}else{
-			//se pudo eliminar exitosamente
-			this.arbolDeVendedores.eliminar(new Vendedor(cedula));
-			this.queueDeVendedores.borrarElemento(new Vendedor(cedula));
+		}else{//se pudo eliminar exitosamente
+			Vendedor vendedorAEliminar = new Vendedor(cedula);
+			//ver si tiene propiedades
+			if(!this.arbolDeVendedores.Buscar(vendedorAEliminar).getDato().getHashPropiedades().esVacio()){
+				//asignar propiedades a otros vendedores
+				int recorridos = 1;
+				int key = 0;
+				while(recorridos <= this.tableHash.getTamañoTabla()){			
+					if(this.tableHashProp.getTabla()[key].getDato() != null &&
+							this.tableHashProp.getTabla()[key].getDato().getCedulaVendedor().equals(cedula)){
+						//asignamos a primer vendedor de la queue y lo insertamos al final
+						Vendedor vNuevo = (Vendedor)this.queueDeVendedores.dequeue();
+						vNuevo.getHashPropiedades().insertar(this.tableHashProp.getTabla()[key].getDato());
+						//cambiamos la ci en la prop
+						this.tableHashProp.getTabla()[key].getDato().setCedulaVendedor(vNuevo.getCedula());
+						this.queueDeVendedores.enqueue(vNuevo);
+					}else{
+						key++;
+						recorridos++;
+						if(key == this.tableHashProp.getTamañoTabla()){
+							key = 0;
+						}
+					}
+				}				
+			}
+			this.arbolDeVendedores.eliminar(vendedorAEliminar);
+			this.queueDeVendedores.borrarElemento(vendedorAEliminar);
 			//TODO asignar sus props
 			return new Retorno(Resultado.OK);
 		}
