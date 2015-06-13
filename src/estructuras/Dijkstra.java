@@ -2,8 +2,8 @@ package estructuras;
 
 public class Dijkstra {
 
-	static int[] dist;
-	static int[] prec;
+	public static int[] dist;
+	public static int[] prec;
 	static boolean[] visited;
 	static int DESTINO;
 	static int ORIGEN;

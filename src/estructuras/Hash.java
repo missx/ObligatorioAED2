@@ -3,6 +3,7 @@ package estructuras;
 import sistema.Enumerados.Rubro;
 import dominio.Punto;
 import dominio.PuntoDeInteres;
+import dominio.Vendedor;
 
 public class Hash {
 
@@ -78,24 +79,21 @@ public class Hash {
 					if(!(tabla[pos].getCoordX().equals(0.0) && tabla[pos].getCoordY().equals(0.0))){
 						if(tabla[pos].getCoordX() == coordX && tabla[pos].getCoordY() == coordY){
 							return true;
-						}
-						else{
+						}else{
 							pos += 1;
 							if(pos == tabla.length){
 								pos = 0;
 							}
 						}
+					}else{
+						pos += 1;
+						if(pos == tabla.length){
+							pos = 0;
+						}
 					}
-					else{
-						flag = false;
-					}
-				}
-				else{
+				}else{
 					flag = false;
 				}
-			}
-			else{
-				flag = false;
 			}
 		}
 		return false;
@@ -158,6 +156,29 @@ public class Hash {
 			}
 		}
 		return false;
+	}
+	
+	/*
+	 * 
+	 */
+	public Lista devolverKeysDeRubro(Rubro rubro){
+		Lista keys = new Lista();
+		int recorridos = 1;
+		int key = 0;
+		while(recorridos <= tamañoTabla){			
+			if(this.tabla[key] != null && this.tabla[key] instanceof PuntoDeInteres &&
+					((PuntoDeInteres)this.tabla[key]).getRubro().equals(rubro)){
+				//agregamos al vector
+				keys.insertarInicio(key);
+			}else{
+				key++;
+				recorridos++;
+				if(key == this.tamañoTabla){
+					key = 0;
+				}
+			}
+		}	
+		return keys;
 	}
 	
 	

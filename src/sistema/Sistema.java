@@ -6,10 +6,12 @@ import dominio.Punto;
 import dominio.PuntoDeInteres;
 import dominio.Vendedor;
 import estructuras.ArbolB;
+import estructuras.Dijkstra;
 import estructuras.GrafoMatriz;
 import estructuras.Hash;
 import estructuras.HashPropiedad;
 import estructuras.Lista;
+import estructuras.NodoLista;
 import estructuras.Queue;
 import interfaces.ISistema;
 import sistema.Enumerados.Rubro;
@@ -211,12 +213,8 @@ public class Sistema implements ISistema {
 		else{
 			return new Retorno(Resultado.ERROR_1);
 		}
-		
-		
 	}
 
-	
-	
 	
 	//**********************************REGISTRAR/ELIMINAR TRAMOS**********************************************
 	
@@ -336,7 +334,7 @@ public class Sistema implements ISistema {
 					}
 				}
 			}				
-			}
+		}
 		this.arbolDeVendedores.eliminar(vendedorAEliminar);
 		this.queueDeVendedores.borrarElemento(vendedorAEliminar);
 		//TODO asignar sus props
@@ -381,8 +379,36 @@ public class Sistema implements ISistema {
 		if(!verticesAdyascentes.chequearSiAlMenosUnoDeRubro(rubroPuntoInteres)){
 			return new Retorno(Resultado.ERROR_3);
 		}
-
-		return new Retorno(Resultado.OK);
+		//se puede calcular el punto de interes mas cercano
+		
+		//buscar las keys de origen y destino
+		int keyOrig = this.tableHash.h(p.getCoordX(), p.getCoordY());
+		Lista keysDestino = this.tableHash.devolverKeysDeRubro(rubroPuntoInteres); //creamos lista de keys
+		NodoLista inicio = keysDestino.getInicio(); //tomamos el inicio
+		int keyDelCaminoMasCorto = 0;
+		int caminoMasCortoARubro = Integer.MAX_VALUE;
+		int[] precedentes;
+		
+		while(inicio != null){ //recorre la lista buscando el rubro más cercano
+			Dijkstra caminoMasCorto = new Dijkstra();
+			caminoMasCorto.dijkstra(this.matrizMapa, keyOrig, (int)inicio.getDato());
+			
+			if(caminoMasCorto.dist.length < caminoMasCortoARubro){
+				caminoMasCortoARubro = caminoMasCorto.dist.length; 
+				keyDelCaminoMasCorto = (int)inicio.getDato();
+			}
+			inicio = inicio.getSig();
+		}
+		
+		//hacemos el dijkstra con el mas cercano
+		Dijkstra cercano = new Dijkstra();
+		cercano.dijkstra(this.matrizMapa, keyOrig, keyDelCaminoMasCorto);
+		precedentes = cercano.prec;
+		String resultado = "";
+		for(int i : precedentes){
+			resultado += this.tableHash.getTabla()[i].getCoordX() + ";" + this.tableHash.getTabla()[i].getCoordY() + "|";
+		}
+		return new Retorno(Resultado.OK, resultado);
 	}
 
 	@Override
