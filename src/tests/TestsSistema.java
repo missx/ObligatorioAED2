@@ -218,6 +218,46 @@ public class TestsSistema {
 		assertEquals(sis.arbolDeVendedores.cantNodos(), 2);
 		assertEquals(sis.queueDeVendedores.cantNodos(), 2);
 	}
+	
+	@Test
+	public void testEliminarVendedorConPropiedad(){
+		Sistema sis = new Sistema();
+		sis.inicializarSistema(10);
+		//Datos de la prueba
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+				
+		//Estimulo
+		Retorno ret = sis.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = sis.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234", ((Vendedor)sis.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp = sis.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		//verificar cantidad de vendedores
+		assertEquals(sis.arbolDeVendedores.cantNodos(), 2);
+		assertEquals(sis.queueDeVendedores.cantNodos(), 2);
+		
+		Retorno retEliminar = sis.eliminarVendedor("3.702.156-9");
+		assertEquals(Retorno.Resultado.OK, retEliminar.resultado);
+		
+		//verificar cantidad de vendedores
+		assertEquals(sis.arbolDeVendedores.cantNodos(), 1);
+		assertEquals(sis.queueDeVendedores.cantNodos(), 1);
+		
+		//verificar que el vendedor restante tiene la propiedad
+		assertEquals(true, sis.arbolDeVendedores.Buscar(new Vendedor(cedula1)).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
+	}
 
 	@Test
 	public void testEliminarVendedorCedulaInexistente(){

@@ -30,7 +30,6 @@ public class Queue implements IQueue{
 		NodoLista aux = this.front;
 		this.front = this.front.getSig();
 		aux.setSig(null);
-		aux = null; //ver si esto esta bien
 		if(this.front == null){
 			this.back = null;
 		}

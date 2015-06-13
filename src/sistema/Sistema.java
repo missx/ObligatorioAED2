@@ -317,7 +317,8 @@ public class Sistema implements ISistema {
 					if(this.tableHashProp.getTabla()[key].getDato() != null &&
 							this.tableHashProp.getTabla()[key].getDato().getCedulaVendedor().equals(cedula)){
 						//asignamos a primer vendedor de la queue y lo insertamos al final
-						Vendedor vNuevo = (Vendedor)this.queueDeVendedores.dequeue();
+						Vendedor vNuevo = (Vendedor)this.queueDeVendedores.front();
+						this.queueDeVendedores.dequeue();
 						vNuevo.getHashPropiedades().insertar(this.tableHashProp.getTabla()[key].getDato());
 						//cambiamos la ci en la prop
 						this.tableHashProp.getTabla()[key].getDato().setCedulaVendedor(vNuevo.getCedula());
