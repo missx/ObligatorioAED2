@@ -8,13 +8,12 @@ public class Dijkstra {
 	static int DESTINO;
 	static int ORIGEN;
 	static GrafoMatriz grafo;
-
 	
 	public void dijkstra(GrafoMatriz gr, int origen, int fin) {
 		grafo = gr;
 		dist = new int[gr.getSize()]; // distancia mas corta desde origen
 		prec = new int[gr.getSize()]; // nodo precedente en el camino
-		visited = new boolean[gr.getSize()]; // inicialmente todos false
+		visited = new boolean[gr.getSize()]; //Nodo que ya fue visitado
 		ORIGEN = origen;
 		DESTINO = fin;
 		
@@ -28,7 +27,6 @@ public class Dijkstra {
 		visited[origen] = true; //el origen como true ya que fue visitado
 		
 		dijkstra(origen);
-		
 	}
 	
 	public void dijkstra(int punto){
@@ -67,22 +65,21 @@ public class Dijkstra {
 		
 		while(aux != null){
 			vertice = (Integer)aux.getDato();
-			if(vertice != DESTINO){
-				if(!visited[vertice]){
-					pesoAux = grafo.devolverDistancia(vertice, actual);
-					if(pesoAux < menorPeso){
-						menorPeso = pesoAux;
-						verticeMenor = vertice;
-					}
-					aux = aux.getSig();
+			if(!visited[vertice]){
+				prec[vertice] = actual;
+				pesoAux = grafo.devolverDistancia(vertice, actual);
+				if(dist[actual] + pesoAux > dist[vertice]){
+					return vertice;
 				}
-				else{
-					aux = aux.getSig();
+				dist[vertice] = dist[actual] + pesoAux;
+				if(pesoAux < menorPeso){
+					menorPeso = pesoAux;
+					verticeMenor = vertice;
 				}
+				aux = aux.getSig();
 			}
 			else{
-				verticeMenor = vertice;
-				aux = null;
+				aux = aux.getSig();
 			}
 		}
 		return verticeMenor;

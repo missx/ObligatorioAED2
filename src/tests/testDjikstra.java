@@ -43,7 +43,7 @@ public class testDjikstra {
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarTramo(2.0, 2.0, 6.0, 6.0, 2);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
-		ret = s.registrarTramo(2.0, 2.0, 4.0, 4.0, 4);
+		ret = s.registrarTramo(2.0, 2.0, 4.0, 4.0, 1);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarTramo(2.0, 2.0, 5.0, 5.0, 9);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
@@ -70,20 +70,21 @@ public class testDjikstra {
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		
 		int keyOrig = s.tableHash.devolverPosActual(7.0,7.0);
-		int keyFin = s.tableHash.devolverPosActual(1.0, 1.0);
+		int keyFin = s.tableHash.devolverPosActual(2.0, 2.0);
 		
 		s.tableHash.imprimirLista();
 		
 		Dijkstra d = new Dijkstra();
 		d.dijkstra(s.matrizMapa, keyOrig, keyFin);
 		d.imprimirCamino(s.matrizMapa);
+		System.out.println(" ");
 	}
 	
 	@Test
 	public void testCaminoMasCorto2(){
 		Sistema s = new Sistema();
 		s.inicializarSistema(8);
-		
+	
 		Retorno ret = s.registrarEsquina(1.0,1.0);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarPuntoInteres(2.0, 2.0, Rubro.CAJERO, "hola");
@@ -96,7 +97,7 @@ public class testDjikstra {
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarPuntoInteres(6.0, 6.0, Rubro.CAJERO, "hola");
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
-		
+
 		ret = s.registrarTramo(1.0, 1.0, 2.0, 2.0, 1);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarTramo(1.0, 1.0, 5.0, 5.0, 3);
@@ -124,5 +125,7 @@ public class testDjikstra {
 		Dijkstra d = new Dijkstra();
 		d.dijkstra(s.matrizMapa, keyOrig, keyFin);
 		d.imprimirCamino(s.matrizMapa);
+		System.out.println(" ");
 	}
+	
 }

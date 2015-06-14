@@ -67,7 +67,6 @@ public class Vendedor {
 	
 	public String listarPropiedadesDelVendedor(){
 		String listado = "";
-		System.out.println("im here");
 		for(int i = 0; i < this.hashPropiedades.getTamañoTabla(); i++){
 			NodoHashPropiedad[] tabla = this.hashPropiedades.getTabla();
 			if(tabla[i].getDato() != null){
