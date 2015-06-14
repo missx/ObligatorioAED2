@@ -116,7 +116,7 @@ public class GrafoMatriz implements IGrafo{
 	@Override
 	public Lista obtenerVerticesAdyacentes(int v) {
 		Lista l = new Lista();
-		for(int i=1; i<=this.cantNodos; i++){
+		for(int i=0; i<this.cantNodos; i++){
 			if(this.sonAdyacentes(v, i)){
 				l.insertarInicio(i);
 			}

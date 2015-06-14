@@ -440,6 +440,9 @@ public class TestsSistema {
 	}
 	
 		
+	
+	//*******************REGISTRO DE PUNTOS VARIADOS************************
+	
 	@Test
 	public void testRegistroPuntosTipoVariadoCorrectamente(){
 		ISistema s = new Sistema();
@@ -866,7 +869,6 @@ public class TestsSistema {
 
 	
 	
-	
 	/********************ELIMINAR PUNTO DEL MAPA***********************/
 	
 	@Test
@@ -946,6 +948,7 @@ public class TestsSistema {
 		assertEquals(false, ((Vendedor)s.arbolDeVendedores.Buscar(new Vendedor(cedula)).getDato()).getHashPropiedades().pertenece(dir1));
 		
 	}
+	
 	
 	
 	/********************MOSTRAR MAPA**********************************/
@@ -1049,5 +1052,235 @@ public class TestsSistema {
 		//Estimulo
 		Retorno retList = s.listadoPropiedades("3.702.156-9");
 		assertEquals(Retorno.Resultado.ERROR_2, retList.resultado);
+	}
+
+
+	
+	
+	//********************PUNTO MÁS CERCANO*****************************
+	
+	@Test
+	public void testPuntoMasCercano(){
+		
+	}
+	
+	@Test
+	public void testPuntoMasCercanoDireccionInexistente(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
+		
+		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = s.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp = s.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		//verificamos que el oto vendedor esté al frente de la queue ahora
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("4.702.156-9"));
+		
+		Propiedad p1 = new Propiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp1 = s.registrarPropiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado);
+		
+		//verificamos que cada vendedor tenga una
+		assertEquals(true, s.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
+		assertEquals(true, s.arbolDeVendedores.Buscar(v1).getDato().getHashPropiedades().pertenece("Avda Italia 1234"));
+
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,34.851944, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.puntoInteresMasCercano("dirección1", Rubro.CAJERO);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+	}
+	
+	@Test
+	public void testPuntoMasCercanoRubroInexistente(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
+		
+		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = s.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp = s.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		//verificamos que el oto vendedor esté al frente de la queue ahora
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("4.702.156-9"));
+		
+		Propiedad p1 = new Propiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp1 = s.registrarPropiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado);
+		
+		//verificamos que cada vendedor tenga una
+		assertEquals(true, s.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
+		assertEquals(true, s.arbolDeVendedores.Buscar(v1).getDato().getHashPropiedades().pertenece("Avda Italia 1234"));
+
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,34.851944, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.puntoInteresMasCercano("Avda Italia 1234", Rubro.CAJERO);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+	}
+	
+	@Test
+	public void testPuntoMasCercanoInalcanzable(){
+		
+	}
+	
+	
+
+	
+	//********************CAMINO MÍNIMO******************************
+	
+	@Test
+	public void testCaminoMinimo(){
+		
+	}
+	
+	@Test
+	public void testCaminoMinimoDireccionInexistente(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
+		
+		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = s.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp = s.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		//verificamos que el oto vendedor esté al frente de la queue ahora
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("4.702.156-9"));
+		
+		Propiedad p1 = new Propiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp1 = s.registrarPropiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado);
+		
+		//verificamos que cada vendedor tenga una
+		assertEquals(true, s.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
+		assertEquals(true, s.arbolDeVendedores.Buscar(v1).getDato().getHashPropiedades().pertenece("Avda Italia 1234"));
+
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,34.851944, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.caminoMinimo("direccion1", 34.764167, 56.213889);
+		assertEquals(Retorno.Resultado.ERROR_1, ret.resultado);
+	}
+	
+	@Test
+	public void testCaminoMinimoCoordenadasInexistentes(){
+		Sistema s = new Sistema();
+		s.inicializarSistema(5);
+		
+		//V1
+		String cedula = "3.702.156-9";
+		String nombre = "Omar";
+		String email = "omar@gmail.com";
+		String celular = "098123456";
+		Vendedor v = new Vendedor(cedula, nombre, email, celular);
+		//V2
+		String cedula1 = "4.702.156-9";
+		String nombre1 = "Luis";
+		String email1 = "luis@gmail.com";
+		String celular1 = "099548554";
+		Vendedor v1 = new Vendedor(cedula1, nombre1, email1, celular1);
+		
+		Retorno ret = s.registrarVendedor(cedula, nombre, email, celular);
+		assertEquals(Retorno.Resultado.OK, ret.resultado);	//Deberia retornar OK
+		Retorno ret1 = s.registrarVendedor(cedula1, nombre1, email1, celular1);
+		assertEquals(Retorno.Resultado.OK, ret1.resultado);	//Deberia retornar OK
+		
+		//verificamos que v1 esta al frent de la queue
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("3.702.156-9"));
+		
+		Propiedad p = new Propiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp = s.registrarPropiedad(34.764167, 56.213889, TipoPropiedad.APARTAMENTO, "18 de Julio 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp.resultado);
+		
+		//verificamos que el oto vendedor esté al frente de la queue ahora
+		assertEquals(s.queueDeVendedores.front(), new Vendedor("4.702.156-9"));
+		
+		Propiedad p1 = new Propiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234", ((Vendedor)s.queueDeVendedores.front()).getCedula());
+		Retorno retRegistroProp1 = s.registrarPropiedad(12.444167, 43.243289, TipoPropiedad.CASA, "Avda Italia 1234");
+		assertEquals(Retorno.Resultado.OK, retRegistroProp1.resultado);
+		
+		//verificamos que cada vendedor tenga una
+		assertEquals(true, s.arbolDeVendedores.Buscar(v).getDato().getHashPropiedades().pertenece("18 de Julio 1234"));
+		assertEquals(true, s.arbolDeVendedores.Buscar(v1).getDato().getHashPropiedades().pertenece("Avda Italia 1234"));
+
+		ret = s.registrarPuntoInteres(-34.905, -56.190, Rubro.CENTRO_COMERCIAL, "Nuevo Centro");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		ret = s.registrarPuntoInteres(34.851944,34.851944, Rubro.FARMACIA, "Cruz Roja");
+		assertEquals(Retorno.Resultado.OK, ret.resultado);
+		
+		ret = s.caminoMinimo("Avda Italia 1234", 34.1111, 56.1111);
+		assertEquals(Retorno.Resultado.ERROR_2, ret.resultado);
+	}
+	
+	@Test
+	public void testCaminoMinimoNoHayCamino(){
+		
 	}
 }

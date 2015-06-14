@@ -25,7 +25,7 @@ public class Sistema implements ISistema {
 	public ArbolB arbolDeVendedores;
 	public GrafoMatriz matrizMapa;
 	public Hash tableHash;
-	public HashPropiedad tableHashProp; //xa que necesitamos el hash este aca?
+	public HashPropiedad tableHashProp;
 
 	
 	//**************************INICIALIZAR/DESTRUIR SISTEMA ******************************************************
@@ -165,7 +165,8 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 
-
+	//PRE: El vendedor existe. Tiene al menos una propiedad. 
+	//POST: Retorna un listado que es un string con las coordenadas de todas las propiedades de las que se encarga el vendedor
 	@Override
 	public Retorno listadoPropiedades(String cedulaVendedor) {
 		//si el vendedor no existe
@@ -249,6 +250,8 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 
+	//PRE: Existen ambas coordenadas, i y f. Existe un tramo desde las coordenadas i a las f.
+	//POST: Elimina el tramo existente desde las coordenadas de inicio hasta las de fin. 
 	@Override
 	public Retorno eliminarTramo(double coordXi, double coordYi, double coordXf, double coordYf) {
 		if(!tableHash.pertenece(coordXi, coordYi) || !tableHash.pertenece(coordXf, coordYf)){
@@ -275,6 +278,8 @@ public class Sistema implements ISistema {
 	
 	//***************************************VENDEDOR**********************************************************
 	
+	//PRE: La cédula cedula cumple con el formato N.NNN.NNN-N. El celular celular cumple con el formato 09NNNNNNN. El email email cumple con el formato regular de emails. El vendedor está registrado en el sistema.
+	//POST: El vendedor queda registrado en el sistema.
 	@Override
 	public Retorno registrarVendedor(String cedula, String nombre, String email, String celular) {
 		if(!Utils.verificarCedula(cedula)){
@@ -299,6 +304,8 @@ public class Sistema implements ISistema {
 		}
 	}
 
+	//PRE: El vendedor está registrado en el sistema. Hay al menos un vendedor más para reasignar las propiedades del que se va a eliminar.
+	//POST: Eliminar el vendedor de cédula cedula, reasignando sus propiedades a los demás vendedores existentes
 	@Override
 	public Retorno eliminarVendedor(String cedula) {
 		//el vendedor no está ingresado
@@ -341,7 +348,8 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK);
 	}
 	
-	
+	//PRE: Hay al menos un vendedor registrado
+	//POST: Retorna un listado que es un string con el nombre, cédula y celular de cada vendedor registrado en el sistema
 	@Override
 	public Retorno listadoVendedores() {
 		String resultadoString = this.arbolDeVendedores.mostrarInOrder();
@@ -353,16 +361,20 @@ public class Sistema implements ISistema {
 	
 	//***********************************MAPAS Y CAMINOS*******************************************************
 	
+	//PRE: Hay al menos un punto registrado en el sistema.
+	//POST: Abre una ventana de un navegador que muestra el mapa de google con los puntos que fueron registrados.
 	@Override
 	public Retorno verMapa() {
 		Utils.crearMapa(this.tableHash);
 		return new Retorno(Resultado.OK);
 	}
 
+	//PRE: La dirección direccionPropiedad existe. Hay al menos un punto de interés del rubro rubroPuntoInteres y es alcanzable desde la dirección direccionPropiedad.
+	//POST: Retorna un string listando las coordenadas de cada punto que forman parte del camino hasta el punto de interés más cercano.
 	@Override
 	public Retorno puntoInteresMasCercano(String direccionPropiedad, Rubro rubroPuntoInteres) {
 		//propiedad de esa direccion no existe 
-		if(this.tableHashProp.pertenece(direccionPropiedad)){
+		if(!this.tableHashProp.pertenece(direccionPropiedad)){
 			return new Retorno(Resultado.ERROR_1);
 		}
 		//si no hay ningun punto de interes de ese rubro
@@ -411,6 +423,8 @@ public class Sistema implements ISistema {
 		return new Retorno(Resultado.OK, resultado);
 	}
 
+	//PRE: La dirección direccionPropiedad existe. El punto de interés existe. Hay por lo menos un camino posible.
+	//POST: Retorna un string listando las coordenadas de cada punto que forman parte del camino mínimo hasta ese punto de interés.
 	@Override
 	public Retorno caminoMinimo(String direccionPropiedad, Double coordX, Double coordY) {
 		//esa direccion no esta registrada en el sistema
