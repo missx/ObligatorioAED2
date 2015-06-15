@@ -439,16 +439,19 @@ public class Sistema implements ISistema {
 		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
 		int keyDePropEnTableHash = 0;
 		if(p != null){
-			keyDePropEnTableHash = this.tableHash.h(p.getCoordX(), p.getCoordY());
+			keyDePropEnTableHash = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
 		}
-		int keyDePtoInteresEnTableHash = this.tableHash.h(coordX, coordY);
+		int keyDePtoInteresEnTableHash = this.tableHash.devolverPosActual(coordX, coordY);
 		if(this.matrizMapa.sonAdyacentes(keyDePropEnTableHash, keyDePtoInteresEnTableHash)){
 			return new Retorno(Resultado.ERROR_3);
 		}
-
-		BreadthFirstSearch bfs = new BreadthFirstSearch(this.matrizMapa, keyDePropEnTableHash,this.tableHash);
-	
-		return new Retorno(Resultado.OK);
+		//hay camino
+		Dijkstra camino = new Dijkstra();
+		camino.dijkstra(matrizMapa, keyDePropEnTableHash, keyDePtoInteresEnTableHash);
+		int[] caminoMin = camino.imprimirCamino(matrizMapa);
+		String coordenadas = this.tableHash.mostrarCoordsDeKeysEnVector(caminoMin);
+		System.out.println(coordenadas);
+		return new Retorno(Resultado.OK, coordenadas);
 	}
 
 }

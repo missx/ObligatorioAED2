@@ -36,6 +36,7 @@ public class Hash {
 	 */
 	public int h(double coordX, double coordY){
 		int nr = Math.abs((int)coordX) + Math.abs((int)coordY);
+		System.out.println("key " +nr%tamañoTabla);
 		return nr%tamañoTabla;
 	}
 	
@@ -62,6 +63,7 @@ public class Hash {
 			}
 		}
 		tabla[pos] = p;
+		System.out.println("posicion real " + pos);
 		return pos;
 	}
 	
@@ -181,5 +183,22 @@ public class Hash {
 		return keys;
 	}
 	
+	/*
+	 * Devuelve en un string las coordenadas de las keys que se 
+	 * pasan en el vector
+	 * @param int[] vector
+	 * @return String
+	 */
+	public String mostrarCoordsDeKeysEnVector(int[] vector){
+		String resultado = "";
+		for(int i = 0; i < vector.length; i++){
+			System.out.println("key a buscar" +vector[i]);
+			resultado += this.tabla[vector[i]].getCoordX() + ";" + this.tabla[vector[i]].getCoordY() + "|";
+			if(vector[i + 1] == 0){
+				break;
+			}
+		}
+		return resultado;
+	}
 	
 }
