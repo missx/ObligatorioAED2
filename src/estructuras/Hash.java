@@ -52,6 +52,7 @@ public class Hash {
 		boolean flag = true;
 		while(flag){
 			if(tabla[pos] != null){
+				System.out.println("acuya");
 				if(!(tabla[pos].getCoordX().equals(0.0) && tabla[pos].getCoordY().equals(0.0))){
 					pos += 1;
 					System.out.println("posicion ocupada " +pos);
@@ -168,7 +169,9 @@ public class Hash {
 	}
 	
 	/*
-	 * 
+	 * Devuelve las keys de los puntos que son rubro
+	 * @param Rubro rubro
+	 * @return Lista
 	 */
 	public Lista devolverKeysDeRubro(Rubro rubro){
 		Lista keys = new Lista();
@@ -179,6 +182,8 @@ public class Hash {
 					((PuntoDeInteres)this.tabla[key]).getRubro().equals(rubro)){
 				//agregamos al vector
 				keys.insertarInicio(key);
+				key++;
+				recorridos++;
 			}else{
 				key++;
 				recorridos++;

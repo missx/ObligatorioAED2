@@ -407,8 +407,8 @@ public class TestsSistemav2 {
 		// Cajero mas cercano - P3-P6-P9 costo 15
 		String cajeroEsperado = "-34.910728;-56.193116";
 		Retorno res = sistema.puntoInteresMasCercano("Rio Negro 1188", Rubro.CAJERO);
-		/*assertEquals(Retorno.Resultado.OK, res.resultado);
-		assertEquals(cajeroEsperado, res.valorString.replace(" ", ""));*/
+		assertEquals(Retorno.Resultado.OK, res.resultado);
+		assertEquals(cajeroEsperado, res.valorString.replace(" ", ""));
 	}
 	
 	

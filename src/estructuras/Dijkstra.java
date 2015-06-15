@@ -23,7 +23,6 @@ public class Dijkstra {
 			dist[i] = Integer.MAX_VALUE;
 			visited[i] = false;
 		}
-		System.out.println(gr.getCantNodos());
 		dist[origen] = 0; //distancia desde origen a origen es 0
 		visited[origen] = true; //el origen como true ya que fue visitado
 		
@@ -42,6 +41,7 @@ public class Dijkstra {
 			boolean flag = true;
 			//Busco vertices adyacentes del origen
 			Lista l = obtenerAdyacentes(puntoActual);
+			System.out.println("es vacia " + l.esVacia());
 			
 			NodoLista nodo = l.getInicio();
 			while(nodo != null){

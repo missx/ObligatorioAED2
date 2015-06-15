@@ -386,11 +386,11 @@ public class Sistema implements ISistema {
 		//buscar las keys de origen y destino
 		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
 		int keyATableHash = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
-		System.out.println(keyATableHash);
+		System.out.println("keyATableHash " + keyATableHash);
 		int keyOrig = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
-		System.out.println(keyOrig);
+		System.out.println("keyOrig " +keyOrig);
 		Lista keysDestino = this.tableHash.devolverKeysDeRubro(rubroPuntoInteres); //creamos lista de keys
-		System.out.println(keysDestino);
+		System.out.println("keysDestino " + keysDestino);
 		NodoLista inicio = keysDestino.getInicio(); //tomamos el inicio
 		System.out.println(inicio.getDato());
 		int keyDelCaminoMasCorto = -1;
@@ -414,12 +414,10 @@ public class Sistema implements ISistema {
 		//hacemos el dijkstra con el mas cercano
 		Dijkstra cercano = new Dijkstra();
 		cercano.dijkstra(this.matrizMapa, keyOrig, keyDelCaminoMasCorto);
-		precedentes = cercano.prec;
-		String resultado = "";
-		for(int i : precedentes){
-			resultado += this.tableHash.getTabla()[i].getCoordX() + ";" + this.tableHash.getTabla()[i].getCoordY() + "|";
-		}
-		return new Retorno(Resultado.OK, resultado);
+		int[] caminoMin = cercano.imprimirCamino(matrizMapa);
+		String coordenadas = this.tableHash.mostrarCoordsDeKeysEnVector(caminoMin);
+		System.out.println(coordenadas);
+		return new Retorno(Resultado.OK, coordenadas);
 	}
 
 	//PRE: La dirección direccionPropiedad existe. El punto de interés existe. Hay por lo menos un camino posible.
