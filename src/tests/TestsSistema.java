@@ -1016,7 +1016,6 @@ public class TestsSistema {
 		
 		s.listadoVendedores();
 		Retorno retListado = s.listadoPropiedades(cedula);
-		System.out.println(retListado.valorString);
 		
 		assertEquals(Retorno.Resultado.OK, retListado.resultado.OK);
 		assertEquals(true, retListado.valorString.contains(coordX1.toString()) && retListado.valorString.contains(coordX2.toString()) &&

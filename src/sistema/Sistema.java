@@ -185,7 +185,7 @@ public class Sistema implements ISistema {
 		System.out.println("es vacio " + v.getCedula() + v.getHashPropiedades().esVacio());
 		String retorno = "";
 		retorno = v.listarPropiedadesDelVendedor();
-		System.out.println();
+		retorno = retorno.substring(0, retorno.length() - 1);
 		return new Retorno(Resultado.OK, retorno);
 	}
 	
@@ -354,6 +354,7 @@ public class Sistema implements ISistema {
 	@Override
 	public Retorno listadoVendedores() {
 		String resultadoString = this.arbolDeVendedores.mostrarInOrder();
+		resultadoString = resultadoString.substring(0, resultadoString.length() - 1);
 		return new Retorno(Resultado.OK, resultadoString);
 	}
 
@@ -388,15 +389,11 @@ public class Sistema implements ISistema {
 		if(p != null){
 			keyATableHash = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
 		}
-		/*
-		Lista verticesAdyascentes = this.matrizMapa.obtenerVerticesAdyacentes(keyATableHash);
-		if(!verticesAdyascentes.chequearSiAlMenosUnoDeRubro(rubroPuntoInteres)){
-			return new Retorno(Resultado.ERROR_3);
-		}
-		*/
 		DijkstraRubroCercano drc = new DijkstraRubroCercano(); 
 		drc.dijkstra(matrizMapa, tableHash, rubroPuntoInteres, keyATableHash);
-		
+		if(drc.resultadoFinal == null){
+			return new Retorno(Resultado.ERROR_3); //error3 si no es alcanzable
+		}
 		return new Retorno(Resultado.OK, drc.resultadoFinal);
 	}
 
@@ -426,10 +423,11 @@ public class Sistema implements ISistema {
 		Dijkstra d = new Dijkstra();
 
 		d.dijkstra(matrizMapa, keyDePropEnTableHash, keyDePtoInteresEnTableHash);
-		d.imprimirCamino(matrizMapa, keyDePtoInteresEnTableHash);
-		System.out.println(" ");
-	
-		return new Retorno(Resultado.OK);
+		
+		int[] caminoMin = d.imprimirCamino(matrizMapa);
+		String coordenadas = this.tableHash.mostrarCoordsDeKeysEnVector(caminoMin);
+		System.out.println(coordenadas);
+		return new Retorno(Resultado.OK, coordenadas);
 	}
 
 }

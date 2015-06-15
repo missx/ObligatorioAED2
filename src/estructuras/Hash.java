@@ -216,12 +216,16 @@ public class Hash {
 	public String mostrarCoordsDeKeysEnVector(int[] vector){
 		String resultado = "";
 		for(int i = 0; i < vector.length; i++){
-			System.out.println("key a buscar" +vector[i]);
-			resultado += this.tabla[vector[i]].getCoordX() + ";" + this.tabla[vector[i]].getCoordY() + "|";
-			if(vector[i + 1] == 0){
-				break;
+			if(vector[i] != 0){
+				System.out.println("key a buscar" +vector[i]);
+				resultado += this.tabla[vector[i]].getCoordX() + ";" + this.tabla[vector[i]].getCoordY() + "|";
 			}
+			/*if(vector[i + 1] == 0){
+				System.out.println("el que sigue " + vector[i+1]);
+				break;
+			}*/
 		}
+		resultado = resultado.substring(0, resultado.length() - 1);
 		return resultado;
 	}
 	

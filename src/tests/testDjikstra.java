@@ -11,6 +11,7 @@ import estructuras.DijkstraRubroCercano;
 import sistema.Retorno;
 import sistema.Sistema;
 import sistema.Enumerados.Rubro;
+import sistema.Enumerados.TipoPropiedad;
 
 public class testDjikstra {
 
@@ -80,7 +81,7 @@ public class testDjikstra {
 		
 		Dijkstra d = new Dijkstra();
 		d.dijkstra(s.matrizMapa, keyOrig, keyFin);
-		d.imprimirCamino(s.matrizMapa, keyFin);
+		d.imprimirCamino(s.matrizMapa);
 		System.out.println(" ");
 	}
 	
@@ -88,10 +89,10 @@ public class testDjikstra {
 	public void testCaminoMasCorto2(){
 		Sistema s = new Sistema();
 		s.inicializarSistema(8);
-	
-		Retorno ret = s.registrarEsquina(1.0,1.0);
-		assertEquals(Retorno.Resultado.OK, ret.resultado);
-		ret = s.registrarPuntoInteres(2.0, 2.0, Rubro.CAJERO, "hola");
+		assertEquals(Retorno.Resultado.OK, s.registrarVendedor("5.555.555-5", "Omar", "omar@gmail.com", "098123456").resultado);
+		assertEquals(Retorno.Resultado.OK, s.registrarPropiedad(1.0, 1.0, TipoPropiedad.CASA, "Rio Negro 1188").resultado);//P1
+
+		Retorno ret = s.registrarPuntoInteres(2.0, 2.0, Rubro.CAJERO, "hola");
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarPuntoInteres(3.0, 3.0, Rubro.CAJERO, "hola");
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
@@ -129,10 +130,8 @@ public class testDjikstra {
 		int keyFin = s.tableHash.devolverPosActual(6.0, 6.0);
 		
 		s.tableHash.imprimirLista();
-		
-		Dijkstra d = new Dijkstra();
-		d.dijkstra(s.matrizMapa, keyOrig, keyFin);
-		d.imprimirCamino(s.matrizMapa, keyFin);
+		String resEsperado = "1.0;1.0|5.0;5.0|6.0;6.0";
+		assertEquals(resEsperado, s.caminoMinimo("Rio Negro 1188", 6.0, 6.0).valorString);
 		System.out.println(" ");
 	}
 	

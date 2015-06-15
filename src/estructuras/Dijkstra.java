@@ -38,7 +38,7 @@ public class Dijkstra {
 			//saco el del frente
 			int puntoActual = (int)((NodoLista)queue.dequeue()).getDato();
 			System.out.println(puntoActual);
-			boolean flag = true;
+			//boolean flag = true;
 			//Busco vertices adyacentes del origen
 			Lista l = obtenerAdyacentes(puntoActual);
 			System.out.println("es vacia " + l.esVacia());
@@ -61,12 +61,12 @@ public class Dijkstra {
 			}
 			
 			//Obtengo el vertice de menor distancia
-			/*int vmd = obtenerVerticeMenorDistancia(l, puntoActual);
+			/*int vmd = obtenerVerticeMenorDistancia(l, punto);
 			
-			int peso = grafo.devolverDistancia(vmd, puntoActual);
+			int peso = grafo.devolverDistancia(vmd, punto);
 			
 			visited[vmd] = true;
-			prec[vmd] = puntoActual;
+			prec[vmd] = punto;
 			dist[vmd] = dist[punto] + peso;
 			
 			if(vmd == DESTINO){
@@ -117,13 +117,26 @@ public class Dijkstra {
 	}	
 	
 
-	public void imprimirCamino(GrafoMatriz Grafo, int destino) {
+	public int[] imprimirCamino(GrafoMatriz Grafo) {
 		int i = 0;
-		System.out.println("Destino - " + destino);
-		while (i < dist.length) {
-			System.out.println(dist[i] + " - " + prec[i]);
-			i += 1;
+		int[] vectorFinal = new int[prec.length];
+		int actual = DESTINO;
+		while(actual != ORIGEN) {
+			System.out.println("Distancia:" + dist[actual] + " - Presente:" + actual + "- Anterior:" + prec[actual]);
+			vectorFinal[i] = actual;
+			actual = prec[actual];
+			i++;
 		}
+		vectorFinal[i] = ORIGEN;
+		//dar vuelta vector
+		int[] vFinalFinal = new int[vectorFinal.length];
+		int count = 0;
+		for(int j = vectorFinal.length - 1; j >= 0; j--){
+			vFinalFinal[count] = vectorFinal[j];
+			count++;
+		}
+		System.out.println("Distancia:" + dist[ORIGEN] + " - Presente:" + actual + " - Anterior:" + prec[ORIGEN]);
+		return vFinalFinal;
 	}
 
 }
