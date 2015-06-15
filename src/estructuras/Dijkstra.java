@@ -75,7 +75,7 @@ public class Dijkstra {
 			if(flag){
 				System.out.println(vmd);
 				dijkstra(vmd);
-			}//*/
+			}*/
 		}
 		
 	}
