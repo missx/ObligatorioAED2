@@ -35,7 +35,11 @@ public class Hash {
 	 * Función de hash
 	 */
 	public int h(double coordX, double coordY){
-		int nr = Math.abs((int)coordX) + Math.abs((int)coordY);
+		String str = String.valueOf(coordX) + String.valueOf(coordX);
+		int nr = 0;
+		for(int i = 0; i < str.length(); i++){
+			nr += (int)str.charAt(i);
+		}
 		System.out.println("key " +nr%tamañoTabla);
 		return nr%tamañoTabla;
 	}
@@ -50,15 +54,18 @@ public class Hash {
 			if(tabla[pos] != null){
 				if(!(tabla[pos].getCoordX().equals(0.0) && tabla[pos].getCoordY().equals(0.0))){
 					pos += 1;
+					System.out.println("posicion ocupada " +pos);
 					if(pos == tabla.length){
 						pos = 0;
 					}
 				}
 				else{
 					flag = false;
+					System.out.println("aqui");
 				}
 			}
 			else{
+				System.out.println("aca");
 				flag = false;
 			}
 		}

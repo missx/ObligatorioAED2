@@ -380,24 +380,20 @@ public class Sistema implements ISistema {
 		//si no hay ningun punto de interes de ese rubro
 		if(!this.tableHash.existePuntoDeEseRubro(rubroPuntoInteres)){
 			return new Retorno(Resultado.ERROR_2);
-		}
-		//si hay algún punto pero no es alcanzable
-		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
-		int keyATableHash = 0;
-		if(p != null){
-			keyATableHash = this.tableHash.h(p.getCoordX(), p.getCoordY());
-		}
-		Lista verticesAdyascentes = this.matrizMapa.obtenerVerticesAdyacentes(keyATableHash);
-		if(!verticesAdyascentes.chequearSiAlMenosUnoDeRubro(rubroPuntoInteres)){
-			return new Retorno(Resultado.ERROR_3);
-		}
+		}		
 		//se puede calcular el punto de interes mas cercano
 		
 		//buscar las keys de origen y destino
-		int keyOrig = this.tableHash.h(p.getCoordX(), p.getCoordY());
+		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
+		int keyATableHash = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
+		System.out.println(keyATableHash);
+		int keyOrig = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
+		System.out.println(keyOrig);
 		Lista keysDestino = this.tableHash.devolverKeysDeRubro(rubroPuntoInteres); //creamos lista de keys
+		System.out.println(keysDestino);
 		NodoLista inicio = keysDestino.getInicio(); //tomamos el inicio
-		int keyDelCaminoMasCorto = 0;
+		System.out.println(inicio.getDato());
+		int keyDelCaminoMasCorto = -1;
 		int caminoMasCortoARubro = Integer.MAX_VALUE;
 		int[] precedentes;
 		
@@ -411,7 +407,10 @@ public class Sistema implements ISistema {
 			}
 			inicio = inicio.getSig();
 		}
-		
+		//si keydelcaminomascorto sigue siend -1 es que no es alcanzable
+		if(keyDelCaminoMasCorto == -1){
+			return new Retorno(Resultado.ERROR_3);
+		}
 		//hacemos el dijkstra con el mas cercano
 		Dijkstra cercano = new Dijkstra();
 		cercano.dijkstra(this.matrizMapa, keyOrig, keyDelCaminoMasCorto);
