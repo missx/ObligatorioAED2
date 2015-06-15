@@ -93,16 +93,16 @@ public class HashPropiedad {
 			return true;
 		}
 	}
-	/*
-	public int devolverPosActual(double coordX, double coordY){
-		int pos = h(coordX, coordY);
+	
+	public int devolverPosActual(String direccion){
+		int pos = h(direccion);
 		boolean flag = true;
 		int count = 0;
 		while(flag){
 			if(count < tabla.length){
 				count += 1;
 				if(tabla[pos] != null){
-					if(tabla[pos].getCoordX() == coordX && tabla[pos].getCoordY() == coordY){
+					if(tabla[pos].getDato().getDireccion() == direccion){
 						return pos;
 					}
 					else{
@@ -122,7 +122,6 @@ public class HashPropiedad {
 		}
 		return -1;
 	}
-	*/
 		
 	public boolean esVacio(){
 		boolean vacio = true;

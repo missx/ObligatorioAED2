@@ -7,6 +7,7 @@ import dominio.PuntoDeInteres;
 import dominio.Vendedor;
 import estructuras.ArbolB;
 import estructuras.Dijkstra;
+import estructuras.DijkstraRubroCercano;
 import estructuras.GrafoMatriz;
 import estructuras.Hash;
 import estructuras.HashPropiedad;
@@ -385,42 +386,18 @@ public class Sistema implements ISistema {
 		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
 		int keyATableHash = 0;
 		if(p != null){
-			keyATableHash = this.tableHash.h(p.getCoordX(), p.getCoordY());
+			keyATableHash = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
 		}
+		/*
 		Lista verticesAdyascentes = this.matrizMapa.obtenerVerticesAdyacentes(keyATableHash);
 		if(!verticesAdyascentes.chequearSiAlMenosUnoDeRubro(rubroPuntoInteres)){
 			return new Retorno(Resultado.ERROR_3);
 		}
-		//se puede calcular el punto de interes mas cercano
+		*/
+		DijkstraRubroCercano drc = new DijkstraRubroCercano();
+		drc.dijkstra(matrizMapa, tableHash, rubroPuntoInteres, keyATableHash);
 		
-		//buscar las keys de origen y destino
-		int keyOrig = this.tableHash.h(p.getCoordX(), p.getCoordY());
-		Lista keysDestino = this.tableHash.devolverKeysDeRubro(rubroPuntoInteres); //creamos lista de keys
-		NodoLista inicio = keysDestino.getInicio(); //tomamos el inicio
-		int keyDelCaminoMasCorto = 0;
-		int caminoMasCortoARubro = Integer.MAX_VALUE;
-		int[] precedentes;
-		
-		while(inicio != null){ //recorre la lista buscando el rubro más cercano
-			Dijkstra caminoMasCorto = new Dijkstra();
-			caminoMasCorto.dijkstra(this.matrizMapa, keyOrig, (int)inicio.getDato());
-			
-			if(caminoMasCorto.dist.length < caminoMasCortoARubro){
-				caminoMasCortoARubro = caminoMasCorto.dist.length; 
-				keyDelCaminoMasCorto = (int)inicio.getDato();
-			}
-			inicio = inicio.getSig();
-		}
-		
-		//hacemos el dijkstra con el mas cercano
-		Dijkstra cercano = new Dijkstra();
-		cercano.dijkstra(this.matrizMapa, keyOrig, keyDelCaminoMasCorto);
-		precedentes = cercano.prec;
-		String resultado = "";
-		for(int i : precedentes){
-			resultado += this.tableHash.getTabla()[i].getCoordX() + ";" + this.tableHash.getTabla()[i].getCoordY() + "|";
-		}
-		return new Retorno(Resultado.OK, resultado);
+		return new Retorno(Resultado.OK);
 	}
 
 	//PRE: La dirección direccionPropiedad existe. El punto de interés existe. Hay por lo menos un camino posible.
@@ -439,14 +416,18 @@ public class Sistema implements ISistema {
 		Propiedad p = this.tableHashProp.devolverPropiedad(direccionPropiedad);
 		int keyDePropEnTableHash = 0;
 		if(p != null){
-			keyDePropEnTableHash = this.tableHash.h(p.getCoordX(), p.getCoordY());
+			keyDePropEnTableHash = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
 		}
-		int keyDePtoInteresEnTableHash = this.tableHash.h(coordX, coordY);
+		int keyDePtoInteresEnTableHash = this.tableHash.devolverPosActual(coordX, coordY);
 		if(this.matrizMapa.sonAdyacentes(keyDePropEnTableHash, keyDePtoInteresEnTableHash)){
 			return new Retorno(Resultado.ERROR_3);
 		}
+		
+		Dijkstra d = new Dijkstra();
 
-		BreadthFirstSearch bfs = new BreadthFirstSearch(this.matrizMapa, keyDePropEnTableHash,this.tableHash);
+		d.dijkstra(matrizMapa, keyDePropEnTableHash, keyDePtoInteresEnTableHash);
+		d.imprimirCamino(matrizMapa, keyDePtoInteresEnTableHash);
+		System.out.println(" ");
 	
 		return new Retorno(Resultado.OK);
 	}
