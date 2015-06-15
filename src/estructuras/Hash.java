@@ -105,6 +105,9 @@ public class Hash {
 					flag = false;
 				}
 			}
+			else{
+				flag = false;
+			}
 		}
 		return false;
 	}
@@ -140,6 +143,15 @@ public class Hash {
 	
 	public void eliminarPunto(int pos){
 		tabla[pos] = new Punto(0.0,0.0);
+	}
+	
+	public Punto devolverPuntoPorPosicion(int pos){
+		if(tabla[pos] != null || !(tabla[pos].getCoordX() == 0.0 && tabla[pos].getCoordY() == 0.0)){
+			return tabla[pos];
+		}
+		else{
+			return null;
+		}
 	}
 	
 

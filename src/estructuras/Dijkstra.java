@@ -104,6 +104,9 @@ public class Dijkstra {
 					menorPeso = pesoAux;
 					verticeMenor = vertice;
 				}
+				if(pesoAux == menorPeso){
+					//algo
+				}
 				aux = aux.getSig();
 			}
 			else{
@@ -113,19 +116,14 @@ public class Dijkstra {
 		return verticeMenor; 
 	}	
 	
-	public int[] imprimirCamino(GrafoMatriz Grafo) {
+
+	public void imprimirCamino(GrafoMatriz Grafo, int destino) {
 		int i = 0;
-		int[] vectorFinal = new int[prec.length];
-		int actual = DESTINO;
-		while(actual != ORIGEN) {
-			System.out.println("Distancia:" + dist[actual] + " - Presente:" + actual + "- Anterior:" + prec[actual]);
-			vectorFinal[i] = actual;
-			actual = prec[actual];
-			i++;
+		System.out.println("Destino - " + destino);
+		while (i < dist.length) {
+			System.out.println(dist[i] + " - " + prec[i]);
+			i += 1;
 		}
-		vectorFinal[i] = ORIGEN;
-		System.out.println("Distancia:" + dist[ORIGEN] + " - Presente:" + actual + " - Anterior:" + prec[ORIGEN]);
-		return vectorFinal;
 	}
 
 }
