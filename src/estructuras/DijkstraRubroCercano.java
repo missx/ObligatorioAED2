@@ -15,6 +15,7 @@ public class DijkstraRubroCercano {
 	static Hash h;
 	static Rubro r;
 	static Punto p;
+	public static String resultadoFinal;
 	
 	public void dijkstra(GrafoMatriz gr, Hash ha, Rubro rubro, int origen) {
 		grafo = gr;
@@ -60,7 +61,7 @@ public class DijkstraRubroCercano {
 			if(pi.getRubro() == r){
 				flag = false;
 				resultado = "Coordenadas X: " + p.getCoordX().toString() + ", Coordenadas Y: " + p.getCoordY().toString();
-				imprimirCoordenadas(p);
+				resultadoFinal = imprimirCoordenadas(p);
 			}
 		}
 		if(flag){
@@ -114,7 +115,9 @@ public class DijkstraRubroCercano {
 		return verticeMenor;
 	}	
 	
-	public void imprimirCoordenadas(Punto punto) {
-		System.out.println("Destino - Coordeanas X: " + punto.getCoordX() + "Coordenadas Y: " + punto.getCoordY());
+	public String imprimirCoordenadas(Punto punto) {
+		String strDevolver = punto.getCoordX() + ";" + punto.getCoordY();
+		System.out.println(strDevolver);
+		return strDevolver;
 	}
 }

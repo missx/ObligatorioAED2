@@ -22,7 +22,7 @@ import sistema.Retorno.Resultado;
 public class Sistema implements ISistema {
 	
 	//atributos
-	public Queue queueDeVendedores;
+	public Queue queueDeVendedores; 
 	public ArbolB arbolDeVendedores;
 	public GrafoMatriz matrizMapa;
 	public Hash tableHash;
@@ -394,10 +394,10 @@ public class Sistema implements ISistema {
 			return new Retorno(Resultado.ERROR_3);
 		}
 		*/
-		DijkstraRubroCercano drc = new DijkstraRubroCercano();
+		DijkstraRubroCercano drc = new DijkstraRubroCercano(); 
 		drc.dijkstra(matrizMapa, tableHash, rubroPuntoInteres, keyATableHash);
 		
-		return new Retorno(Resultado.OK);
+		return new Retorno(Resultado.OK, drc.resultadoFinal);
 	}
 
 	//PRE: La dirección direccionPropiedad existe. El punto de interés existe. Hay por lo menos un camino posible.
