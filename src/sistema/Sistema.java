@@ -1,5 +1,7 @@
 package sistema;
 
+import java.util.ArrayList;
+
 import dominio.Esquina;
 import dominio.Propiedad;
 import dominio.Punto;
@@ -419,13 +421,11 @@ public class Sistema implements ISistema {
 		if(this.matrizMapa.sonAdyacentes(keyDePropEnTableHash, keyDePtoInteresEnTableHash)){
 			return new Retorno(Resultado.ERROR_3);
 		}
-		
 		Dijkstra d = new Dijkstra();
 
 		d.dijkstra(matrizMapa, keyDePropEnTableHash, keyDePtoInteresEnTableHash);
-		
-		int[] caminoMin = d.imprimirCamino(matrizMapa);
-		String coordenadas = this.tableHash.mostrarCoordsDeKeysEnVector(caminoMin);
+		String coordenadas = d.imprimirCamino(matrizMapa, this.tableHash);
+		coordenadas = coordenadas.substring(0, coordenadas.length() - 1);
 		System.out.println(coordenadas);
 		return new Retorno(Resultado.OK, coordenadas);
 	}

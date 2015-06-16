@@ -1,5 +1,7 @@
 package estructuras;
 
+import java.util.ArrayList;
+
 import dominio.PuntoDeInteres;
 
 public class Dijkstra {
@@ -40,12 +42,11 @@ public class Dijkstra {
 			//saco el del frente
 			int puntoActual = (int)((NodoLista)queue.dequeue()).getDato();
 			System.out.println("padre " + puntoActual);
-			//boolean flag = true;
+			
 			//Busco vertices adyacentes del origen
 			Lista l = obtenerAdyacentes(puntoActual);
 			System.out.println("es vacia " + l.esVacia());
 			
-			//NodoLista nodo = l.getInicio();
 			NodoLista nodo = obtenerNodoMenorDistancia(l, puntoActual);
 			while(nodo != null){
 				int otroPunto = (int)nodo.getDato();
@@ -64,23 +65,6 @@ public class Dijkstra {
 				nodo = obtenerNodoMenorDistancia(l, puntoActual);
 			}
 			
-			//Obtengo el vertice de menor distancia
-			/*int vmd = obtenerVerticeMenorDistancia(l, punto);
-			
-			int peso = grafo.devolverDistancia(vmd, punto);
-			
-			visited[vmd] = true;
-			prec[vmd] = punto;
-			dist[vmd] = dist[punto] + peso;
-			
-			if(vmd == DESTINO){
-				flag = false;
-			}
-			if(flag){
-				System.out.println(vmd);
-				dijkstra(vmd);
-			}
-		}*/
 		}
 	}
 
@@ -94,25 +78,21 @@ public class Dijkstra {
 		int pesoAux = 0;
 		int menorPeso = Integer.MAX_VALUE;
 		NodoLista aux = l.getInicio();
-		int x = Integer.MAX_VALUE;
-		int y = -1;   // graph not connected, or no unvisited vertices
+		
 		while(aux != null){
 			vertice = (Integer)aux.getDato();
+			pesoAux = grafo.devolverDistancia(vertice, actual);
 			//Verificar si el punto ya fue visitado
-			if(!visited[vertice]){
-				prec[vertice] = actual;
-				pesoAux = grafo.devolverDistancia(vertice, actual);
+			if(!visited[vertice] || (dist[actual] + pesoAux < dist[vertice] && dist[vertice] != Integer.MAX_VALUE)){
+				
 				if(dist[actual] + pesoAux > dist[vertice]){
 					return aux;
 				}
-				dist[vertice] = dist[actual] + pesoAux;
-				if(pesoAux < menorPeso){
+				if(pesoAux <= menorPeso){
 					menorPeso = pesoAux;
 					verticeMenor = aux;
 				}
-				if(pesoAux == menorPeso){
-					//algo
-				}
+				
 				aux = aux.getSig();
 			}
 			else{
@@ -122,59 +102,30 @@ public class Dijkstra {
 		return verticeMenor;
 	}	
 	
-	private int obtenerVerticeMenorDistancia(Lista l, int actual){
-		int verticeMenor = 0;
-		int vertice = 0;
-		int pesoAux = 0;
-		int menorPeso = Integer.MAX_VALUE;
-		NodoLista aux = l.getInicio();
 		
-		while(aux != null){
-			vertice = (Integer)aux.getDato();
-			if(!visited[vertice]){
-				prec[vertice] = actual;
-				pesoAux = grafo.devolverDistancia(vertice, actual);
-				if(dist[actual] + pesoAux > dist[vertice]){
-					return vertice;
-				}
-				dist[vertice] = dist[actual] + pesoAux;
-				if(pesoAux < menorPeso){
-					menorPeso = pesoAux;
-					verticeMenor = vertice;
-				}
-				if(pesoAux == menorPeso){
-					//algo
-				}
-				aux = aux.getSig();
-			}
-			else{
-				aux = aux.getSig();
-			}
-		}
-		return verticeMenor; 
-	}	
-	
-
-	public int[] imprimirCamino(GrafoMatriz Grafo) {
+	public String imprimirCamino(GrafoMatriz Grafo, Hash tableHash) {
 		int i = 0;
-		int[] vectorFinal = new int[prec.length];
+		String[] arraysAlReves = new String[tableHash.getTabla().length];
+		
 		int actual = DESTINO;
 		while(actual != ORIGEN) {
 			System.out.println("Distancia:" + dist[actual] + " - Presente:" + actual + "- Anterior:" + prec[actual]);
-			vectorFinal[i] = actual;
+			arraysAlReves[i] = tableHash.getTabla()[actual].getCoordXConCerosAlFinal() + ";" + tableHash.getTabla()[actual].getCoordYConCerosAlFinal() + "|";
+			
 			actual = prec[actual];
 			i++;
 		}
-		vectorFinal[i] = ORIGEN;
-		//dar vuelta vector
-		int[] vFinalFinal = new int[vectorFinal.length];
-		int count = 0;
-		for(int j = vectorFinal.length - 1; j >= 0; j--){
-			vFinalFinal[count] = vectorFinal[j];
-			count++;
+		arraysAlReves[i] = tableHash.getTabla()[ORIGEN].getCoordXConCerosAlFinal() + ";" + tableHash.getTabla()[ORIGEN].getCoordYConCerosAlFinal() + "|";
+		
+		String coordenadas = "";
+		for(int j = arraysAlReves.length - 1; j >= 0; j--){
+			if(arraysAlReves[j] != null){
+				coordenadas += arraysAlReves[j];
+			}
 		}
-		System.out.println("Distancia:" + dist[ORIGEN] + " - Presente:" + actual + " - Anterior:" + prec[ORIGEN]);
-		return vFinalFinal;
+		
+		System.out.println(coordenadas);
+		return coordenadas;
 	}
 
 }

@@ -81,7 +81,7 @@ public class testDjikstra {
 		
 		Dijkstra d = new Dijkstra();
 		d.dijkstra(s.matrizMapa, keyOrig, keyFin);
-		d.imprimirCamino(s.matrizMapa);
+		d.imprimirCamino(s.matrizMapa, s.tableHash);
 		System.out.println(" ");
 	}
 	
@@ -130,7 +130,7 @@ public class testDjikstra {
 		int keyFin = s.tableHash.devolverPosActual(6.0, 6.0);
 		
 		s.tableHash.imprimirLista();
-		String resEsperado = "1.0;1.0|2.0;2.0|5.0;5.0|6.0;6.0";
+		String resEsperado = "1.000000;1.000000|2.000000;2.000000|5.000000;5.000000|6.000000;6.000000";
 		assertEquals(resEsperado, s.caminoMinimo("Rio Negro 1188", 6.0, 6.0).valorString);
 		System.out.println(" ");
 	}
