@@ -418,16 +418,17 @@ public class Sistema implements ISistema {
 			keyDePropEnTableHash = this.tableHash.devolverPosActual(p.getCoordX(), p.getCoordY());
 		}
 		int keyDePtoInteresEnTableHash = this.tableHash.devolverPosActual(coordX, coordY);
-		if(this.matrizMapa.sonAdyacentes(keyDePropEnTableHash, keyDePtoInteresEnTableHash)){
-			return new Retorno(Resultado.ERROR_3);
-		}
+		
 		Dijkstra d = new Dijkstra();
 
 		d.dijkstra(matrizMapa, keyDePropEnTableHash, keyDePtoInteresEnTableHash);
 		String coordenadas = d.imprimirCamino(matrizMapa, this.tableHash);
 		coordenadas = coordenadas.substring(0, coordenadas.length() - 1);
 		System.out.println(coordenadas);
-		return new Retorno(Resultado.OK, coordenadas);
+		if(!coordenadas.equals("NO_COORD")){
+			return new Retorno(Resultado.OK, coordenadas);
+		}
+		return new Retorno(Resultado.ERROR_3);
 	}
 
 }

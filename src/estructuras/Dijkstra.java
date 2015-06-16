@@ -26,6 +26,7 @@ public class Dijkstra {
 		for (int i = 0; i < dist.length; i++) {
 			dist[i] = Integer.MAX_VALUE;
 			visited[i] = false;
+			prec[i] = Integer.MAX_VALUE;
 		}
 		dist[origen] = 0; //distancia desde origen a origen es 0
 		visited[origen] = true; //el origen como true ya que fue visitado
@@ -45,7 +46,6 @@ public class Dijkstra {
 			
 			//Busco vertices adyacentes del origen
 			Lista l = obtenerAdyacentes(puntoActual);
-			System.out.println("es vacia " + l.esVacia());
 			
 			NodoLista nodo = obtenerNodoMenorDistancia(l, puntoActual);
 			while(nodo != null){
@@ -106,10 +106,13 @@ public class Dijkstra {
 	public String imprimirCamino(GrafoMatriz Grafo, Hash tableHash) {
 		int i = 0;
 		String[] arraysAlReves = new String[tableHash.getTabla().length];
-		
+		String coordenadas = "";
 		int actual = DESTINO;
 		while(actual != ORIGEN) {
-			System.out.println("Distancia:" + dist[actual] + " - Presente:" + actual + "- Anterior:" + prec[actual]);
+			if(prec[actual] == Integer.MAX_VALUE){
+				coordenadas = "NO_COORDS";
+				break;
+			}
 			arraysAlReves[i] = tableHash.getTabla()[actual].getCoordXConCerosAlFinal() + ";" + tableHash.getTabla()[actual].getCoordYConCerosAlFinal() + "|";
 			
 			actual = prec[actual];
@@ -117,14 +120,14 @@ public class Dijkstra {
 		}
 		arraysAlReves[i] = tableHash.getTabla()[ORIGEN].getCoordXConCerosAlFinal() + ";" + tableHash.getTabla()[ORIGEN].getCoordYConCerosAlFinal() + "|";
 		
-		String coordenadas = "";
-		for(int j = arraysAlReves.length - 1; j >= 0; j--){
-			if(arraysAlReves[j] != null){
-				coordenadas += arraysAlReves[j];
+		if(!coordenadas.equals("NO_COORDS")){
+			for(int j = arraysAlReves.length - 1; j >= 0; j--){
+				if(arraysAlReves[j] != null){
+					coordenadas += arraysAlReves[j];
+				}
 			}
 		}
 		
-		System.out.println(coordenadas);
 		return coordenadas;
 	}
 
