@@ -1240,22 +1240,18 @@ public class TestsSistema {
 		ret = s.registrarTramo(1.0, 1.0, 5.0, 5.0, 3);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		
-		ret = s.registrarTramo(2.0, 2.0, 4.0, 4.0, 6);
-		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		ret = s.registrarTramo(2.0, 2.0, 5.0, 5.0, 1);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 				
 		ret = s.registrarTramo(4.0, 4.0, 6.0, 6.0, 4);
 		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		
-		ret = s.registrarTramo(5.0, 5.0, 6.0, 6.0, 7);
-		assertEquals(Retorno.Resultado.OK, ret.resultado);
 		
 		s.tableHash.imprimirLista();
 		int keyOrig = s.tableHash.devolverPosActual(1.0,1.0);
 		
 		DijkstraRubroCercano drc = new DijkstraRubroCercano();
-		drc.dijkstra(s.matrizMapa, s.tableHash, Rubro.CENTRO_COMERCIAL, keyOrig);
+		drc.dijkstra(s.matrizMapa, s.tableHash, Rubro.FARMACIA, keyOrig);
 	}
 	
 		

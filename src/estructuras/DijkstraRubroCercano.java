@@ -16,6 +16,7 @@ public class DijkstraRubroCercano {
 	static Rubro r;
 	static Punto p;
 	public static String resultadoFinal;
+	public static boolean INALCANZABLE = false;
 	
 	public void dijkstra(GrafoMatriz gr, Hash ha, Rubro rubro, int origen) {
 		grafo = gr;
@@ -47,12 +48,19 @@ public class DijkstraRubroCercano {
 		//Obtengo el vertice de menor distancia
 		int vmd = obtenerVerticeMenorDistancia(l, punto);
 		
+		if(vmd == -1){
+			INALCANZABLE = true;
+			imprimirCoordenadas(null);
+			return;
+		}
 		int peso = grafo.devolverDistancia(vmd, punto);
 		
+	
 		//Modificar los array con el nuevo punto seleccionado
 		visited[vmd] = true;
 		prec[vmd] = punto;
 		dist[vmd] = dist[punto] + peso;
+		
 		
 		p = h.devolverPuntoPorPosicion(vmd);
 		
@@ -82,7 +90,7 @@ public class DijkstraRubroCercano {
 	}
 	
 	private int obtenerVerticeMenorDistancia(Lista l, int actual){
-		int verticeMenor = 0;
+		int verticeMenor = -1;
 		int vertice = 0;
 		int pesoAux = 0;
 		int menorPeso = Integer.MAX_VALUE;
@@ -116,6 +124,9 @@ public class DijkstraRubroCercano {
 	}	
 	
 	public String imprimirCoordenadas(Punto punto) {
+		if(INALCANZABLE){
+			return "";
+		}
 		String strDevolver = punto.getCoordX() + ";" + punto.getCoordY();
 		System.out.println(strDevolver);
 		return strDevolver;

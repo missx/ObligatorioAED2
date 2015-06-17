@@ -393,7 +393,7 @@ public class Sistema implements ISistema {
 		}
 		DijkstraRubroCercano drc = new DijkstraRubroCercano(); 
 		drc.dijkstra(matrizMapa, tableHash, rubroPuntoInteres, keyATableHash);
-		if(drc.resultadoFinal == null){
+		if(drc.INALCANZABLE){
 			return new Retorno(Resultado.ERROR_3); //error3 si no es alcanzable
 		}
 		return new Retorno(Resultado.OK, drc.resultadoFinal);
